@@ -7,4 +7,5 @@ Bundle-Activator: es.uma.lcc.e_motions.Activator
 Bundle-Vendor: LCC UMA
 Bundle-ActivationPolicy: lazy
 Require-Bundle: org.eclipse.ui;bundle-version="3.105.0",
- org.eclipse.core.runtime;bundle-version="3.9.100"
+ org.eclipse.core.runtime;bundle-version="3.9.100",
+ org.eclipse.core.resources;bundle-version="3.8.101"
