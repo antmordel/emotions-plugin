@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension
+         point="org.eclipse.ui.commands">
+      <category
+            id="es.uma.lcc.e-motions.category"
+            name="e-Motions">
+      </category>
+      <command
+            categoryId="es.uma.lcc.e-motions.category"
+            id="es.uma.lcc.e-motions.commandGeneration"
+            name="e-Motions code generation">
+      </command>
+   </extension>
+   <extension
+         point="org.eclipse.ui.menus">
+      <menuContribution
+            allPopups="false"
+            locationURI="toolbar:org.eclipse.ui.main.toolbar?after=additions">
+         <toolbar
+               id="es.uma.lcc.e-motions.toolbar">
+            <command
+                  commandId="es.uma.lcc.e-motions.commandGeneration"
+                  icon="icons/cog.png"
+                  label="e-Motions code generation"
+                  style="push">
+            </command>
+         </toolbar>
+      </menuContribution>
+   </extension>
+   <extension
+         point="org.eclipse.ui.handlers">
+      <handler
+            class="es.uma.lcc.e_motions.handlers.CodGenerationHandler"
+            commandId="es.uma.lcc.e-motions.commandGeneration">
+      </handler>
+   </extension>
+
+</plugin>
