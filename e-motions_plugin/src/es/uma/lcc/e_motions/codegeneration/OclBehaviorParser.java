@@ -11,14 +11,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URL;
-import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.StringTokenizer;
-
-
-
-
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
@@ -48,7 +43,6 @@ import es.uma.lcc.e_motions.common.FileManager;
 import es.uma.lcc.e_motions.common.Printer;
 import es.uma.lcc.e_motions.metamodels.Metamodels;
 
-
 public class OclBehaviorParser {
 
 	/**
@@ -57,8 +51,8 @@ public class OclBehaviorParser {
 	 * 
 	 * @date July, 2nd 2014
 	 * 
-	 *       Creates an HOT to parse the OCL expressions in the behavior model to
-	 *       be transformed to Maude.
+	 *       Creates an HOT to parse the OCL expressions in the behavior model
+	 *       to be transformed to Maude.
 	 * 
 	 * @param metamodel
 	 * @param behaviorModel
@@ -66,19 +60,22 @@ public class OclBehaviorParser {
 	 * @throws CoreException
 	 * @throws ATLCoreException
 	 */
-	public static void oclParser(String behaviorModel, String metamodel) throws IOException, CoreException,
-	ATLCoreException {
+	public static void oclParser(String behaviorModel, String metamodel)
+			throws IOException, CoreException, ATLCoreException {
 
 		IWorkspace workspace = ResourcesPlugin.getWorkspace();
 		IWorkspaceRoot root = workspace.getRoot();
 
-		String project = FileManager.getDefault().getBehavior().getProject().getName();
+		String project = FileManager.getDefault().getBehavior().getProject()
+				.getName();
 
 		IFolder tmp = FileManager.getDefault().createFolderTmp(project);
 		IFile oclBehaviorATLCode = tmp.getFile(FileManager.OCLBEHAVIOR_ATL);
 
-		String output = OclBehaviorParser.parseOclBehavior(behaviorModel, metamodel);
-		InputStream contents = new ByteArrayInputStream(output.getBytes(StandardCharsets.UTF_8));
+		String output = OclBehaviorParser.parseOclBehavior(behaviorModel,
+				metamodel);
+		InputStream contents = new ByteArrayInputStream(
+				output.getBytes("UTF-8"));
 		if (oclBehaviorATLCode.exists()) {
 			oclBehaviorATLCode.setContents(contents, false, false, null);
 		} else {
@@ -89,13 +86,12 @@ public class OclBehaviorParser {
 		IInjector injector = new EMFInjector();
 
 		IReferenceModel atlMM = mF.newReferenceModel();
-		injector.inject(atlMM, Metamodels.class.getResource("ATL.ecore").openStream(), 
-				new HashMap<String,Object>());
+		injector.inject(atlMM, Metamodels.class.getResource("ATL.ecore")
+				.openStream(), new HashMap<String, Object>());
 
 		AtlParser atlPars = AtlParser.getDefault();
 		IModel atlModel = mF.newModel(atlMM);
 		atlPars.inject(atlModel, oclBehaviorATLCode.getLocation().toOSString());
-
 
 		/* create actual file in the .tmp folder */
 		IFile oclBehaviorATLModel = tmp.getFile(FileManager.OCLBEHAVIOR_XMI);
@@ -103,7 +99,8 @@ public class OclBehaviorParser {
 
 		IExtractor extractor = new EMFExtractor();
 
-		extractor.extract(atlModel, oclBehaviorATLModel.getFullPath().toString());
+		extractor.extract(atlModel, oclBehaviorATLModel.getFullPath()
+				.toString());
 
 		EMFModelFactory emfMF = (EMFModelFactory) mF;
 		emfMF.unload((EMFModel) atlMM);
@@ -123,7 +120,8 @@ public class OclBehaviorParser {
 	 * @throws IOException
 	 * @throws ATLCoreException
 	 */
-	public static String parseOclBehavior(String inFile, String metamodel) throws ATLCoreException {
+	public static String parseOclBehavior(String inFile, String metamodel)
+			throws ATLCoreException {
 		String res = "";
 
 		ModelFactory mF = new EMFModelFactory();
@@ -140,10 +138,12 @@ public class OclBehaviorParser {
 
 		int d = 0;
 		while (d < mmObjectList.size()) {
-			EList<EClassifier> classes = ((EPackageImpl) mmObjectList.get(d)).getEClassifiers();
+			EList<EClassifier> classes = ((EPackageImpl) mmObjectList.get(d))
+					.getEClassifiers();
 			int f = 0;
 			while (f < classes.size()) {
-				if (classes.get(f).getClass().getName().equals("org.eclipse.emf.ecore.impl.EEnumImpl"))
+				if (classes.get(f).getClass().getName()
+						.equals("org.eclipse.emf.ecore.impl.EEnumImpl"))
 					enums.add(classes.get(f).getName());
 				f++;
 			}
@@ -170,25 +170,34 @@ public class OclBehaviorParser {
 					linea = linea.replaceAll(c + "::", c + "#");
 				}
 				if (linea.contains("oclExpression=")) {
-					String cadena = linea.substring(linea.indexOf("oclExpression=\"") + 15, linea.indexOf("\"/>"));
+					String cadena = linea.substring(
+							linea.indexOf("oclExpression=\"") + 15,
+							linea.indexOf("\"/>"));
 
 					// helper Ocl troceado
-					String contexto = cadena.substring(cadena.indexOf("context") + 8, cadena.indexOf("::"));
+					String contexto = cadena
+							.substring(cadena.indexOf("context") + 8,
+									cadena.indexOf("::"));
 
 					String funcion = cadena.substring(cadena.indexOf("::") + 2);
 					funcion = funcion.substring(0, funcion.indexOf("("));
 
 					String cadenaNb = cadena.replaceAll(" ", "");
-					String argumentos = cadenaNb.substring(cadenaNb.indexOf("("), cadenaNb.indexOf("):") + 1);
+					String argumentos = cadenaNb.substring(
+							cadenaNb.indexOf("("), cadenaNb.indexOf("):") + 1);
 
-					String resultado = cadena.substring(0, cadena.indexOf("body"));
-					resultado = resultado.substring(resultado.lastIndexOf(":") + 1, resultado.length());
+					String resultado = cadena.substring(0,
+							cadena.indexOf("body"));
+					resultado = resultado.substring(
+							resultado.lastIndexOf(":") + 1, resultado.length());
 					resultado = resultado.trim();
 
 					String body = cadena.substring(cadena.indexOf("body") + 5);
 
-					String[] tBasicos = { "Integer", "Real", "Boolean", "String" };
-					String[] tCollection = { "Set", "Sequence", "Bag", "OrderedSet" };
+					String[] tBasicos = { "Integer", "Real", "Boolean",
+							"String" };
+					String[] tCollection = { "Set", "Sequence", "Bag",
+							"OrderedSet" };
 
 					// tratamos el contexto
 					contexto = contexto(contexto, tBasicos, tCollection);
@@ -199,12 +208,13 @@ public class OclBehaviorParser {
 					resultado = resultado(resultado, tBasicos, tCollection);
 
 					res += "\n";
-					res += "helper context " + contexto + " def: " + funcion + "(" + argumentos + ") : " + resultado
-							+ " = \n" + body + ";\n\n";
+					res += "helper context " + contexto + " def: " + funcion
+							+ "(" + argumentos + ") : " + resultado + " = \n"
+							+ body + ";\n\n";
 				}
 
-				String[] cadena = { "value=", "duration=", "maxDuration=", "startingTime=", "endingTime=", "oclValue=",
-				"pos=" };
+				String[] cadena = { "value=", "duration=", "maxDuration=",
+						"startingTime=", "endingTime=", "oclValue=", "pos=" };
 				/*
 				 * Antonio Moreno: por que no "minDuration="?
 				 */
@@ -218,14 +228,16 @@ public class OclBehaviorParser {
 			}
 			br.close();
 		} catch (IOException e) {
-			Printer.getDefault().println(e.getMessage() + "\nError generating OCL parser.");
+			Printer.getDefault().println(
+					e.getMessage() + "\nError generating OCL parser.");
 			Printer.getDefault().println(e.getStackTrace().toString());
 		}
 
 		return res;
 	}
 
-	private static String argumentos(String argumentos, String[] tBasicos, String[] tCollection) {
+	private static String argumentos(String argumentos, String[] tBasicos,
+			String[] tCollection) {
 		int contB = 0;
 		Boolean encontradoB = false;
 		StringTokenizer ast = new StringTokenizer(argumentos, ",");
@@ -277,7 +289,8 @@ public class OclBehaviorParser {
 				String tokenAux = token.substring(0, token.indexOf("("));
 				String tokenAux2;
 				if (token.endsWith(")")) {
-					tokenAux2 = token.substring(token.indexOf("(") + 1, token.indexOf(")"));
+					tokenAux2 = token.substring(token.indexOf("(") + 1,
+							token.indexOf(")"));
 				} else {
 					tokenAux2 = token.substring(token.indexOf("(") + 1);
 				}
@@ -302,11 +315,13 @@ public class OclBehaviorParser {
 		return result;
 	}
 
-	private static String contexto(String contexto, String[] tBasicos, String[] tCollection) {
+	private static String contexto(String contexto, String[] tBasicos,
+			String[] tCollection) {
 		int contB = 0;
 		Boolean encontradoB = false;
 		while (contB < tBasicos.length && !encontradoB) {
-			if (contexto.contains(tBasicos[contB]) || contexto.equalsIgnoreCase(tCollection[contB])) {
+			if (contexto.contains(tBasicos[contB])
+					|| contexto.equalsIgnoreCase(tCollection[contB])) {
 				encontradoB = true;
 			}
 			contB++;
@@ -314,7 +329,8 @@ public class OclBehaviorParser {
 
 		if (!encontradoB) {
 			if (contexto.endsWith(")")) {
-				contexto = contexto.substring(0, contexto.lastIndexOf(")")) + "!Ecore)";
+				contexto = contexto.substring(0, contexto.lastIndexOf(")"))
+						+ "!Ecore)";
 			} else {
 				contexto = contexto + "!Ecore";
 			}
@@ -322,7 +338,8 @@ public class OclBehaviorParser {
 		return contexto;
 	}
 
-	private static String resultado(String contexto, String[] tBasicos, String[] tCollection) {
+	private static String resultado(String contexto, String[] tBasicos,
+			String[] tCollection) {
 		int contB = 0;
 		Boolean encontradoB = false;
 		while (contB < tBasicos.length && !encontradoB) {
@@ -334,7 +351,8 @@ public class OclBehaviorParser {
 
 		if (!encontradoB) {
 			if (contexto.endsWith(")")) {
-				contexto = contexto.substring(0, contexto.lastIndexOf(")")) + "!Ecore)";
+				contexto = contexto.substring(0, contexto.lastIndexOf(")"))
+						+ "!Ecore)";
 			} else {
 				contexto = contexto + "!Ecore";
 			}
@@ -342,7 +360,8 @@ public class OclBehaviorParser {
 		return contexto;
 	}
 
-	private static String analiza(String linea, String valor) throws IOException {
+	private static String analiza(String linea, String valor)
+			throws IOException {
 		String lineaAux;
 		lineaAux = linea.substring(linea.indexOf(valor), linea.length());
 		lineaAux = lineaAux.replace("\"\"", "\" \"");

@@ -7,16 +7,11 @@ Bundle-Activator: es.uma.lcc.e_motions.Activator
 Bundle-Vendor: LCC UMA
 Bundle-ActivationPolicy: lazy
 Require-Bundle: org.eclipse.ui;bundle-version="3.105.0",
- org.eclipse.core.runtime;bundle-version="3.9.100",
  org.eclipse.core.resources;bundle-version="3.8.101",
  org.eclipse.jface.text;bundle-version="3.8.101",
- org.eclipse.xtend2.lib;bundle-version="2.9.2",
- org.eclipse.core.jobs,
- org.eclipse.emf.common;bundle-version="2.10.1",
  es.upv.dsic.issi.moment.mdt.maudedaemon;bundle-version="1.3.6",
- org.eclipse.m2m.atl.core;bundle-version="3.6.0",
- org.eclipse.m2m.atl.core.emf;bundle-version="3.6.0",
  org.eclipse.m2m.atl.engine.emfvm;bundle-version="3.6.0",
  Behavior;bundle-version="1.0.0",
  org.eclipse.m2m.atl.engine;bundle-version="3.6.0",
- es.uma.lcc.maude_mm;bundle-version="1.0.0"
+ es.uma.lcc.maude_mm;bundle-version="1.0.0",
+ org.eclipse.xtend.lib;bundle-version="2.9.2"
