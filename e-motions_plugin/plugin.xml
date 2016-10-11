@@ -12,6 +12,11 @@
             id="es.uma.lcc.e-motions.commandGeneration"
             name="e-Motions code generation">
       </command>
+      <command
+            categoryId="es.uma.lcc.e-motions.category"
+            id="es.uma.lcc.e-motions.palladio"
+            name="Palladio into e-Motions">
+      </command>
    </extension>
    <extension
          point="org.eclipse.ui.menus">
@@ -26,6 +31,12 @@
                   label="e-Motions code generation"
                   style="push">
             </command>
+            <command
+                  commandId="es.uma.lcc.e-motions.palladio"
+                  icon="icons/palladio.png"
+                  label="Palladio into e-Motions"
+                  style="push">
+            </command>
          </toolbar>
       </menuContribution>
    </extension>
@@ -34,6 +45,10 @@
       <handler
             class="es.uma.lcc.e_motions.handlers.CodGenerationHandler"
             commandId="es.uma.lcc.e-motions.commandGeneration">
+      </handler>
+      <handler
+            class="es.uma.lcc.e_motions.handlers.PalladioHandler"
+            commandId="es.uma.lcc.e-motions.palladio">
       </handler>
    </extension>
 

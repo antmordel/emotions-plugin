@@ -24,8 +24,6 @@ import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.dialogs.ElementTreeSelectionDialog;
 import org.eclipse.ui.model.BaseWorkbenchContentProvider;
 import org.eclipse.ui.model.WorkbenchLabelProvider;
-import org.eclipse.swt.widgets.Shell;
-import org.eclipse.jface.dialogs.Dialog;
 
 
 public class MaudeCodeDialog extends Dialog {
