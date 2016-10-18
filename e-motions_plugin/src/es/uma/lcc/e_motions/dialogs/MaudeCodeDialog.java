@@ -25,6 +25,9 @@ import org.eclipse.ui.dialogs.ElementTreeSelectionDialog;
 import org.eclipse.ui.model.BaseWorkbenchContentProvider;
 import org.eclipse.ui.model.WorkbenchLabelProvider;
 
+import es.uma.lcc.e_motions.common.ExecutionData;
+import es.uma.lcc.e_motions.common.FileManager;
+
 
 public class MaudeCodeDialog extends Dialog {
 	protected IAdaptable input;
@@ -48,7 +51,7 @@ public class MaudeCodeDialog extends Dialog {
 
 	protected Control createDialogArea(Composite parent) {
 		
-		//final FileManager _fm = FileManager.getDefault();
+		final FileManager _fm = FileManager.getDefault();
 		Composite composite = (Composite) super.createDialogArea(parent);
 
 		GridLayout layout = new GridLayout();
@@ -97,9 +100,9 @@ public class MaudeCodeDialog extends Dialog {
 		_gridTextModelBehavior.horizontalSpan = 2;
 		_gridTextModelBehavior.widthHint = 350;
 		textModelBehavior.setLayoutData(_gridTextModelBehavior);
-		//if (_fm.getBehavior() != null) {
-		//	textModelBehavior.setText(_fm.getBehavior().getFullPath().toOSString());
-		//}
+		if (_fm.getBehavior() != null) {
+			textModelBehavior.setText(_fm.getBehavior().getFullPath().toOSString());
+		}
 
 		// 2x4
 		// Button to define the behavior model by url
@@ -120,8 +123,8 @@ public class MaudeCodeDialog extends Dialog {
 
 				IFile result = (IFile) dialog.getResult()[0];
 				if (dialog.getReturnCode() == Window.OK) {
-					//_fm.setBehavior(result);
-					//textModelBehavior.setText(_fm.getBehavior().getFullPath().toOSString());
+					_fm.setBehavior(result);
+					textModelBehavior.setText(_fm.getBehavior().getFullPath().toOSString());
 				}
 			}
 		});
@@ -158,9 +161,9 @@ public class MaudeCodeDialog extends Dialog {
 		gridtextmodmm.horizontalSpan = 2;
 		gridtextmodmm.widthHint = 350;
 		textMM.setLayoutData(gridtextmodmm);
-//		if (_fm.getMetamodel() != null) {
-//			textMM.setText(_fm.getMetamodel().getFullPath().toOSString());
-//		}
+		if (_fm.getMetamodel() != null) {
+			textMM.setText(_fm.getMetamodel().getFullPath().toOSString());
+		}
 
 		// 2x4
 		// Bot�n para definir el modelo por URL
@@ -182,8 +185,8 @@ public class MaudeCodeDialog extends Dialog {
 
 				IFile result = (IFile) dialog.getResult()[0];
 				if (dialog.getReturnCode() == Window.OK) {
-//					_fm.setMetamodel(result);
-//					textMM.setText(_fm.getMetamodel().getFullPath().toOSString());
+					_fm.setMetamodel(result);
+					textMM.setText(_fm.getMetamodel().getFullPath().toOSString());
 				}
 			}
 		});
@@ -216,9 +219,9 @@ public class MaudeCodeDialog extends Dialog {
 		gridtextmmod3.horizontalSpan = 2;
 		gridtextmmod3.widthHint = 350;
 		initialModelText.setLayoutData(gridtextmmod3);
-//		if (_fm.getInitialModel() != null) {
-//			initialModelText.setText(_fm.getInitialModel().getFullPath().toOSString());
-//		}
+		if (_fm.getInitialModel() != null) {
+			initialModelText.setText(_fm.getInitialModel().getFullPath().toOSString());
+		}
 
 		// 8x4
 		// Bot�n para definir el modelo inicial por URL
@@ -235,7 +238,7 @@ public class MaudeCodeDialog extends Dialog {
 
 				if (dialog.getReturnCode() == Window.OK) {
 					IFile result = (IFile) dialog.getResult()[0];
-//					_fm.setInitialModel(result);
+					_fm.setInitialModel(result);
 					initialModelText.setText(result.getFullPath().toOSString());
 				}
 			}
@@ -247,7 +250,7 @@ public class MaudeCodeDialog extends Dialog {
 		clearInitMM.setText(" Clear ");
 		clearInitMM.addListener(SWT.Selection, new Listener() {
 			public void handleEvent(Event event) {
-//				_fm.setInitialModel(null);
+				_fm.setInitialModel(null);
 				initialModelText.setText("");
 			}
 		});
@@ -271,9 +274,7 @@ public class MaudeCodeDialog extends Dialog {
 		timelimit.setText("");
 		timelimit.setEditable(true);
 		timelimit.setBackground(_blancomm);
-//		if (SimulateAction.timelimit != null) {
-//			timelimit.setText(ExecutionData.getDefault().getTimeLimitString());
-//		}
+		timelimit.setText(ExecutionData.getDefault().getTimeLimitString());
 
 		GridData gridtimelimit = new GridData();
 		gridtimelimit.horizontalAlignment = GridData.BEGINNING;
@@ -284,11 +285,11 @@ public class MaudeCodeDialog extends Dialog {
 			public void handleEvent(Event event) {
 				String tl = timelimit.getText();
 				tl = tl.trim();
-//				if (tl.equals("")) {
-//					ExecutionData.getDefault().setTimeLimit(-1);
-//				} else {
-//					ExecutionData.getDefault().setTimeLimit(Integer.valueOf(tl));
-//				}
+				if (tl.equals("")) {
+					ExecutionData.getDefault().setTimeLimit(-1);
+				} else {
+					ExecutionData.getDefault().setTimeLimit(Integer.valueOf(tl));
+				}
 			}
 		});
 
@@ -319,9 +320,7 @@ public class MaudeCodeDialog extends Dialog {
 		defaulttime.setText("");
 		defaulttime.setEditable(true);
 		defaulttime.setBackground(_blancomm);
-//		if (SimulateAction.defaultTime != null) {
-//			defaulttime.setText(ExecutionData.getDefault().getDefaultElapsetimeString());
-//		}
+		defaulttime.setText(ExecutionData.getDefault().getDefaultElapsetimeString());
 
 		GridData gridDefaultTime = new GridData();
 		gridDefaultTime.horizontalAlignment = GridData.BEGINNING;
@@ -332,11 +331,11 @@ public class MaudeCodeDialog extends Dialog {
 			public void handleEvent(Event event) {
 				String dt = defaulttime.getText();
 				dt = dt.trim();
-//				if (dt.equals("")) {
-//					ExecutionData.getDefault().setDefaultElapseTime(-1);
-//				} else {
-//					ExecutionData.getDefault().setDefaultElapseTime(Integer.valueOf(dt));
-//				}
+				if (dt.equals("")) {
+					ExecutionData.getDefault().setDefaultElapseTime(-1);
+				} else {
+					ExecutionData.getDefault().setDefaultElapseTime(Integer.valueOf(dt));
+				}
 			}
 		});
 
@@ -372,14 +371,14 @@ public class MaudeCodeDialog extends Dialog {
 		gridtextmmod5.horizontalSpan = 2;
 		gridtextmmod5.widthHint = 350;
 		resultingModelText.setLayoutData(gridtextmmod5);
-//		if (_fm.getFolderResultName() != null) {
-//			resultingModelText.setText(_fm.getFolderResultName());
-//		}
-//		resultingModelText.addListener(SWT.Modify, new Listener() {
-//			public void handleEvent(Event event) {
-//				_fm.setFolderResultName(resultingModelText.getText());
-//			}
-//		});
+		if (_fm.getFolderResultName() != null) {
+			resultingModelText.setText(_fm.getFolderResultName());
+		}
+		resultingModelText.addListener(SWT.Modify, new Listener() {
+			public void handleEvent(Event event) {
+				_fm.setFolderResultName(resultingModelText.getText());
+			}
+		});
 
 		// 12x4
 		vacios[i] = new Label(composite, SWT.HORIZONTAL);
@@ -416,27 +415,27 @@ public class MaudeCodeDialog extends Dialog {
 
 		final Button cb = new Button(composite, SWT.CHECK);
 		cb.setText("Keep track of realized actions");
-//		cb.setSelection(ExecutionData.getDefault().isTrackingActions());
+		cb.setSelection(ExecutionData.getDefault().isTrackingActions());
 		GridData gridcb = new GridData();
 		gridcb.horizontalAlignment = GridData.BEGINNING;
 		gridcb.horizontalSpan = 2;
 		cb.setLayoutData(gridcb);
 		cb.addListener(SWT.Selection, new Listener() {
 			public void handleEvent(Event event) {
-//				ExecutionData.getDefault().setTrackingActions(cb.getSelection());
+				ExecutionData.getDefault().setTrackingActions(cb.getSelection());
 			}
 		});
 
 		final Button validate = new Button(composite, SWT.CHECK);
 		validate.setText("Validate OCL");
-//		validate.setSelection(ExecutionData.getDefault().isValidateOCL());
+		validate.setSelection(ExecutionData.getDefault().isValidateOCL());
 		GridData gridValidate = new GridData();
 		gridValidate.horizontalAlignment = GridData.BEGINNING;
 		gridValidate.horizontalSpan = 2;
 		validate.setLayoutData(gridValidate);
 		validate.addListener(SWT.Selection, new Listener() {
 			public void handleEvent(Event event) {
-//				ExecutionData.getDefault().setValidateOCL(validate.getSelection());
+				ExecutionData.getDefault().setValidateOCL(validate.getSelection());
 			}
 		});
 		
@@ -445,14 +444,14 @@ public class MaudeCodeDialog extends Dialog {
 		i++;
 		final Button printAppliedRulesButton = new Button(composite, SWT.CHECK);
 		printAppliedRulesButton.setText("Print applied rules");
-//		printAppliedRulesButton.setSelection(ExecutionData.getDefault().isPrintAppliedRules());
+		printAppliedRulesButton.setSelection(ExecutionData.getDefault().isPrintAppliedRules());
 		GridData gridPrintAppliedRulesLabel = new GridData();
 		gridPrintAppliedRulesLabel.horizontalAlignment = GridData.BEGINNING;
 		gridPrintAppliedRulesLabel.horizontalSpan = 2;
 		printAppliedRulesButton.setLayoutData(gridPrintAppliedRulesLabel);
 		printAppliedRulesButton.addListener(SWT.Selection, new Listener() {
 			public void handleEvent(Event event) {
-//				ExecutionData.getDefault().setPrintAppliedRules(printAppliedRulesButton.getSelection());
+				ExecutionData.getDefault().setPrintAppliedRules(printAppliedRulesButton.getSelection());
 			}
 		});
 		

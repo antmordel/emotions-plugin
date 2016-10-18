@@ -9,9 +9,9 @@ import org.eclipse.core.resources.IFile;
  * @author Antonio Moreno-Delgado <amoreno@lcc.uma.es>
  *
  */
-public class RunningInformationPalladio {
+public class PalladioRunningInformation {
 	
-	private static RunningInformationPalladio self;
+	private static PalladioRunningInformation self;
 	
 	private IFile behaviorModel;
 	private IFile metamodel;
@@ -22,10 +22,20 @@ public class RunningInformationPalladio {
 	private IFile allocationModel;
 	private IFile resenvModel;
 	
-	private RunningInformationPalladio(){ }
-	public static RunningInformationPalladio getDefault() {
+	private int limitTime;
+	
+	private boolean appliedRules;
+	private boolean showAdvisories;
+	
+	private String outputFolder;
+	
+	private PalladioRunningInformation(){
+		appliedRules = true;
+		showAdvisories = false;
+	}
+	public static PalladioRunningInformation getDefault() {
 		if (self == null) {
-			self = new RunningInformationPalladio();
+			self = new PalladioRunningInformation();
 		}
 		return self;
 	}
@@ -71,6 +81,30 @@ public class RunningInformationPalladio {
 	}
 	public void setResenvModel(IFile resenvModel) {
 		this.resenvModel = resenvModel;
+	}
+	public int getLimitTime() {
+		return limitTime;
+	}
+	public void setLimitTime(int limitTime) {
+		this.limitTime = limitTime;
+	}
+	public boolean isAppliedRules() {
+		return appliedRules;
+	}
+	public void setAppliedRules(boolean appliedRules) {
+		this.appliedRules = appliedRules;
+	}
+	public boolean isShowAdvisories() {
+		return showAdvisories;
+	}
+	public void setShowAdvisories(boolean showAdvisories) {
+		this.showAdvisories = showAdvisories;
+	}
+	public String getOutputFolder() {
+		return outputFolder;
+	}
+	public void setOutputFolder(String outputFolder) {
+		this.outputFolder = outputFolder;
 	}
 	
 }

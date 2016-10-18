@@ -3,11 +3,16 @@ package es.uma.lcc.e_motions.handlers;
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
+import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.jface.dialogs.Dialog;
+import org.eclipse.jface.window.Window;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.handlers.HandlerUtil;
 
+import es.uma.lcc.e_motions.common.LaunchConfiguration;
+import es.uma.lcc.e_motions.console.EmotionsConsole;
 import es.uma.lcc.e_motions.dialogs.PalladioDialog;
+import es.uma.lcc.e_motions.jobs.PalladioJob;
 
 public class PalladioHandler extends AbstractHandler {
 
@@ -16,8 +21,23 @@ public class PalladioHandler extends AbstractHandler {
 		Dialog palladioDialog;
 		
 		IWorkbenchWindow window = HandlerUtil.getActiveWorkbenchWindowChecked(event);
+		
+		LaunchConfiguration launch = new LaunchConfiguration();
+		launch.read();
+		
 		palladioDialog = new PalladioDialog(window.getShell());
-        palladioDialog.open();
+        int exitCode = palladioDialog.open();
+        
+        if (exitCode == Window.OK) {
+        	EmotionsConsole.getDefault().setVisible();
+        	/* save configuration */
+        	launch = new LaunchConfiguration();
+        	launch.save();
+        	
+        	Job palladioJob = new PalladioJob("Creating Palladio infrastructure");
+        	palladioJob.setPriority(Job.SHORT);
+        	palladioJob.schedule(); // start as soon as possible
+        }
         
 		return null;
 	}

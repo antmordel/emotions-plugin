@@ -14,4 +14,6 @@ Require-Bundle: org.eclipse.ui;bundle-version="3.105.0",
  Behavior;bundle-version="1.0.0",
  org.eclipse.m2m.atl.engine;bundle-version="3.6.0",
  es.uma.lcc.maude_mm;bundle-version="1.0.0",
- org.eclipse.xtend.lib;bundle-version="2.9.2"
+ org.eclipse.xtend.lib;bundle-version="2.9.2",
+ org.eclipse.ui.console;bundle-version="3.7.0",
+ org.eclipse.m2m.atl.emftvm;bundle-version="3.7.0"

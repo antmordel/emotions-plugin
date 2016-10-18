@@ -7,6 +7,8 @@ import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.window.Window;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.ModifyEvent;
+import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.Color;
@@ -25,7 +27,7 @@ import org.eclipse.ui.model.BaseWorkbenchContentProvider;
 import org.eclipse.ui.model.WorkbenchLabelProvider;
 import org.eclipse.wb.swt.SWTResourceManager;
 
-import es.uma.lcc.e_motions.common.RunningInformationPalladio;
+import es.uma.lcc.e_motions.common.PalladioRunningInformation;
 
 /**
  * 
@@ -45,12 +47,12 @@ public class PalladioDialog extends Dialog {
 	private Text textTimeLimit;
 	private Text textOuputFolder;
 	
-	private RunningInformationPalladio info;
+	private PalladioRunningInformation info;
 
 	public PalladioDialog(Shell parentShell) {
 		super(parentShell);
 		shell = parentShell;
-		info = RunningInformationPalladio.getDefault();
+		info = PalladioRunningInformation.getDefault();
 	}
 	
 	protected void configureShell(Shell newShell) {
@@ -76,6 +78,9 @@ public class PalladioDialog extends Dialog {
 		textBehavior = new Text(groupEmotionsFiles, SWT.BORDER);
 		textBehavior.setBounds(143, 37, 300, 25);
 		textBehavior.setEditable(false);
+		if (info.getBehaviorModel() != null) {
+			textBehavior.setText(info.getBehaviorModel().getFullPath().toOSString());
+		}
 		
 		Button btnBehModel = new Button(groupEmotionsFiles, SWT.NONE);
 		btnBehModel.setBounds(449, 35, 54, 25);
@@ -100,13 +105,16 @@ public class PalladioDialog extends Dialog {
 			} 
 		});
 		
-		textMetamodel = new Text(groupEmotionsFiles, SWT.BORDER);
-		textMetamodel.setBounds(143, 75, 300, 21);
-		textMetamodel.setEditable(false);
-		
 		Label lblMetamodel = new Label(groupEmotionsFiles, SWT.NONE);
 		lblMetamodel.setBounds(71, 78, 66, 15);
 		lblMetamodel.setText("Metamodel:");
+
+		textMetamodel = new Text(groupEmotionsFiles, SWT.BORDER);
+		textMetamodel.setBounds(143, 75, 300, 21);
+		textMetamodel.setEditable(false);
+		if (info.getMetamodel() != null) {
+			textMetamodel.setText(info.getMetamodel().getFullPath().toOSString());
+		}
 		
 		Button btnMetamodel = new Button(groupEmotionsFiles, SWT.NONE);
 		btnMetamodel.setBounds(449, 73, 54, 25);
@@ -145,6 +153,9 @@ public class PalladioDialog extends Dialog {
 		textUsageModel = new Text(grpPalladioFiles, SWT.BORDER);
 		textUsageModel.setBounds(143, 23, 300, 25);
 		textUsageModel.setEditable(false);
+		if (info.getUsageModel() != null) {
+			textUsageModel.setText(info.getUsageModel().getFullPath().toOSString());
+		}
 		
 		Button btnUsageModel = new Button(grpPalladioFiles, SWT.NONE);
 		btnUsageModel.setBounds(449, 23, 54, 25);
@@ -176,6 +187,9 @@ public class PalladioDialog extends Dialog {
 		textRepositoryModel = new Text(grpPalladioFiles, SWT.BORDER);
 		textRepositoryModel.setBounds(143, 62, 300, 25);
 		textRepositoryModel.setEditable(false);
+		if (info.getRepositoryModel() != null) {
+			textRepositoryModel.setText(info.getRepositoryModel().getFullPath().toOSString());
+		}
 		
 		Button btnRepositoryModel = new Button(grpPalladioFiles, SWT.NONE);
 		btnRepositoryModel.setBounds(449, 62, 54, 25);
@@ -207,6 +221,9 @@ public class PalladioDialog extends Dialog {
 		textSystemModel = new Text(grpPalladioFiles, SWT.BORDER);
 		textSystemModel.setBounds(143, 101, 300, 25);
 		textSystemModel.setEditable(false);
+		if (info.getSystemModel() != null) {
+			textSystemModel.setText(info.getSystemModel().getFullPath().toOSString());
+		}
 		
 		Button btnSystemModel = new Button(grpPalladioFiles, SWT.NONE);
 		btnSystemModel.setText("Browse");
@@ -238,6 +255,9 @@ public class PalladioDialog extends Dialog {
 		textAllocationModel = new Text(grpPalladioFiles, SWT.BORDER);
 		textAllocationModel.setBounds(143, 140, 300, 25);
 		textAllocationModel.setEditable(false);
+		if (info.getAllocationModel() != null) {
+			textAllocationModel.setText(info.getAllocationModel().getFullPath().toOSString());
+		}
 		
 		Button btnAllocationModel = new Button(grpPalladioFiles, SWT.NONE);
 		btnAllocationModel.setText("Browse");
@@ -270,6 +290,9 @@ public class PalladioDialog extends Dialog {
 		textResourceEnvModel = new Text(grpPalladioFiles, SWT.BORDER);
 		textResourceEnvModel.setBounds(143, 179, 300, 25);
 		textResourceEnvModel.setEditable(false);
+		if (info.getResenvModel() != null) {
+			textResourceEnvModel.setText(info.getResenvModel().getFullPath().toOSString());
+		}
 		
 		Button btnResourceEnvModel = new Button(grpPalladioFiles, SWT.NONE);
 		btnResourceEnvModel.setText("Browse");
@@ -288,23 +311,14 @@ public class PalladioDialog extends Dialog {
 				IFile resultResourceEnvModel = (IFile) dialog.getResult()[0];
 				if (dialog.getReturnCode() == Window.OK) {
 					textResourceEnvModel.setText(resultResourceEnvModel.getFullPath().toOSString());
+					info.setResenvModel(resultResourceEnvModel);
 					checkIfCompleted();
 				}
 			} 
 		});
 	}
 	
-	@Override
-	protected Control createDialogArea(Composite parent) {
-		Composite composite = (Composite) super.createDialogArea(parent);
-		composite.setLayout(null);
-		
-		createEmotionsFilesGroup(composite);
-		createPalladioFilesGroup(composite);
-		
-		/*
-		 * Simulation options
-		 */
+	private void createSimulationGroup(Composite composite) {
 		Group grpSimulationOptions = new Group(composite, SWT.NONE);
 		grpSimulationOptions.setFont(SWTResourceManager.getFont("Segoe UI", 12, SWT.NORMAL));
 		grpSimulationOptions.setText("Simulation options");
@@ -321,14 +335,37 @@ public class PalladioDialog extends Dialog {
 		
 		textTimeLimit = new Text(grpSimulationOptions, SWT.BORDER);
 		textTimeLimit.setBounds(143, 28, 76, 21);
+		textTimeLimit.addModifyListener(new ModifyListener() {
+			
+			@Override
+			public void modifyText(ModifyEvent e) {
+				try {
+					info.setLimitTime(Integer.parseInt(textTimeLimit.getText()));
+				} catch (NumberFormatException nfe) {}
+			}
+		});
 		
 		Button btnPrintAppliedMtes = new Button(grpSimulationOptions, SWT.CHECK);
 		btnPrintAppliedMtes.setBounds(321, 50, 171, 16);
 		btnPrintAppliedMtes.setText("Print applied mte's and rules");
+		btnPrintAppliedMtes.setSelection(info.isAppliedRules());
+		btnPrintAppliedMtes.addSelectionListener(new SelectionAdapter()	{
+			@Override
+		    public void widgetSelected(SelectionEvent e) {
+				info.setAppliedRules(btnPrintAppliedMtes.getSelection());
+		    }
+		});
 		
 		Button btnShowAdvisories = new Button(grpSimulationOptions, SWT.CHECK);
 		btnShowAdvisories.setBounds(321, 69, 145, 16);
+		btnShowAdvisories.setSelection(info.isShowAdvisories());
 		btnShowAdvisories.setText("Show Maude advisories");
+		btnShowAdvisories.addSelectionListener(new SelectionAdapter()	{
+			@Override
+		    public void widgetSelected(SelectionEvent e) {
+				info.setShowAdvisories(btnShowAdvisories.getSelection());
+		    }
+		});
 		
 		Label lblAdvancedOptions = new Label(grpSimulationOptions, SWT.NONE);
 		lblAdvancedOptions.setBounds(321, 20, 103, 15);
@@ -336,10 +373,9 @@ public class PalladioDialog extends Dialog {
 		
 		Label lblSeparatorAdvanced = new Label(grpSimulationOptions, SWT.SEPARATOR | SWT.HORIZONTAL);
 		lblSeparatorAdvanced.setBounds(321, 40, 100, 2);
-		
-		/*
-		 * Output options
-		 */
+	}
+	
+	private void createOutputGroup(Composite composite) {
 		Group grpOutputOptions = new Group(composite, SWT.NONE);
 		grpOutputOptions.setFont(SWTResourceManager.getFont("Segoe UI", 12, SWT.NORMAL));
 		grpOutputOptions.setText("Output options");
@@ -351,6 +387,9 @@ public class PalladioDialog extends Dialog {
 		
 		textOuputFolder = new Text(grpOutputOptions, SWT.BORDER);
 		textOuputFolder.setBounds(143, 36, 300, 25);
+		if (info.getOutputFolder() != null) {
+			textOuputFolder.setText(info.getOutputFolder());
+		}
 		
 		Button btnOutputFolder = new Button(grpOutputOptions, SWT.NONE);
 		btnOutputFolder.setBounds(449, 36, 54, 25);
@@ -363,11 +402,22 @@ public class PalladioDialog extends Dialog {
 				String resultingDir = dialog.open();
 				if (resultingDir != null) {
 					textOuputFolder.setText(resultingDir);
+					info.setOutputFolder(resultingDir);
 				}
 				checkIfCompleted();
 			}
 		});
+	}
+	
+	@Override
+	protected Control createDialogArea(Composite parent) {
+		Composite composite = (Composite) super.createDialogArea(parent);
+		composite.setLayout(null);
 		
+		createEmotionsFilesGroup(composite);
+		createPalladioFilesGroup(composite);
+		createSimulationGroup(composite);
+		createOutputGroup(composite);
 				
 		return composite;
 	}
