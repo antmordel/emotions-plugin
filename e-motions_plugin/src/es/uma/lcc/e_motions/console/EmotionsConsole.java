@@ -42,7 +42,7 @@ public class EmotionsConsole {
 		return self;
 	}
 	
-	public void setVisible() {
+	public EmotionsConsole setVisible() {
 		IWorkbench wb = PlatformUI.getWorkbench();
 		IWorkbenchWindow win = wb.getActiveWorkbenchWindow();
 		IWorkbenchPage page = win.getActivePage();
@@ -54,6 +54,12 @@ public class EmotionsConsole {
 		} catch (PartInitException e) {
 			e.printStackTrace();
 		}
+		return this;
+	}
+	
+	public EmotionsConsole clean() {
+		console.clearConsole();
+		return this;
 	}
 	
 	public void print(String text) {

@@ -29,7 +29,7 @@ public class PalladioHandler extends AbstractHandler {
         int exitCode = palladioDialog.open();
         
         if (exitCode == Window.OK) {
-        	EmotionsConsole.getDefault().setVisible();
+        	EmotionsConsole.getDefault().setVisible().clean();
         	/* save configuration */
         	launch = new LaunchConfiguration();
         	launch.save();

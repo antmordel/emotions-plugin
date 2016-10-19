@@ -1,0 +1,2042 @@
+-- @atlcompiler emftvm
+
+-- @path PCM=../Metamodels/pcmOld/pcm.ecore
+
+-- @nsURI FlattenPCM=pcmflatten/1.0
+module MM2FlattenMM;
+create OUTPCM : FlattenPCM from INUSAGEMODEL : PCM, INREPOSITORY : PCM, INSYSTEM : PCM, INALLOCATION : PCM, INRESOURCEENVIRONTMENT : PCM, INRESOURCETYPE : PCM, INPRIMITIVETYPES : PCM;
+
+rule FlattenDummyClass {
+ from
+  sourceClass : PCM!DummyClass
+ to
+  targetClass : FlattenPCM!PCMpcmDummyClass
+}
+
+-- @extends FlattenRandomVariable
+rule FlattenPCMRandomVariable { 
+ from
+  sourceClass : PCM!PCMRandomVariable
+ to
+  targetClass : FlattenPCM!PCMcorePCMRandomVariable (
+   closedWorkload_PCMRandomVariable <- sourceClass.closedWorkload_PCMRandomVariable,
+   passiveResource_capacity_PCMRandomVariable <- sourceClass.passiveResource_capacity_PCMRandomVariable,
+   --variableCharacterisation_Specification <- sourceClass.variableCharacterisation_Specification.resolve(),
+   infrastructureCall__PCMRandomVariable <- sourceClass.infrastructureCall__PCMRandomVariable,
+   resourceCall__PCMRandomVariable <- sourceClass.resourceCall__PCMRandomVariable,
+   --parametricResourceDemand_PCMRandomVariable <- sourceClass.parametricResourceDemand_PCMRandomVariable,
+   loopAction_PCMRandomVariable <- sourceClass.loopAction_PCMRandomVariable,
+   guardedBranchTransition_PCMRandomVariable <- sourceClass.guardedBranchTransition_PCMRandomVariable,
+   specifiedExecutionTime_PCMRandomVariable <- sourceClass.specifiedExecutionTime_PCMRandomVariable,
+   eventChannelSinkConnector__FilterCondition <- sourceClass.eventChannelSinkConnector__FilterCondition,
+   assemblyEventConnector__FilterCondition <- sourceClass.assemblyEventConnector__FilterCondition,
+   loop_LoopIteration <- sourceClass.loop_LoopIteration,
+   openWorkload_PCMRandomVariable <- sourceClass.openWorkload_PCMRandomVariable,
+   delay_TimeSpecification <- sourceClass.delay_TimeSpecification,
+   communicationLinkResourceSpecifcation_throughput_PCMRandomVariable <- sourceClass.communicationLinkResourceSpecifcation_throughput_PCMRandomVariable,
+   processingResourceSpecification_processingRate_PCMRandomVariable <- sourceClass.processingResourceSpecification_processingRate_PCMRandomVariable,
+   communicationLinkResourceSpecification_latency_PCMRandomVariable <- sourceClass.communicationLinkResourceSpecification_latency_PCMRandomVariable
+  )
+  do {
+  	if(not sourceClass.variableCharacterisation_Specification.oclIsUndefined()){
+  	  targetClass.variableCharacterisation_Specification <- sourceClass.variableCharacterisation_Specification.resolve();
+  	}
+  	if(not sourceClass.parametricResourceDemand_PCMRandomVariable.oclIsUndefined()){
+  	  targetClass.parametricResourceDemand_PCMRandomVariable <- sourceClass.parametricResourceDemand_PCMRandomVariable.resolve();
+  	}
+  	sourceClass.specification.debug('RandomVariable transformed');
+  }
+}
+
+-- @extends FlattenRole
+rule FlattenResourceProvidedRole {
+ from
+  sourceClass : PCM!ResourceProvidedRole
+ to
+  targetClass : FlattenPCM!PCMentityResourceProvidedRole (
+   resourceInterfaceProvidingEntity__ResourceProvidedRole <- sourceClass.resourceInterfaceProvidingEntity__ResourceProvidedRole,
+   providedResourceInterface__ResourceProvidedRole <- sourceClass.providedResourceInterface__ResourceProvidedRole
+  )
+}
+
+-- @extends FlattenInterfaceProvidingEntity, FlattenInterfaceRequiringEntity
+abstract rule FlattenInterfaceProvidingRequiringEntity {
+ from
+  sourceClass : PCM!InterfaceProvidingRequiringEntity
+ to
+  targetClass : FlattenPCM!PCMentityInterfaceProvidingRequiringEntity
+}
+
+-- @extends FlattenEntity
+abstract rule FlattenInterfaceProvidingEntity {
+ from
+  sourceClass : PCM!InterfaceProvidingEntity
+ to
+  targetClass : FlattenPCM!PCMentityInterfaceProvidingEntity (
+   providedRoles_InterfaceProvidingEntity <- sourceClass.providedRoles_InterfaceProvidingEntity
+  )
+}
+
+-- @extends FlattenEntity, FlattenResourceInterfaceRequiringEntity
+abstract rule FlattenInterfaceRequiringEntity {
+ from
+  sourceClass : PCM!InterfaceRequiringEntity
+ to
+  targetClass : FlattenPCM!PCMentityInterfaceRequiringEntity (
+   requiredRoles_InterfaceRequiringEntity <- sourceClass.requiredRoles_InterfaceRequiringEntity
+  )
+}
+
+-- @extends FlattenEntity
+rule FlattenResourceInterfaceRequiringEntity {
+ from
+  sourceClass : PCM!ResourceInterfaceRequiringEntity
+ to
+  targetClass : FlattenPCM!PCMentityResourceInterfaceRequiringEntity (
+   resourceRequiredRoles__ResourceInterfaceRequiringEntity <- sourceClass.resourceRequiredRoles__ResourceInterfaceRequiringEntity
+  )
+}
+
+-- @extends FlattenRole
+rule FlattenResourceRequiredRole {
+ from
+  sourceClass : PCM!ResourceRequiredRole
+ to
+  targetClass : FlattenPCM!PCMentityResourceRequiredRole (
+   requiredResourceInterface__ResourceRequiredRole <- sourceClass.requiredResourceInterface__ResourceRequiredRole,
+   resourceInterfaceRequiringEntity__ResourceRequiredRole <- sourceClass.resourceInterfaceRequiringEntity__ResourceRequiredRole
+  )
+}
+
+-- @extends FlattenEntity
+rule FlattenResourceInterfaceProvidingEntity {
+ from
+  sourceClass : PCM!ResourceInterfaceProvidingEntity
+ to
+  targetClass : FlattenPCM!PCMentityResourceInterfaceProvidingEntity (
+   resourceProvidedRoles__ResourceInterfaceProvidingEntity <- sourceClass.resourceProvidedRoles__ResourceInterfaceProvidingEntity
+  )
+}
+
+-- @extends FlattenComposedStructure, FlattenInterfaceProvidingRequiringEntity
+abstract rule FlattenComposedProvidingRequiringEntity {
+ from
+  sourceClass : PCM!ComposedProvidingRequiringEntity
+ to
+  targetClass : FlattenPCM!PCMentityComposedProvidingRequiringEntity
+}
+
+abstract rule FlattenNamedElement {
+ from
+  sourceClass : PCM!NamedElement
+ to
+  targetClass : FlattenPCM!PCMentityNamedElement (
+   entityName <- sourceClass.entityName
+  )
+}
+
+-- @extends FlattenResourceInterfaceRequiringEntity, FlattenResourceInterfaceProvidingEntity
+rule FlattenResourceInterfaceProvidingRequiringEntity {
+ from
+  sourceClass : PCM!ResourceInterfaceProvidingRequiringEntity
+ to
+  targetClass : FlattenPCM!PCMentityResourceInterfaceProvidingRequiringEntity
+}
+
+-- @extends FlattenIdentifier, FlattenNamedElement
+abstract rule FlattenEntity {
+ from
+  sourceClass : PCM!Entity
+ to
+  targetClass : FlattenPCM!PCMentityEntity
+}
+
+-- @extends FlattenConnector
+abstract rule FlattenDelegationConnector {
+ from
+  sourceClass : PCM!DelegationConnector
+ to
+  targetClass : FlattenPCM!PCMcompositionDelegationConnector
+}
+
+-- @extends FlattenEntity
+abstract rule FlattenConnector {
+ from
+  sourceClass : PCM!Connector
+ to
+  targetClass : FlattenPCM!PCMcompositionConnector (
+   parentStructure__Connector <- sourceClass.parentStructure__Connector
+  )
+}
+
+-- @extends FlattenEntity
+abstract rule FlattenComposedStructure {
+ from
+  sourceClass : PCM!ComposedStructure
+ to
+  targetClass : FlattenPCM!PCMcompositionComposedStructure (
+   assemblyContexts__ComposedStructure <- sourceClass.assemblyContexts__ComposedStructure,
+   resourceRequiredDelegationConnectors_ComposedStructure <- sourceClass.resourceRequiredDelegationConnectors_ComposedStructure,
+   eventChannel__ComposedStructure <- sourceClass.eventChannel__ComposedStructure,
+   connectors__ComposedStructure <- sourceClass.connectors__ComposedStructure
+  )
+}
+
+rule FlattenResourceRequiredDelegationConnector {
+ from
+  sourceClass : PCM!ResourceRequiredDelegationConnector
+ to
+  targetClass : FlattenPCM!PCMcompositionResourceRequiredDelegationConnector (
+   innerResourceRequiredRole_ResourceRequiredDelegationConnector <- sourceClass.innerResourceRequiredRole_ResourceRequiredDelegationConnector,
+   outerResourceRequiredRole_ResourceRequiredDelegationConnector <- sourceClass.outerResourceRequiredRole_ResourceRequiredDelegationConnector,
+   parentStructure_ResourceRequiredDelegationConnector <- sourceClass.parentStructure_ResourceRequiredDelegationConnector
+  )
+}
+
+-- @extends FlattenEntity
+rule FlattenEventChannel {
+ from
+  sourceClass : PCM!EventChannel
+ to
+  targetClass : FlattenPCM!PCMcompositionEventChannel (
+   eventGroup__EventChannel <- sourceClass.eventGroup__EventChannel,
+   eventChannelSourceConnector__EventChannel <- sourceClass.eventChannelSourceConnector__EventChannel,
+   eventChannelSinkConnector__EventChannel <- sourceClass.eventChannelSinkConnector__EventChannel,
+   parentStructure__EventChannel <- sourceClass.parentStructure__EventChannel
+  )
+}
+
+-- @extends FlattenConnector
+rule FlattenEventChannelSourceConnector {
+ from
+  sourceClass : PCM!EventChannelSourceConnector
+ to
+  targetClass : FlattenPCM!PCMcompositionEventChannelSourceConnector (
+   sourceRole__EventChannelSourceRole <- sourceClass.sourceRole__EventChannelSourceRole,
+   assemblyContext__EventChannelSourceConnector <- sourceClass.assemblyContext__EventChannelSourceConnector,
+   eventChannel__EventChannelSourceConnector <- sourceClass.eventChannel__EventChannelSourceConnector
+  )
+}
+
+-- @extends FlattenConnector
+rule FlattenEventChannelSinkConnector {
+ from
+  sourceClass : PCM!EventChannelSinkConnector
+ to
+  targetClass : FlattenPCM!PCMcompositionEventChannelSinkConnector (
+   sinkRole__EventChannelSinkConnector <- sourceClass.sinkRole__EventChannelSinkConnector,
+   filterCondition__EventChannelSinkConnector <- sourceClass.filterCondition__EventChannelSinkConnector,
+   assemblyContext__EventChannelSinkConnector <- sourceClass.assemblyContext__EventChannelSinkConnector,
+   eventChannel__EventChannelSinkConnector <- sourceClass.eventChannel__EventChannelSinkConnector
+  )
+}
+
+-- @extends FlattenDelegationConnector
+rule FlattenProvidedDelegationConnector {
+ from
+  sourceClass : PCM!ProvidedDelegationConnector
+ to
+  targetClass : FlattenPCM!PCMcompositionProvidedDelegationConnector (
+   --innerProvidedRole_ProvidedDelegationConnector <- sourceClass.innerProvidedRole_ProvidedDelegationConnector,
+   --outerProvidedRole_ProvidedDelegationConnector <- sourceClass.outerProvidedRole_ProvidedDelegationConnector,
+   assemblyContext_ProvidedDelegationConnector <- sourceClass.assemblyContext_ProvidedDelegationConnector
+  )
+  do {
+  	targetClass.innerProvidedRole_ProvidedDelegationConnector <- sourceClass.innerProvidedRole_ProvidedDelegationConnector.resolve();
+  	targetClass.outerProvidedRole_ProvidedDelegationConnector <- sourceClass.outerProvidedRole_ProvidedDelegationConnector.resolve();
+  }
+}
+
+-- @extends FlattenDelegationConnector
+rule FlattenRequiredDelegationConnector {
+ from
+  sourceClass : PCM!RequiredDelegationConnector
+ to
+  targetClass : FlattenPCM!PCMcompositionRequiredDelegationConnector (
+   innerRequiredRole_RequiredDelegationConnector <- sourceClass.innerRequiredRole_RequiredDelegationConnector,
+   outerRequiredRole_RequiredDelegationConnector <- sourceClass.outerRequiredRole_RequiredDelegationConnector,
+   assemblyContext_RequiredDelegationConnector <- sourceClass.assemblyContext_RequiredDelegationConnector
+  )
+}
+
+-- @extends FlattenConnector
+rule FlattenAssemblyConnector {
+ from
+  sourceClass : PCM!AssemblyConnector
+ to
+  targetClass : FlattenPCM!PCMcompositionAssemblyConnector (
+   requiringAssemblyContext_AssemblyConnector <- sourceClass.requiringAssemblyContext_AssemblyConnector,
+   providingAssemblyContext_AssemblyConnector <- sourceClass.providingAssemblyContext_AssemblyConnector,
+   providedRole_AssemblyConnector <- sourceClass.providedRole_AssemblyConnector,
+   requiredRole_AssemblyConnector <- sourceClass.requiredRole_AssemblyConnector
+  )
+}
+
+-- @extends FlattenConnector
+rule FlattenAssemblyEventConnector {
+ from
+  sourceClass : PCM!AssemblyEventConnector
+ to
+  targetClass : FlattenPCM!PCMcompositionAssemblyEventConnector (
+   sinkRole__AssemblyEventConnector <- sourceClass.sinkRole__AssemblyEventConnector,
+   sourceRole__AssemblyEventConnector <- sourceClass.sourceRole__AssemblyEventConnector,
+   sinkAssemblyContext__AssemblyEventConnector <- sourceClass.sinkAssemblyContext__AssemblyEventConnector,
+   sourceAssemblyContext__AssemblyEventConnector <- sourceClass.sourceAssemblyContext__AssemblyEventConnector,
+   filterCondition__AssemblyEventConnector <- sourceClass.filterCondition__AssemblyEventConnector
+  )
+}
+
+-- @extends FlattenDelegationConnector
+rule FlattenSourceDelegationConnector {
+ from
+  sourceClass : PCM!SourceDelegationConnector
+ to
+  targetClass : FlattenPCM!PCMcompositionSourceDelegationConnector (
+   innerSourceRole__SourceRole <- sourceClass.innerSourceRole__SourceRole,
+   outerSourceRole__SourceRole <- sourceClass.outerSourceRole__SourceRole,
+   assemblyContext__SourceDelegationConnector <- sourceClass.assemblyContext__SourceDelegationConnector
+  )
+}
+
+-- @extends FlattenDelegationConnector
+rule FlattenSinkDelegationConnector {
+ from
+  sourceClass : PCM!SinkDelegationConnector
+ to
+  targetClass : FlattenPCM!PCMcompositionSinkDelegationConnector (
+   assemblyContext__SinkDelegationConnector <- sourceClass.assemblyContext__SinkDelegationConnector,
+   innerSinkRole__SinkRole <- sourceClass.innerSinkRole__SinkRole,
+   outerSinkRole__SinkRole <- sourceClass.outerSinkRole__SinkRole
+  )
+}
+
+-- @extends FlattenConnector
+rule FlattenAssemblyInfrastructureConnector {
+ from
+  sourceClass : PCM!AssemblyInfrastructureConnector
+ to
+  targetClass : FlattenPCM!PCMcompositionAssemblyInfrastructureConnector (
+   providedRole__AssemblyInfrastructureConnector <- sourceClass.providedRole__AssemblyInfrastructureConnector,
+   requiredRole__AssemblyInfrastructureConnector <- sourceClass.requiredRole__AssemblyInfrastructureConnector,
+   providingAssemblyContext__AssemblyInfrastructureConnector <- sourceClass.providingAssemblyContext__AssemblyInfrastructureConnector,
+   requiringAssemblyContext__AssemblyInfrastructureConnector <- sourceClass.requiringAssemblyContext__AssemblyInfrastructureConnector
+  )
+}
+
+-- @extends FlattenDelegationConnector
+rule FlattenProvidedInfrastructureDelegationConnector {
+ from
+  sourceClass : PCM!ProvidedInfrastructureDelegationConnector
+ to
+  targetClass : FlattenPCM!PCMcompositionProvidedInfrastructureDelegationConnector (
+   innerProvidedRole__ProvidedInfrastructureDelegationConnector <- sourceClass.innerProvidedRole__ProvidedInfrastructureDelegationConnector,
+   outerProvidedRole__ProvidedInfrastructureDelegationConnector <- sourceClass.outerProvidedRole__ProvidedInfrastructureDelegationConnector,
+   assemblyContext__ProvidedInfrastructureDelegationConnector <- sourceClass.assemblyContext__ProvidedInfrastructureDelegationConnector
+  )
+}
+
+-- @extends FlattenDelegationConnector
+rule FlattenRequiredInfrastructureDelegationConnector {
+ from
+  sourceClass : PCM!RequiredInfrastructureDelegationConnector
+ to
+  targetClass : FlattenPCM!PCMcompositionRequiredInfrastructureDelegationConnector (
+   innerRequiredRole__RequiredInfrastructureDelegationConnector <- sourceClass.innerRequiredRole__RequiredInfrastructureDelegationConnector,
+   outerRequiredRole__RequiredInfrastructureDelegationConnector <- sourceClass.outerRequiredRole__RequiredInfrastructureDelegationConnector,
+   assemblyContext__RequiredInfrastructureDelegationConnector <- sourceClass.assemblyContext__RequiredInfrastructureDelegationConnector
+  )
+}
+
+-- @extends FlattenDelegationConnector
+rule FlattenRequiredResourceDelegationConnector {
+ from
+  sourceClass : PCM!RequiredResourceDelegationConnector
+ to
+  targetClass : FlattenPCM!PCMcompositionRequiredResourceDelegationConnector (
+   assemblyContext__RequiredResourceDelegationConnector <- sourceClass.assemblyContext__RequiredResourceDelegationConnector,
+   innerRequiredRole__RequiredResourceDelegationConnector <- sourceClass.innerRequiredRole__RequiredResourceDelegationConnector,
+   outerRequiredRole__RequiredResourceDelegationConnector <- sourceClass.outerRequiredRole__RequiredResourceDelegationConnector
+  )
+}
+
+-- @extends FlattenEntity
+rule FlattenAssemblyContext {
+ from
+  sourceClass : PCM!AssemblyContext
+ to
+  targetClass : FlattenPCM!PCMcompositionAssemblyContext (
+   parentStructure__AssemblyContext <- sourceClass.parentStructure__AssemblyContext,
+   --encapsulatedComponent__AssemblyContext <- sourceClass.encapsulatedComponent__AssemblyContext,
+   configParameterUsages__AssemblyContext <- sourceClass.configParameterUsages__AssemblyContext
+  )
+  do {
+  	targetClass.encapsulatedComponent__AssemblyContext <- sourceClass.encapsulatedComponent__AssemblyContext;
+  }
+}
+
+abstract rule FlattenWorkload {
+ from
+  sourceClass : PCM!Workload
+ to
+  targetClass : FlattenPCM!PCMusagemodelWorkload (
+   usageScenario_Workload <- sourceClass.usageScenario_Workload
+  )
+}
+
+-- @extends FlattenEntity
+rule FlattenUsageScenario {
+ from
+  sourceClass : PCM!UsageScenario
+ to
+  targetClass : FlattenPCM!PCMusagemodelUsageScenario (
+   usageModel_UsageScenario <- sourceClass.usageModel_UsageScenario,
+   scenarioBehaviour_UsageScenario <- sourceClass.scenarioBehaviour_UsageScenario,
+   workload_UsageScenario <- sourceClass.workload_UsageScenario
+  )
+  do {
+  	targetClass.scenarioBehaviour_UsageScenario <- sourceClass.scenarioBehaviour_UsageScenario.resolve();
+  }
+}
+
+rule FlattenUserData {
+ from
+  sourceClass : PCM!UserData
+ to
+  targetClass : FlattenPCM!PCMusagemodelUserData (
+   assemblyContext_userData <- sourceClass.assemblyContext_userData,
+   usageModel_UserData <- sourceClass.usageModel_UserData,
+   userDataParameterUsages_UserData <- sourceClass.userDataParameterUsages_UserData
+  )
+}
+
+rule FlattenUsageModel {
+ from
+  sourceClass : PCM!UsageModel
+ to
+  targetClass : FlattenPCM!PCMusagemodelUsageModel (
+   usageScenario_UsageModel <- sourceClass.usageScenario_UsageModel,
+   userData_UsageModel <- sourceClass.userData_UsageModel
+  )
+ do {
+  	targetClass.usageScenario_UsageModel <- Sequence{}->including(thisModule.resolveTemp(sourceClass.usageScenario_UsageModel->first(), 'targetClass'));
+  }
+}
+
+-- @extends FlattenAbstractUserAction
+rule FlattenEntryLevelSystemCall {
+ from
+  sourceClass : PCM!EntryLevelSystemCall
+ to
+  targetClass : FlattenPCM!PCMusagemodelEntryLevelSystemCall (
+   --providedRole_EntryLevelSystemCall <- sourceClass.providedRole_EntryLevelSystemCall,
+   --operationSignature__EntryLevelSystemCall <- sourceClass.operationSignature__EntryLevelSystemCall,
+   outputParameterUsages_EntryLevelSystemCall <- sourceClass.outputParameterUsages_EntryLevelSystemCall,
+   inputParameterUsages_EntryLevelSystemCall <- sourceClass.inputParameterUsages_EntryLevelSystemCall,
+   priority <- sourceClass.priority
+  )
+  do {
+  	targetClass.providedRole_EntryLevelSystemCall <- sourceClass.providedRole_EntryLevelSystemCall.resolve();
+  	targetClass.operationSignature__EntryLevelSystemCall <- sourceClass.operationSignature__EntryLevelSystemCall.resolve();
+  }
+}
+
+-- @extends FlattenEntity
+abstract rule FlattenAbstractUserAction {
+ from
+  sourceClass : PCM!AbstractUserAction
+ to
+  targetClass : FlattenPCM!PCMusagemodelAbstractUserAction (
+   successor <- sourceClass.successor,
+   predecessor <- sourceClass.predecessor,
+   scenarioBehaviour_AbstractUserAction <- sourceClass.scenarioBehaviour_AbstractUserAction
+  )
+}
+
+-- @extends FlattenEntity
+rule FlattenScenarioBehaviour {
+ from
+  sourceClass : PCM!ScenarioBehaviour
+ to
+  targetClass : FlattenPCM!PCMusagemodelScenarioBehaviour (
+   usageScenario_SenarioBehaviour <- sourceClass.usageScenario_SenarioBehaviour,
+   loop_ScenarioBehaviour <- sourceClass.loop_ScenarioBehaviour
+   --actions_ScenarioBehaviour <- sourceClass.actions_ScenarioBehaviour
+  )
+  do {
+  	targetClass.actions_ScenarioBehaviour <- Sequence{}->union(sourceClass.actions_ScenarioBehaviour->collect(a | a.resolve()))->flatten();
+    --targetClass.branchTransition_ScenarioBehaviour <- sourceClass.branchTransition_ScenarioBehaviour.resolve();
+  }
+}
+
+rule FlattenBranchTransition {
+ from
+  sourceClass : PCM!BranchTransition
+ to
+  targetClass : FlattenPCM!PCMusagemodelBranchTransition (
+   branchProbability <- sourceClass.branchProbability,
+   branch_BranchTransition <- sourceClass.branch_BranchTransition
+   --branchedBehaviour_BranchTransition <- sourceClass.branchedBehaviour_BranchTransition
+  )
+  do {
+  	targetClass.branchedBehaviour_BranchTransition <- sourceClass.branchedBehaviour_BranchTransition.resolve();
+  }
+}
+
+-- @extends FlattenAbstractUserAction
+rule FlattenBranch {
+ from
+  sourceClass : PCM!Branch
+ to
+  targetClass : FlattenPCM!PCMusagemodelBranch (
+   branchTransitions_Branch <- sourceClass.branchTransitions_Branch
+  )
+}
+
+-- @extends FlattenAbstractUserAction
+rule FlattenLoop {
+ from
+  sourceClass : PCM!Loop
+ to
+  targetClass : FlattenPCM!PCMusagemodelLoop (
+   loopIteration_Loop <- sourceClass.loopIteration_Loop,
+   bodyBehaviour_Loop <- sourceClass.bodyBehaviour_Loop
+  )
+}
+
+-- @extends FlattenAbstractUserAction
+rule FlattenStop {
+ from
+  sourceClass : PCM!Stop
+ to
+  targetClass : FlattenPCM!PCMusagemodelStop
+}
+
+-- @extends FlattenAbstractUserAction
+rule FlattenStart {
+ from
+  sourceClass : PCM!Start
+ to
+  targetClass : FlattenPCM!PCMusagemodelStart
+}
+
+-- @extends FlattenWorkload
+rule FlattenOpenWorkload {
+ from
+  sourceClass : PCM!OpenWorkload
+ to
+  targetClass : FlattenPCM!PCMusagemodelOpenWorkload (
+  --interArrivalTime_OpenWorkload <- sourceClass.interArrivalTime_OpenWorkload
+  )
+  do{
+  	targetClass.interArrivalTime_OpenWorkload <- sourceClass.interArrivalTime_OpenWorkload.resolve();
+  }
+}
+
+-- @extends FlattenAbstractUserAction
+rule FlattenDelay {
+ from
+  sourceClass : PCM!Delay
+ to
+  targetClass : FlattenPCM!PCMusagemodelDelay (
+   timeSpecification_Delay <- sourceClass.timeSpecification_Delay
+  )
+}
+
+-- @extends FlattenWorkload
+rule FlattenClosedWorkload {
+ from
+  sourceClass : PCM!ClosedWorkload
+ to
+  targetClass : FlattenPCM!PCMusagemodelClosedWorkload (
+   population <- sourceClass.population,
+   thinkTime_ClosedWorkload <- sourceClass.thinkTime_ClosedWorkload
+  )
+}
+
+-- @extends FlattenEntity
+rule FlattenPassiveResource {
+ from
+  sourceClass : PCM!PassiveResource
+ to
+  targetClass : FlattenPCM!PCMrepositoryPassiveResource (
+   capacity_PassiveResource <- sourceClass.capacity_PassiveResource,
+   basicComponent_PassiveResource <- sourceClass.basicComponent_PassiveResource,
+   resourceTimeoutFailureType__PassiveResource <- sourceClass.resourceTimeoutFailureType__PassiveResource
+  )
+}
+
+-- @extends FlattenImplementationComponentType
+rule FlattenBasicComponent {
+ from
+  sourceClass : PCM!BasicComponent
+ to
+  targetClass : FlattenPCM!PCMrepositoryBasicComponent (
+   serviceEffectSpecifications__BasicComponent <- sourceClass.serviceEffectSpecifications__BasicComponent,
+   passiveResource_BasicComponent <- sourceClass.passiveResource_BasicComponent
+  )
+}
+
+-- @extends FlattenRepositoryComponent
+abstract rule FlattenImplementationComponentType {
+ from
+  sourceClass : PCM!ImplementationComponentType
+ to
+  targetClass : FlattenPCM!PCMrepositoryImplementationComponentType (
+   parentCompleteComponentTypes <- sourceClass.parentCompleteComponentTypes,
+   componentParameterUsage_ImplementationComponentType <- sourceClass.componentParameterUsage_ImplementationComponentType
+   --componentType <- sourceClass.componentType
+  )
+}
+
+
+-- @extends FlattenInterfaceProvidingRequiringEntity
+abstract rule FlattenRepositoryComponent {
+ from
+  sourceClass : PCM!RepositoryComponent
+ to
+  targetClass : FlattenPCM!PCMrepositoryRepositoryComponent (
+   repository__RepositoryComponent <- sourceClass.repository__RepositoryComponent
+  )
+}
+
+-- @extends FlattenRole
+abstract rule FlattenProvidedRole {
+ from
+  sourceClass : PCM!ProvidedRole
+ to
+  targetClass : FlattenPCM!PCMrepositoryProvidedRole (
+   providingEntity_ProvidedRole <- sourceClass.providingEntity_ProvidedRole
+  )
+}
+
+rule FlattenParameter {
+ from
+  sourceClass : PCM!Parameter
+ to
+  targetClass : FlattenPCM!PCMrepositoryParameter (
+   dataType__Parameter <- sourceClass.dataType__Parameter,
+   infrastructureSignature__Parameter <- sourceClass.infrastructureSignature__Parameter,
+   operationSignature__Parameter <- sourceClass.operationSignature__Parameter,
+   eventType__Parameter <- sourceClass.eventType__Parameter,
+   parameterName <- sourceClass.parameterName,
+   modifier__Parameter <- sourceClass.modifier__Parameter,
+   resourceSignature__Parameter <- sourceClass.resourceSignature__Parameter
+  )
+}
+
+abstract rule FlattenDataType {
+ from
+  sourceClass : PCM!DataType
+ to
+  targetClass : FlattenPCM!PCMrepositoryDataType (
+   repository__DataType <- sourceClass.repository__DataType
+  )
+}
+
+-- @extends FlattenEntity
+rule FlattenRepository {
+ from
+  sourceClass : PCM!Repository
+ to
+  targetClass : FlattenPCM!PCMrepositoryRepository (
+   repositoryDescription <- sourceClass.repositoryDescription,
+   components__Repository <- sourceClass.components__Repository,
+   interfaces__Repository <- sourceClass.interfaces__Repository,
+   failureTypes__Repository <- sourceClass.failureTypes__Repository,
+   dataTypes__Repository <- sourceClass.dataTypes__Repository
+  )
+}
+
+-- @extends FlattenEntity
+abstract rule FlattenInterface {
+ from
+  sourceClass : PCM!Interface
+ to
+  targetClass : FlattenPCM!PCMrepositoryInterface (
+   parentInterfaces__Interface <- sourceClass.parentInterfaces__Interface,
+   protocols__Interface <- sourceClass.protocols__Interface,
+   requiredCharacterisations <- sourceClass.requiredCharacterisations,
+   repository__Interface <- sourceClass.repository__Interface
+  )
+}
+
+rule FlattenRequiredCharacterisation {
+ from
+  sourceClass : PCM!RequiredCharacterisation
+ to
+  targetClass : FlattenPCM!PCMrepositoryRequiredCharacterisation (
+   type <- sourceClass.type,
+   parameter <- sourceClass.parameter,
+   interface_RequiredCharacterisation <- sourceClass.interface_RequiredCharacterisation
+  )
+}
+
+-- @extends FlattenInterface
+rule FlattenEventGroup {
+ from
+  sourceClass : PCM!EventGroup
+ to
+  targetClass : FlattenPCM!PCMrepositoryEventGroup (
+   eventTypes__EventGroup <- sourceClass.eventTypes__EventGroup
+  )
+}
+
+-- @extends FlattenSignature
+rule FlattenEventType {
+ from
+  sourceClass : PCM!EventType
+ to
+  targetClass : FlattenPCM!PCMrepositoryEventType (
+   parameter__EventType <- sourceClass.parameter__EventType,
+   eventGroup__EventType <- sourceClass.eventGroup__EventType
+  )
+}
+
+-- @extends FlattenEntity
+abstract rule FlattenSignature {
+ from
+  sourceClass : PCM!Signature
+ to
+  targetClass : FlattenPCM!PCMrepositorySignature (
+   exceptions__Signature <- sourceClass.exceptions__Signature,
+   failureType <- sourceClass.failureType
+  )
+}
+
+rule FlattenExceptionType {
+ from
+  sourceClass : PCM!ExceptionType
+ to
+  targetClass : FlattenPCM!PCMrepositoryExceptionType (
+   exceptionName <- sourceClass.exceptionName,
+   exceptionMessage <- sourceClass.exceptionMessage
+  )
+}
+
+-- @extends FlattenSignature
+rule FlattenInfrastructureSignature {
+ from
+  sourceClass : PCM!InfrastructureSignature
+ to
+  targetClass : FlattenPCM!PCMrepositoryInfrastructureSignature (
+   parameters__InfrastructureSignature <- sourceClass.parameters__InfrastructureSignature,
+   infrastructureInterface__InfrastructureSignature <- sourceClass.infrastructureInterface__InfrastructureSignature
+  )
+}
+
+-- @extends FlattenInterface
+rule FlattenInfrastructureInterface {
+ from
+  sourceClass : PCM!InfrastructureInterface
+ to
+  targetClass : FlattenPCM!PCMrepositoryInfrastructureInterface (
+   infrastructureSignatures__InfrastructureInterface <- sourceClass.infrastructureSignatures__InfrastructureInterface
+  )
+}
+
+-- @extends FlattenRequiredRole
+rule FlattenInfrastructureRequiredRole {
+ from
+  sourceClass : PCM!InfrastructureRequiredRole
+ to
+  targetClass : FlattenPCM!PCMrepositoryInfrastructureRequiredRole (
+   requiredInterface__InfrastructureRequiredRole <- sourceClass.requiredInterface__InfrastructureRequiredRole
+  )
+}
+
+-- @extends FlattenRole
+abstract rule FlattenRequiredRole {
+ from
+  sourceClass : PCM!RequiredRole
+ to
+  targetClass : FlattenPCM!PCMrepositoryRequiredRole (
+   requiringEntity_RequiredRole <- sourceClass.requiringEntity_RequiredRole
+  )
+}
+
+-- @extends FlattenSignature
+rule FlattenOperationSignature {
+ from
+  sourceClass : PCM!OperationSignature
+ to
+  targetClass : FlattenPCM!PCMrepositoryOperationSignature (
+   interface__OperationSignature <- sourceClass.interface__OperationSignature,
+   parameters__OperationSignature <- sourceClass.parameters__OperationSignature,
+   returnType__OperationSignature <- sourceClass.returnType__OperationSignature
+  )
+}
+
+-- @extends FlattenInterface
+rule FlattenOperationInterface {
+ from
+  sourceClass : PCM!OperationInterface
+ to
+  targetClass : FlattenPCM!PCMrepositoryOperationInterface (
+   signatures__OperationInterface <- sourceClass.signatures__OperationInterface
+  )
+}
+
+-- @extends FlattenRequiredRole
+rule FlattenOperationRequiredRole {
+ from
+  sourceClass : PCM!OperationRequiredRole
+ to
+  targetClass : FlattenPCM!PCMrepositoryOperationRequiredRole (
+   requiredInterface__OperationRequiredRole <- sourceClass.requiredInterface__OperationRequiredRole
+  )
+}
+
+-- @extends FlattenRequiredRole
+rule FlattenSourceRole {
+ from
+  sourceClass : PCM!SourceRole
+ to
+  targetClass : FlattenPCM!PCMrepositorySourceRole (
+   eventGroup__SourceRole <- sourceClass.eventGroup__SourceRole
+  )
+}
+
+-- @extends FlattenProvidedRole
+rule FlattenSinkRole {
+ from
+  sourceClass : PCM!SinkRole
+ to
+  targetClass : FlattenPCM!PCMrepositorySinkRole (
+   eventGroup__SinkRole <- sourceClass.eventGroup__SinkRole
+  )
+}
+
+-- @extends FlattenProvidedRole
+rule FlattenOperationProvidedRole {
+ from
+  sourceClass : PCM!OperationProvidedRole
+ to
+  targetClass : FlattenPCM!PCMrepositoryOperationProvidedRole (
+   --providedInterface__OperationProvidedRole <- sourceClass.providedInterface__OperationProvidedRole
+  )
+  do {
+	targetClass.providedInterface__OperationProvidedRole <- sourceClass.providedInterface__OperationProvidedRole.resolve();	
+  }
+}
+
+-- @extends FlattenProvidedRole
+rule FlattenInfrastructureProvidedRole {
+ from
+  sourceClass : PCM!InfrastructureProvidedRole
+ to
+  targetClass : FlattenPCM!PCMrepositoryInfrastructureProvidedRole (
+   providedInterface__InfrastructureProvidedRole <- sourceClass.providedInterface__InfrastructureProvidedRole
+  )
+}
+
+-- @extends FlattenRepositoryComponent
+rule FlattenCompleteComponentType {
+ from
+  sourceClass : PCM!CompleteComponentType
+ to
+  targetClass : FlattenPCM!PCMrepositoryCompleteComponentType (
+   parentProvidesComponentTypes <- sourceClass.parentProvidesComponentTypes
+  )
+}
+
+-- @extends FlattenRepositoryComponent
+rule FlattenProvidesComponentType {
+ from
+  sourceClass : PCM!ProvidesComponentType
+ to
+  targetClass : FlattenPCM!PCMrepositoryProvidesComponentType
+}
+
+-- @extends FlattenComposedProvidingRequiringEntity, FlattenImplementationComponentType
+rule FlattenCompositeComponent {
+ from
+  sourceClass : PCM!CompositeComponent
+ to
+  targetClass : FlattenPCM!PCMrepositoryCompositeComponent
+}
+
+-- @extends FlattenDataType
+rule FlattenPrimitiveDataType {
+ from
+  sourceClass : PCM!PrimitiveDataType
+ to
+  targetClass : FlattenPCM!PCMrepositoryPrimitiveDataType (
+   type <- sourceClass.type
+  )
+}
+
+-- @extends FlattenEntity, FlattenDataType
+rule FlattenCollectionDataType {
+ from
+  sourceClass : PCM!CollectionDataType
+ to
+  targetClass : FlattenPCM!PCMrepositoryCollectionDataType (
+   --innerType_CollectionDataType <- sourceClass.innerType_CollectionDataType
+  )
+}
+
+-- @extends FlattenEntity, FlattenDataType
+rule FlattenCompositeDataType {
+ from
+  sourceClass : PCM!CompositeDataType
+ to
+  targetClass : FlattenPCM!PCMrepositoryCompositeDataType (
+   parentType_CompositeDataType <- sourceClass.parentType_CompositeDataType,
+   innerDeclaration_CompositeDataType <- sourceClass.innerDeclaration_CompositeDataType
+  )
+}
+
+-- @extends FlattenNamedElement
+rule FlattenInnerDeclaration {
+ from
+  sourceClass : PCM!InnerDeclaration
+ to
+  targetClass : FlattenPCM!PCMrepositoryInnerDeclaration (
+   datatype_InnerDeclaration <- sourceClass.datatype_InnerDeclaration,
+   compositeDataType_InnerDeclaration <- sourceClass.compositeDataType_InnerDeclaration
+  )
+}
+
+-- @extends FlattenEntity
+abstract rule FlattenRole {
+ from
+  sourceClass : PCM!Role
+ to
+  targetClass : FlattenPCM!PCMrepositoryRole
+}
+
+-- @extends FlattenEntity
+rule FlattenResourceSignature {
+ from
+  sourceClass : PCM!ResourceSignature
+ to
+  targetClass : FlattenPCM!PCMresourcetypeResourceSignature (
+   parameter__ResourceSignature <- sourceClass.parameter__ResourceSignature,
+   resourceServiceId <- sourceClass.resourceServiceId,
+   resourceInterface__ResourceSignature <- sourceClass.resourceInterface__ResourceSignature
+  )
+}
+
+-- @extends FlattenResourceType
+rule FlattenProcessingResourceType {
+ from
+  sourceClass : PCM!ProcessingResourceType
+ to
+  targetClass : FlattenPCM!PCMresourcetypeProcessingResourceType (
+   hardwareInducedFailureType__ProcessingResourceType <- sourceClass.hardwareInducedFailureType__ProcessingResourceType
+  )
+}
+
+-- @extends FlattenEntity, FlattenUnitCarryingElement, FlattenResourceInterfaceProvidingEntity
+abstract rule FlattenResourceType {
+ from
+  sourceClass : PCM!ResourceType
+ to
+  targetClass : FlattenPCM!PCMresourcetypeResourceType (
+   resourceRepository_ResourceType <- sourceClass.resourceRepository_ResourceType
+  )
+}
+
+rule FlattenResourceRepository {
+ from
+  sourceClass : PCM!ResourceRepository
+ to
+  targetClass : FlattenPCM!PCMresourcetypeResourceRepository (
+   resourceInterfaces__ResourceRepository <- sourceClass.resourceInterfaces__ResourceRepository,
+   schedulingPolicies__ResourceRepository <- sourceClass.schedulingPolicies__ResourceRepository,
+   availableResourceTypes_ResourceRepository <- sourceClass.availableResourceTypes_ResourceRepository
+  )
+}
+
+-- @extends FlattenEntity
+rule FlattenSchedulingPolicy {
+ from
+  sourceClass : PCM!SchedulingPolicy
+ to
+  targetClass : FlattenPCM!PCMresourcetypeSchedulingPolicy (
+   resourceRepository__SchedulingPolicy <- sourceClass.resourceRepository__SchedulingPolicy
+  )
+}
+
+-- @extends FlattenResourceType
+rule FlattenCommunicationLinkResourceType {
+ from
+  sourceClass : PCM!CommunicationLinkResourceType
+ to
+  targetClass : FlattenPCM!PCMresourcetypeCommunicationLinkResourceType (
+   networkInducedFailureType__CommunicationLinkResourceType <- sourceClass.networkInducedFailureType__CommunicationLinkResourceType
+  )
+}
+
+-- @extends FlattenEntity
+rule FlattenResourceInterface {
+ from
+  sourceClass : PCM!ResourceInterface
+ to
+  targetClass : FlattenPCM!PCMresourcetypeResourceInterface (
+   resourceRepository__ResourceInterface <- sourceClass.resourceRepository__ResourceInterface,
+   resourceSignatures__ResourceInterface <- sourceClass.resourceSignatures__ResourceInterface
+  )
+}
+
+abstract rule FlattenProtocol {
+ from
+  sourceClass : PCM!Protocol
+ to
+  targetClass : FlattenPCM!PCMprotocolProtocol (
+   protocolTypeID <- sourceClass.protocolTypeID
+  )
+}
+
+rule FlattenVariableUsage {
+ from
+  sourceClass : PCM!VariableUsage
+ to
+  targetClass : FlattenPCM!PCMparameterVariableUsage (
+   variableCharacterisation_VariableUsage <- sourceClass.variableCharacterisation_VariableUsage,
+   userData_VariableUsage <- sourceClass.userData_VariableUsage,
+   callAction__VariableUsage <- sourceClass.callAction__VariableUsage,
+   --synchronisationPoint_VariableUsage <- sourceClass.synchronisationPoint_VariableUsage
+   --callReturnAction__VariableUsage <- sourceClass.callReturnAction__VariableUsage,
+   --setVariableAction_VariableUsage <- sourceClass.setVariableAction_VariableUsage,
+   --specifiedOutputParameterAbstraction_expectedExternalOutputs_VariableUsage <- sourceClass.specifiedOutputParameterAbstraction_expectedExternalOutputs_VariableUsage,
+   --assemblyContext__VariableUsage <- sourceClass.assemblyContext__VariableUsage,
+   --entryLevelSystemCall_InputParameterUsage <- sourceClass.entryLevelSystemCall_InputParameterUsage
+   --entryLevelSystemCall_OutputParameterUsage <- sourceClass.entryLevelSystemCall_OutputParameterUsage,
+   namedReference__VariableUsage <- sourceClass.namedReference__VariableUsage
+  )
+  do {
+  	if (not sourceClass.synchronisationPoint_VariableUsage.oclIsUndefined()){
+  		targetClass.synchronisationPoint_VariableUsage <- sourceClass.synchronisationPoint_VariableUsage.resolve();
+  	}
+  }
+}
+
+rule FlattenVariableCharacterisation {
+ from
+  sourceClass : PCM!VariableCharacterisation
+ to
+  targetClass : FlattenPCM!PCMparameterVariableCharacterisation (
+   type <- sourceClass.type,
+   --specification_VariableCharacterisation <- sourceClass.specification_VariableCharacterisation,
+   variableUsage_VariableCharacterisation <- sourceClass.variableUsage_VariableCharacterisation
+  )
+  do {
+  	targetClass.specification_VariableCharacterisation <- sourceClass.specification_VariableCharacterisation.resolve();
+  }
+}
+
+-- @extends FlattenVariable
+rule FlattenCharacterisedVariable {
+ from
+  sourceClass : PCM!CharacterisedVariable
+ to
+  targetClass : FlattenPCM!PCMparameterCharacterisedVariable (
+   characterisationType <- sourceClass.characterisationType
+  )
+}
+
+abstract rule FlattenFailureOccurrenceDescription {
+ from
+  sourceClass : PCM!FailureOccurrenceDescription
+ to
+  targetClass : FlattenPCM!PCMreliabilityFailureOccurrenceDescription (
+   failureProbability <- sourceClass.failureProbability
+  )
+}
+
+-- @extends FlattenFailureType
+rule FlattenHardwareInducedFailureType {
+ from
+  sourceClass : PCM!HardwareInducedFailureType
+ to
+  targetClass : FlattenPCM!PCMreliabilityHardwareInducedFailureType (
+   processingResourceType__HardwareInducedFailureType <- sourceClass.processingResourceType__HardwareInducedFailureType
+  )
+}
+
+-- @extends FlattenFailureType
+rule FlattenSoftwareInducedFailureType {
+ from
+  sourceClass : PCM!SoftwareInducedFailureType
+ to
+  targetClass : FlattenPCM!PCMreliabilitySoftwareInducedFailureType (
+   internalFailureOccurrenceDescriptions__SoftwareInducedFailureType <- sourceClass.internalFailureOccurrenceDescriptions__SoftwareInducedFailureType
+  )
+}
+
+-- @extends FlattenFailureOccurrenceDescription
+rule FlattenInternalFailureOccurrenceDescription {
+ from
+  sourceClass : PCM!InternalFailureOccurrenceDescription
+ to
+  targetClass : FlattenPCM!PCMreliabilityInternalFailureOccurrenceDescription (
+   internalAction__InternalFailureOccurrenceDescription <- sourceClass.internalAction__InternalFailureOccurrenceDescription,
+   softwareInducedFailureType__InternalFailureOccurrenceDescription <- sourceClass.softwareInducedFailureType__InternalFailureOccurrenceDescription
+  )
+}
+
+-- @extends FlattenFailureType
+rule FlattenNetworkInducedFailureType {
+ from
+  sourceClass : PCM!NetworkInducedFailureType
+ to
+  targetClass : FlattenPCM!PCMreliabilityNetworkInducedFailureType (
+   communicationLinkResourceType__NetworkInducedFailureType <- sourceClass.communicationLinkResourceType__NetworkInducedFailureType
+  )
+}
+
+-- @extends FlattenFailureOccurrenceDescription
+rule FlattenExternalFailureOccurrenceDescription {
+ from
+  sourceClass : PCM!ExternalFailureOccurrenceDescription
+ to
+  targetClass : FlattenPCM!PCMreliabilityExternalFailureOccurrenceDescription (
+   specifiedReliabilityAnnotation__ExternalFailureOccurrenceDescription <- sourceClass.specifiedReliabilityAnnotation__ExternalFailureOccurrenceDescription,
+   failureType__ExternalFailureOccurrenceDescription <- sourceClass.failureType__ExternalFailureOccurrenceDescription
+  )
+}
+
+-- @extends FlattenSoftwareInducedFailureType
+rule FlattenResourceTimeoutFailureType {
+ from
+  sourceClass : PCM!ResourceTimeoutFailureType
+ to
+  targetClass : FlattenPCM!PCMreliabilityResourceTimeoutFailureType (
+   passiveResource__ResourceTimeoutFailureType <- sourceClass.passiveResource__ResourceTimeoutFailureType
+  )
+}
+
+-- @extends FlattenEntity
+abstract rule FlattenFailureType {
+ from
+  sourceClass : PCM!FailureType
+ to
+  targetClass : FlattenPCM!PCMreliabilityFailureType (
+   repository__FailureType <- sourceClass.repository__FailureType
+  )
+}
+
+-- @extends FlattenAbstractInternalControlFlowAction
+rule FlattenStopAction {
+ from
+  sourceClass : PCM!StopAction
+ to
+  targetClass : FlattenPCM!PCMseffStopAction
+}
+
+-- @extends FlattenAbstractAction
+abstract rule FlattenAbstractInternalControlFlowAction {
+ from
+  sourceClass : PCM!AbstractInternalControlFlowAction
+ to
+  targetClass : FlattenPCM!PCMseffAbstractInternalControlFlowAction (
+   resourceDemand_Action <- sourceClass.resourceDemand_Action,
+   infrastructureCall__Action <- sourceClass.infrastructureCall__Action,
+   resourceCall__Action <- sourceClass.resourceCall__Action
+  )
+}
+
+-- @extends FlattenEntity
+abstract rule FlattenAbstractAction {
+ from
+  sourceClass : PCM!AbstractAction
+ to
+  targetClass : FlattenPCM!PCMseffAbstractAction (
+   predecessor_AbstractAction <- sourceClass.predecessor_AbstractAction,
+   successor_AbstractAction <- sourceClass.successor_AbstractAction,
+   resourceDemandingBehaviour_AbstractAction <- sourceClass.resourceDemandingBehaviour_AbstractAction
+  )
+}
+
+-- @extends FlattenIdentifier
+rule FlattenResourceDemandingBehaviour {
+ from
+  sourceClass : PCM!ResourceDemandingBehaviour
+ to
+  targetClass : FlattenPCM!PCMseffResourceDemandingBehaviour (
+   abstractLoopAction_ResourceDemandingBehaviour <- sourceClass.abstractLoopAction_ResourceDemandingBehaviour,
+   abstractBranchTransition_ResourceDemandingBehaviour <- sourceClass.abstractBranchTransition_ResourceDemandingBehaviour
+   ---steps_Behaviour <- sourceClass.steps_Behaviour
+  )
+  do {
+  	targetClass.steps_Behaviour <- Sequence{}->union(sourceClass.steps_Behaviour->collect(s | s.resolve()));
+  }
+}
+
+-- @extends FlattenAbstractInternalControlFlowAction
+abstract rule FlattenAbstractLoopAction {
+ from
+  sourceClass : PCM!AbstractLoopAction
+ to
+  targetClass : FlattenPCM!PCMseffAbstractLoopAction (
+   bodyBehaviour_Loop <- sourceClass.bodyBehaviour_Loop
+  )
+}
+
+-- @extends FlattenEntity
+abstract rule FlattenAbstractBranchTransition {
+ from
+  sourceClass : PCM!AbstractBranchTransition
+ to
+  targetClass : FlattenPCM!PCMseffAbstractBranchTransition (
+   branchAction_AbstractBranchTransition <- sourceClass.branchAction_AbstractBranchTransition,
+   branchBehaviour_BranchTransition <- sourceClass.branchBehaviour_BranchTransition
+  )
+}
+
+-- @extends FlattenAbstractInternalControlFlowAction
+rule FlattenBranchAction {
+ from
+  sourceClass : PCM!BranchAction
+ to
+  targetClass : FlattenPCM!PCMseffBranchAction (
+   branches_Branch <- sourceClass.branches_Branch
+  )
+}
+
+abstract rule FlattenCallAction {
+ from
+  sourceClass : PCM!CallAction
+ to
+  targetClass : FlattenPCM!PCMseffCallAction (
+   inputVariableUsages__CallAction <- sourceClass.inputVariableUsages__CallAction
+  )
+}
+
+-- @extends FlattenAbstractInternalControlFlowAction
+rule FlattenStartAction {
+ from
+  sourceClass : PCM!StartAction
+ to
+  targetClass : FlattenPCM!PCMseffStartAction
+}
+
+abstract rule FlattenServiceEffectSpecification {
+ from
+  sourceClass : PCM!ServiceEffectSpecification
+ to
+  targetClass : FlattenPCM!PCMseffServiceEffectSpecification (
+   seffTypeID <- sourceClass.seffTypeID,
+   describedService__SEFF <- sourceClass.describedService__SEFF,
+   basicComponent_ServiceEffectSpecification <- sourceClass.basicComponent_ServiceEffectSpecification
+  )
+}
+
+-- @extends FlattenIdentifier, FlattenServiceEffectSpecification, FlattenResourceDemandingBehaviour
+rule FlattenResourceDemandingSEFF {
+ from
+  sourceClass : PCM!ResourceDemandingSEFF
+ to
+  targetClass : FlattenPCM!PCMseffResourceDemandingSEFF (
+   resourceDemandingInternalBehaviours <- sourceClass.resourceDemandingInternalBehaviours
+  )
+}
+
+-- @extends FlattenResourceDemandingBehaviour
+rule FlattenResourceDemandingInternalBehaviour {
+ from
+  sourceClass : PCM!ResourceDemandingInternalBehaviour
+ to
+  targetClass : FlattenPCM!PCMseffResourceDemandingInternalBehaviour (
+   resourceDemandingSEFF_ResourceDemandingInternalBehaviour <- sourceClass.resourceDemandingSEFF_ResourceDemandingInternalBehaviour
+  )
+}
+
+-- @extends FlattenAbstractInternalControlFlowAction
+rule FlattenReleaseAction {
+ from
+  sourceClass : PCM!ReleaseAction
+ to
+  targetClass : FlattenPCM!PCMseffReleaseAction (
+   passiveResource_ReleaseAction <- sourceClass.passiveResource_ReleaseAction
+  )
+}
+
+-- @extends FlattenAbstractLoopAction
+rule FlattenLoopAction {
+ from
+  sourceClass : PCM!LoopAction
+ to
+  targetClass : FlattenPCM!PCMseffLoopAction (
+   iterationCount_LoopAction <- sourceClass.iterationCount_LoopAction
+  )
+}
+
+-- @extends FlattenAbstractInternalControlFlowAction
+rule FlattenForkAction {
+ from
+  sourceClass : PCM!ForkAction
+ to
+  targetClass : FlattenPCM!PCMseffForkAction (
+   asynchronousForkedBehaviours_ForkAction <- sourceClass.asynchronousForkedBehaviours_ForkAction,
+   synchronisingBehaviours_ForkAction <- sourceClass.synchronisingBehaviours_ForkAction
+  )
+}
+
+-- @extends FlattenResourceDemandingBehaviour
+rule FlattenForkedBehaviour {
+ from
+  sourceClass : PCM!ForkedBehaviour
+ to
+  targetClass : FlattenPCM!PCMseffForkedBehaviour (
+   synchronisationPoint_ForkedBehaviour <- sourceClass.synchronisationPoint_ForkedBehaviour,
+   forkAction_ForkedBehaivour <- sourceClass.forkAction_ForkedBehaivour
+  )
+}
+
+rule FlattenSynchronisationPoint {
+ from
+  sourceClass : PCM!SynchronisationPoint
+ to
+  targetClass : FlattenPCM!PCMseffSynchronisationPoint (
+   outputParameterUsage_SynchronisationPoint <- sourceClass.outputParameterUsage_SynchronisationPoint,
+   forkAction_SynchronisationPoint <- sourceClass.forkAction_SynchronisationPoint,
+   synchronousForkedBehaviours_SynchronisationPoint <- sourceClass.synchronousForkedBehaviours_SynchronisationPoint
+  )
+}
+
+-- @extends FlattenAbstractAction, FlattenCallReturnAction, FlattenFailureHandlingEntity
+rule FlattenExternalCallAction {
+ from
+  sourceClass : PCM!ExternalCallAction
+ to
+  targetClass : FlattenPCM!PCMseffExternalCallAction (
+   calledService_ExternalService <- sourceClass.calledService_ExternalService,
+   role_ExternalService <- sourceClass.role_ExternalService,
+   retryCount <- sourceClass.retryCount
+  )
+}
+
+-- @extends FlattenCallAction
+rule FlattenCallReturnAction {
+ from
+  sourceClass : PCM!CallReturnAction
+ to
+  targetClass : FlattenPCM!PCMseffCallReturnAction (
+   returnVariableUsage__CallReturnAction <- sourceClass.returnVariableUsage__CallReturnAction
+  )
+}
+
+-- @extends FlattenAbstractBranchTransition
+rule FlattenProbabilisticBranchTransition {
+ from
+  sourceClass : PCM!ProbabilisticBranchTransition
+ to
+  targetClass : FlattenPCM!PCMseffProbabilisticBranchTransition (
+   branchProbability <- sourceClass.branchProbability
+  )
+}
+
+-- @extends FlattenAbstractInternalControlFlowAction
+rule FlattenAcquireAction {
+ from
+  sourceClass : PCM!AcquireAction
+ to
+  targetClass : FlattenPCM!PCMseffAcquireAction (
+   passiveresource_AcquireAction <- sourceClass.passiveresource_AcquireAction,
+   timeout <- sourceClass.timeout,
+   timeoutValue <- sourceClass.timeoutValue
+  )
+}
+
+-- @extends FlattenAbstractLoopAction
+rule FlattenCollectionIteratorAction {
+ from
+  sourceClass : PCM!CollectionIteratorAction
+ to
+  targetClass : FlattenPCM!PCMseffCollectionIteratorAction (
+   parameter_CollectionIteratorAction <- sourceClass.parameter_CollectionIteratorAction
+  )
+}
+
+-- @extends FlattenAbstractBranchTransition
+rule FlattenGuardedBranchTransition {
+ from
+  sourceClass : PCM!GuardedBranchTransition
+ to
+  targetClass : FlattenPCM!PCMseffGuardedBranchTransition (
+   branchCondition_GuardedBranchTransition <- sourceClass.branchCondition_GuardedBranchTransition
+  )
+}
+
+-- @extends FlattenAbstractInternalControlFlowAction
+rule FlattenSetVariableAction {
+ from
+  sourceClass : PCM!SetVariableAction
+ to
+  targetClass : FlattenPCM!PCMseffSetVariableAction (
+   localVariableUsages_SetVariableAction <- sourceClass.localVariableUsages_SetVariableAction
+  )
+}
+
+-- @extends FlattenCallAction, FlattenAbstractInternalControlFlowAction
+rule FlattenInternalCallAction {
+ from
+  sourceClass : PCM!InternalCallAction
+ to
+  targetClass : FlattenPCM!PCMseffInternalCallAction (
+   calledResourceDemandingInternalBehaviour <- sourceClass.calledResourceDemandingInternalBehaviour
+  )
+}
+
+-- @extends FlattenAbstractAction, FlattenCallAction
+rule FlattenEmitEventAction {
+ from
+  sourceClass : PCM!EmitEventAction
+ to
+  targetClass : FlattenPCM!PCMseffEmitEventAction (
+   eventType__EmitEventAction <- sourceClass.eventType__EmitEventAction,
+   sourceRole__EmitEventAction <- sourceClass.sourceRole__EmitEventAction
+  )
+}
+
+-- @extends FlattenAbstractInternalControlFlowAction
+rule FlattenInternalAction {
+ from
+  sourceClass : PCM!InternalAction
+ to
+  targetClass : FlattenPCM!PCMseffInternalAction (
+   internalFailureOccurrenceDescriptions__InternalAction <- sourceClass.internalFailureOccurrenceDescriptions__InternalAction
+  )
+}
+
+-- @extends FlattenCallAction
+rule FlattenInfrastructureCall {
+ from
+  sourceClass : PCM!InfrastructureCall
+ to
+  targetClass : FlattenPCM!PCMseff_performanceInfrastructureCall (
+   signature__InfrastructureCall <- sourceClass.signature__InfrastructureCall,
+   numberOfCalls__InfrastructureCall <- sourceClass.numberOfCalls__InfrastructureCall,
+   action__InfrastructureCall <- sourceClass.action__InfrastructureCall,
+   requiredRole__InfrastructureCall <- sourceClass.requiredRole__InfrastructureCall
+  )
+}
+
+-- @extends FlattenCallAction
+rule FlattenResourceCall {
+ from
+  sourceClass : PCM!ResourceCall
+ to
+  targetClass : FlattenPCM!PCMseff_performanceResourceCall (
+   action__ResourceCall <- sourceClass.action__ResourceCall,
+   resourceRequiredRole__ResourceCall <- sourceClass.resourceRequiredRole__ResourceCall,
+   signature__ResourceCall <- sourceClass.signature__ResourceCall,
+   numberOfCalls__ResourceCall <- sourceClass.numberOfCalls__ResourceCall
+  )
+}
+
+rule FlattenParametricResourceDemand {
+ from
+  sourceClass : PCM!ParametricResourceDemand
+ to
+  targetClass : FlattenPCM!PCMseff_performanceParametricResourceDemand (
+   --requiredResource_ParametricResourceDemand <- sourceClass.requiredResource_ParametricResourceDemand,
+   --action_ParametricResourceDemand <- sourceClass.action_ParametricResourceDemand
+   --specification_ParametericResourceDemand <- thisModule.FlattenPCMRandomVariableLazy(sourceClass.specification_ParametericResourceDemand)
+   --specification_ParametericResourceDemand <- sourceClass.specification_ParametericResourceDemand
+  )
+  do {
+  	sourceClass.specification_ParametericResourceDemand.specification.debug('RandomVariable');
+   	--targetClass.specification_ParametericResourceDemand <- thisModule.resolveTemp(sourceClass.specification_ParametericResourceDemand, 'targetClass');
+   	targetClass.specification_ParametericResourceDemand <- sourceClass.specification_ParametericResourceDemand.resolve();
+   	--targetClass.requiredResource_ParametricResourceDemand <- sourceClass.requiredResource_ParametricResourceDemand.resolve();
+   	sourceClass.requiredResource_ParametricResourceDemand.debug();
+  }
+}
+
+-- @extends FlattenFailureHandlingEntity, FlattenResourceDemandingBehaviour
+rule FlattenRecoveryActionBehaviour {
+ from
+  sourceClass : PCM!RecoveryActionBehaviour
+ to
+  targetClass : FlattenPCM!PCMseff_reliabilityRecoveryActionBehaviour (
+   failureHandlingAlternatives__RecoveryActionBehaviour <- sourceClass.failureHandlingAlternatives__RecoveryActionBehaviour,
+   recoveryAction__RecoveryActionBehaviour <- sourceClass.recoveryAction__RecoveryActionBehaviour
+  )
+}
+
+-- @extends FlattenAbstractInternalControlFlowAction
+rule FlattenRecoveryAction {
+ from
+  sourceClass : PCM!RecoveryAction
+ to
+  targetClass : FlattenPCM!PCMseff_reliabilityRecoveryAction (
+   primaryBehaviour__RecoveryAction <- sourceClass.primaryBehaviour__RecoveryAction,
+   recoveryActionBehaviours__RecoveryAction <- sourceClass.recoveryActionBehaviours__RecoveryAction
+  )
+}
+
+-- @extends FlattenEntity
+abstract rule FlattenFailureHandlingEntity {
+ from
+  sourceClass : PCM!FailureHandlingEntity
+ to
+  targetClass : FlattenPCM!PCMseff_reliabilityFailureHandlingEntity (
+   failureTypes_FailureHandlingEntity <- sourceClass.failureTypes_FailureHandlingEntity
+  )
+}
+
+abstract rule FlattenSpecifiedQoSAnnotation {
+ from
+  sourceClass : PCM!SpecifiedQoSAnnotation
+ to
+  targetClass : FlattenPCM!PCMqosannotationsSpecifiedQoSAnnotation (
+   signature_SpecifiedQoSAnnation <- sourceClass.signature_SpecifiedQoSAnnation,
+   role_SpecifiedQoSAnnotation <- sourceClass.role_SpecifiedQoSAnnotation,
+   qosAnnotations_SpecifiedQoSAnnotation <- sourceClass.qosAnnotations_SpecifiedQoSAnnotation
+  )
+}
+
+-- @extends FlattenEntity
+rule FlattenQoSAnnotations {
+ from
+  sourceClass : PCM!QoSAnnotations
+ to
+  targetClass : FlattenPCM!PCMqosannotationsQoSAnnotations (
+   specifiedOutputParameterAbstractions_QoSAnnotations <- sourceClass.specifiedOutputParameterAbstractions_QoSAnnotations,
+   system_QoSAnnotations <- sourceClass.system_QoSAnnotations,
+   specifiedQoSAnnotations_QoSAnnotations <- sourceClass.specifiedQoSAnnotations_QoSAnnotations
+  )
+}
+
+abstract rule FlattenSpecifiedOutputParameterAbstraction {
+ from
+  sourceClass : PCM!SpecifiedOutputParameterAbstraction
+ to
+  targetClass : FlattenPCM!PCMqosannotationsSpecifiedOutputParameterAbstraction (
+   signature_SpecifiedOutputParameterAbstraction <- sourceClass.signature_SpecifiedOutputParameterAbstraction,
+   role_SpecifiedOutputParameterAbstraction <- sourceClass.role_SpecifiedOutputParameterAbstraction,
+   expectedExternalOutputs_SpecifiedOutputParameterAbstraction <- sourceClass.expectedExternalOutputs_SpecifiedOutputParameterAbstraction,
+   qosAnnotations_SpecifiedOutputParameterAbstraction <- sourceClass.qosAnnotations_SpecifiedOutputParameterAbstraction
+  )
+}
+
+-- @extends FlattenSpecifiedExecutionTime
+rule FlattenSystemSpecifiedExecutionTime {
+ from
+  sourceClass : PCM!SystemSpecifiedExecutionTime
+ to
+  targetClass : FlattenPCM!PCMqos_performanceSystemSpecifiedExecutionTime
+}
+
+-- @extends FlattenSpecifiedQoSAnnotation
+abstract rule FlattenSpecifiedExecutionTime {
+ from
+  sourceClass : PCM!SpecifiedExecutionTime
+ to
+  targetClass : FlattenPCM!PCMqos_performanceSpecifiedExecutionTime (
+   specification_SpecifiedExecutionTime <- sourceClass.specification_SpecifiedExecutionTime
+  )
+}
+
+-- @extends FlattenSpecifiedExecutionTime
+rule FlattenComponentSpecifiedExecutionTime {
+ from
+  sourceClass : PCM!ComponentSpecifiedExecutionTime
+ to
+  targetClass : FlattenPCM!PCMqos_performanceComponentSpecifiedExecutionTime (
+   assemblyContext_ComponentSpecifiedExecutionTime <- sourceClass.assemblyContext_ComponentSpecifiedExecutionTime
+  )
+}
+
+-- @extends FlattenSpecifiedQoSAnnotation
+rule FlattenSpecifiedReliabilityAnnotation {
+ from
+  sourceClass : PCM!SpecifiedReliabilityAnnotation
+ to
+  targetClass : FlattenPCM!PCMqos_reliabilitySpecifiedReliabilityAnnotation (
+   externalFailureOccurrenceDescriptions__SpecifiedReliabilityAnnotation <- sourceClass.externalFailureOccurrenceDescriptions__SpecifiedReliabilityAnnotation
+  )
+}
+
+-- @extends FlattenEntity, FlattenComposedProvidingRequiringEntity
+rule FlattenSystem {
+ from
+  sourceClass : PCM!System
+ to
+  targetClass : FlattenPCM!PCMsystemSystem (
+   qosAnnotations_System <- sourceClass.qosAnnotations_System
+  )
+}
+
+-- @extends FlattenNamedElement
+rule FlattenResourceEnvironment {
+ from
+  sourceClass : PCM!ResourceEnvironment
+ to
+  targetClass : FlattenPCM!PCMresourceenvironmentResourceEnvironment (
+   linkingResources__ResourceEnvironment <- sourceClass.linkingResources__ResourceEnvironment,
+   resourceContainer_ResourceEnvironment <- sourceClass.resourceContainer_ResourceEnvironment
+  )
+  do {
+  	targetClass.resourceContainer_ResourceEnvironment <- sourceClass.resourceContainer_ResourceEnvironment.resolve();
+  }
+}
+
+-- @extends FlattenEntity
+rule FlattenLinkingResource {
+ from
+  sourceClass : PCM!LinkingResource
+ to
+  targetClass : FlattenPCM!PCMresourceenvironmentLinkingResource (
+   connectedResourceContainers_LinkingResource <- sourceClass.connectedResourceContainers_LinkingResource,
+   communicationLinkResourceSpecifications_LinkingResource <- sourceClass.communicationLinkResourceSpecifications_LinkingResource,
+   resourceEnvironment_LinkingResource <- sourceClass.resourceEnvironment_LinkingResource
+  )
+}
+
+-- @extends FlattenEntity
+rule FlattenResourceContainer {
+ from
+  sourceClass : PCM!ResourceContainer
+ to
+  targetClass : FlattenPCM!PCMresourceenvironmentResourceContainer (
+   activeResourceSpecifications_ResourceContainer <- sourceClass.activeResourceSpecifications_ResourceContainer,
+   resourceEnvironment_ResourceContainer <- sourceClass.resourceEnvironment_ResourceContainer,
+   nestedResourceContainers__ResourceContainer <- sourceClass.nestedResourceContainers__ResourceContainer,
+   parentResourceContainer__ResourceContainer <- sourceClass.parentResourceContainer__ResourceContainer
+  )
+}
+
+-- @extends FlattenIdentifier
+rule FlattenProcessingResourceSpecification {
+ from
+  sourceClass : PCM!ProcessingResourceSpecification
+ to
+  targetClass : FlattenPCM!PCMresourceenvironmentProcessingResourceSpecification (
+   MTTR <- sourceClass.MTTR,
+   MTTF <- sourceClass.MTTF,
+   requiredByContainer <- sourceClass.requiredByContainer,
+   --schedulingPolicy <- sourceClass.schedulingPolicy,
+   --activeResourceType_ActiveResourceSpecification <- sourceClass.activeResourceType_ActiveResourceSpecification,
+   numberOfReplicas <- sourceClass.numberOfReplicas
+  )
+  do {
+  	targetClass.processingRate_ProcessingResourceSpecification <- sourceClass.processingRate_ProcessingResourceSpecification.resolve();
+  	targetClass.resourceContainer_ProcessingResourceSpecification <- sourceClass.resourceContainer_ProcessingResourceSpecification.resolve();
+  	targetClass.schedulingPolicy <- sourceClass.schedulingPolicy.resolve();
+  	targetClass.activeResourceType_ActiveResourceSpecification <- sourceClass.activeResourceType_ActiveResourceSpecification.resolve();
+  }
+}
+
+-- @extends FlattenIdentifier
+rule FlattenCommunicationLinkResourceSpecification {
+ from
+  sourceClass : PCM!CommunicationLinkResourceSpecification
+ to
+  targetClass : FlattenPCM!PCMresourceenvironmentCommunicationLinkResourceSpecification (
+   linkingResource_CommunicationLinkResourceSpecification <- sourceClass.linkingResource_CommunicationLinkResourceSpecification,
+   failureProbability <- sourceClass.failureProbability,
+   --communicationLinkResourceType_CommunicationLinkResourceSpecification <- sourceClass.communicationLinkResourceType_CommunicationLinkResourceSpecification,
+   latency_CommunicationLinkResourceSpecification <- sourceClass.latency_CommunicationLinkResourceSpecification,
+   throughput_CommunicationLinkResourceSpecification <- sourceClass.throughput_CommunicationLinkResourceSpecification
+  )
+}
+
+-- @extends FlattenEntity
+rule FlattenAllocationContext {
+ from
+  sourceClass : PCM!AllocationContext
+ to
+  targetClass : FlattenPCM!PCMallocationAllocationContext (
+   --resourceContainer_AllocationContext <- sourceClass.resourceContainer_AllocationContext,
+   --assemblyContext_AllocationContext <- sourceClass.assemblyContext_AllocationContext,
+   allocation_AllocationContext <- sourceClass.allocation_AllocationContext,
+   eventChannel__AllocationContext <- sourceClass.eventChannel__AllocationContext
+  )
+  do {
+  	targetClass.resourceContainer_AllocationContext <- sourceClass.resourceContainer_AllocationContext.resolve();
+  	targetClass.assemblyContext_AllocationContext <- sourceClass.assemblyContext_AllocationContext.resolve();
+  }
+}
+
+-- @extends FlattenEntity
+rule FlattenAllocation {
+ from
+  sourceClass : PCM!Allocation
+ to
+  targetClass : FlattenPCM!PCMallocationAllocation (
+   --targetResourceEnvironment_Allocation <- sourceClass.targetResourceEnvironment_Allocation,
+   --system_Allocation <- sourceClass.system_Allocation,
+   allocationContexts_Allocation <- sourceClass.allocationContexts_Allocation
+  )
+  do {
+  	targetClass.targetResourceEnvironment_Allocation <- sourceClass.targetResourceEnvironment_Allocation.resolve();
+  	targetClass.system_Allocation <- sourceClass.system_Allocation.resolve();
+  }
+}
+
+-- @extends FlattenComposedProvidingRequiringEntity, FlattenRepositoryComponent
+rule FlattenSubSystem {
+ from
+  sourceClass : PCM!SubSystem
+ to
+  targetClass : FlattenPCM!PCMsubsystemSubSystem
+}
+
+-- @extends FlattenAbstractNamedReference
+rule FlattenVariableReference {
+ from
+  sourceClass : PCM!VariableReference
+ to
+  targetClass : FlattenPCM!STOEXstoexVariableReference
+}
+
+abstract rule FlattenAbstractNamedReference {
+ from
+  sourceClass : PCM!AbstractNamedReference
+ to
+  targetClass : FlattenPCM!STOEXstoexAbstractNamedReference (
+   referenceName <- sourceClass.referenceName
+  )
+}
+
+-- @extends FlattenAbstractNamedReference
+rule FlattenNamespaceReference {
+ from
+  sourceClass : PCM!NamespaceReference
+ to
+  targetClass : FlattenPCM!STOEXstoexNamespaceReference (
+   --innerReference_NamespaceReference <- sourceClass.innerReference_NamespaceReference
+  )
+  do {
+  	targetClass.innerReference_NamespaceReference <- sourceClass.innerReference_NamespaceReference.resolve();
+  }
+}
+
+-- @extends FlattenAtom
+rule FlattenVariable {
+ from
+  sourceClass : PCM!Variable
+ to
+  targetClass : FlattenPCM!STOEXstoexVariable (
+   id_Variable <- sourceClass.id_Variable
+  )
+}
+
+-- @extends FlattenUnary
+abstract rule FlattenAtom {
+ from
+  sourceClass : PCM!Atom
+ to
+  targetClass : FlattenPCM!STOEXstoexAtom
+}
+
+-- @extends FlattenPower
+abstract rule FlattenUnary {
+ from
+  sourceClass : PCM!Unary
+ to
+  targetClass : FlattenPCM!STOEXstoexUnary
+}
+
+-- @extends FlattenProduct
+abstract rule FlattenPower {
+ from
+  sourceClass : PCM!Power
+ to
+  targetClass : FlattenPCM!STOEXstoexPower
+}
+
+-- @extends FlattenTerm
+abstract rule FlattenProduct {
+ from
+  sourceClass : PCM!Product
+ to
+  targetClass : FlattenPCM!STOEXstoexProduct
+}
+
+-- @extends FlattenComparison
+abstract rule FlattenTerm {
+ from
+  sourceClass : PCM!Term
+ to
+  targetClass : FlattenPCM!STOEXstoexTerm
+}
+
+-- @extends FlattenBooleanExpression
+abstract rule FlattenComparison {
+ from
+  sourceClass : PCM!Comparison
+ to
+  targetClass : FlattenPCM!STOEXstoexComparison
+}
+
+-- @extends FlattenIfElse
+abstract rule FlattenBooleanExpression {
+ from
+  sourceClass : PCM!BooleanExpression
+ to
+  targetClass : FlattenPCM!STOEXstoexBooleanExpression
+}
+
+-- @extends FlattenExpression
+abstract rule FlattenIfElse {
+ from
+  sourceClass : PCM!IfElse
+ to
+  targetClass : FlattenPCM!STOEXstoexIfElse
+}
+
+abstract rule FlattenExpression {
+ from
+  sourceClass : PCM!Expression
+ to
+  targetClass : FlattenPCM!STOEXstoexExpression
+}
+
+-- @extends FlattenTerm
+rule FlattenTermExpression {
+ from
+  sourceClass : PCM!TermExpression
+ to
+  targetClass : FlattenPCM!STOEXstoexTermExpression (
+   left <- sourceClass.left,
+   right <- sourceClass.right,
+   operation <- sourceClass.operation
+  )
+}
+
+-- @extends FlattenProduct
+rule FlattenProductExpression {
+ from
+  sourceClass : PCM!ProductExpression
+ to
+  targetClass : FlattenPCM!STOEXstoexProductExpression (
+   left <- sourceClass.left,
+   right <- sourceClass.right,
+   operation <- sourceClass.operation
+  )
+}
+
+-- @extends FlattenAtom
+rule FlattenProbabilityFunctionLiteral {
+ from
+  sourceClass : PCM!ProbabilityFunctionLiteral
+ to
+  targetClass : FlattenPCM!STOEXstoexProbabilityFunctionLiteral (
+   function_ProbabilityFunctionLiteral <- sourceClass.function_ProbabilityFunctionLiteral
+  )
+}
+
+-- @extends FlattenAtom
+rule FlattenParenthesis {
+ from
+  sourceClass : PCM!Parenthesis
+ to
+  targetClass : FlattenPCM!STOEXstoexParenthesis (
+   innerExpression <- sourceClass.innerExpression
+  )
+}
+
+-- @extends FlattenUnitCarryingElement, FlattenAtom
+abstract rule FlattenNumericLiteral {
+ from
+  sourceClass : PCM!NumericLiteral
+ to
+  targetClass : FlattenPCM!STOEXstoexNumericLiteral
+}
+
+-- @extends FlattenNumericLiteral
+rule FlattenIntLiteral {
+ from
+  sourceClass : PCM!IntLiteral
+ to
+  targetClass : FlattenPCM!STOEXstoexIntLiteral (
+   value <- sourceClass.value
+  )
+}
+
+-- @extends FlattenNumericLiteral
+rule FlattenDoubleLiteral {
+ from
+  sourceClass : PCM!DoubleLiteral
+ to
+  targetClass : FlattenPCM!STOEXstoexDoubleLiteral (
+   value <- sourceClass.value
+  )
+}
+
+-- @extends FlattenComparison
+rule FlattenCompareExpression {
+ from
+  sourceClass : PCM!CompareExpression
+ to
+  targetClass : FlattenPCM!STOEXstoexCompareExpression (
+   left <- sourceClass.left,
+   right <- sourceClass.right,
+   operation <- sourceClass.operation
+  )
+}
+
+-- @extends FlattenAtom
+rule FlattenBoolLiteral {
+ from
+  sourceClass : PCM!BoolLiteral
+ to
+  targetClass : FlattenPCM!STOEXstoexBoolLiteral (
+   value <- sourceClass.value
+  )
+}
+
+-- @extends FlattenAtom
+rule FlattenStringLiteral {
+ from
+  sourceClass : PCM!StringLiteral
+ to
+  targetClass : FlattenPCM!STOEXstoexStringLiteral (
+   value <- sourceClass.value
+  )
+}
+
+-- @extends FlattenPower
+rule FlattenPowerExpression {
+ from
+  sourceClass : PCM!PowerExpression
+ to
+  targetClass : FlattenPCM!STOEXstoexPowerExpression (
+   base <- sourceClass.base,
+   exponent <- sourceClass.exponent
+  )
+}
+
+-- @extends FlattenBooleanExpression
+rule FlattenBooleanOperatorExpression {
+ from
+  sourceClass : PCM!BooleanOperatorExpression
+ to
+  targetClass : FlattenPCM!STOEXstoexBooleanOperatorExpression (
+   left <- sourceClass.left,
+   right <- sourceClass.right,
+   operation <- sourceClass.operation
+  )
+}
+
+-- @extends FlattenUnary
+rule FlattenNotExpression {
+ from
+  sourceClass : PCM!NotExpression
+ to
+  targetClass : FlattenPCM!STOEXstoexNotExpression (
+   inner <- sourceClass.inner
+  )
+}
+
+-- @extends FlattenUnary
+rule FlattenNegativeExpression {
+ from
+  sourceClass : PCM!NegativeExpression
+ to
+  targetClass : FlattenPCM!STOEXstoexNegativeExpression (
+   inner <- sourceClass.inner
+  )
+}
+
+-- @extends FlattenAtom
+rule FlattenFunctionLiteral {
+ from
+  sourceClass : PCM!FunctionLiteral
+ to
+  targetClass : FlattenPCM!STOEXstoexFunctionLiteral (
+   id <- sourceClass.id,
+   parameters_FunctionLiteral <- sourceClass.parameters_FunctionLiteral
+  )
+}
+
+-- @extends FlattenIfElse
+rule FlattenIfElseExpression {
+ from
+  sourceClass : PCM!IfElseExpression
+ to
+  targetClass : FlattenPCM!STOEXstoexIfElseExpression (
+   ifExpression <- sourceClass.ifExpression,
+   elseExpression <- sourceClass.elseExpression,
+   conditionExpression <- sourceClass.conditionExpression
+  )
+}
+
+rule FlattenRandomVariable {
+ from
+  sourceClass : PCM!RandomVariable
+ to
+  targetClass : FlattenPCM!STOEXstoexRandomVariable (
+  	specification <- sourceClass.specification
+  )
+}
+
+rule FlattenBaseUnit {
+ from
+  sourceClass : PCM!BaseUnit
+ to
+  targetClass : FlattenPCM!UNITSunitsBaseUnit (
+   name <- sourceClass.name
+  )
+}
+
+rule FlattenUnitRepository {
+ from
+  sourceClass : PCM!UnitRepository
+ to
+  targetClass : FlattenPCM!UNITSunitsUnitRepository (
+   units <- sourceClass.units
+  )
+}
+
+abstract rule FlattenUnit {
+ from
+  sourceClass : PCM!Unit
+ to
+  targetClass : FlattenPCM!UNITSunitsUnit
+}
+
+-- @extends FlattenUnit
+rule FlattenUnitMultiplication {
+ from
+  sourceClass : PCM!UnitMultiplication
+ to
+  targetClass : FlattenPCM!UNITSunitsUnitMultiplication (
+   units <- sourceClass.units
+  )
+}
+
+-- @extends FlattenUnit
+rule FlattenUnitPower {
+ from
+  sourceClass : PCM!UnitPower
+ to
+  targetClass : FlattenPCM!UNITSunitsUnitPower (
+   unit <- sourceClass.unit,
+   exponent <- sourceClass.exponent
+  )
+}
+
+-- @extends FlattenUnit
+rule FlattenUnitLiteral {
+ from
+  sourceClass : PCM!UnitLiteral
+ to
+  targetClass : FlattenPCM!UNITSunitsUnitLiteral (
+   baseUnit <- sourceClass.baseUnit
+  )
+}
+
+abstract rule FlattenUnitCarryingElement {
+ from
+  sourceClass : PCM!UnitCarryingElement
+ to
+  targetClass : FlattenPCM!UNITSunitsUnitCarryingElement (
+   unit <- sourceClass.unit,
+   unitSpecification <- sourceClass.unitSpecification
+  )
+}
+
+abstract rule FlattenIdentifier {
+ from
+  sourceClass : PCM!Identifier
+ to
+  targetClass : FlattenPCM!IDENTIFIERidentifierIdentifier (
+   id <- sourceClass.id
+  )
+}
