@@ -37,6 +37,8 @@ public class LaunchConfiguration {
 	private final static String SYSTEM_MODEL = "systemModel";
 	private final static String ALLOCATION_MODEL = "allocationModel";
 	private final static String RESENV_MODEL = "resenvModel";
+	
+	private final static String OUTPUT_FOLDER = "ouputFolder";
 
 	
 	public LaunchConfiguration() {
@@ -53,6 +55,7 @@ public class LaunchConfiguration {
 		props.setProperty(SYSTEM_MODEL, info.getSystemModel().getFullPath().toOSString());
 		props.setProperty(ALLOCATION_MODEL, info.getAllocationModel().getFullPath().toOSString());
 		props.setProperty(RESENV_MODEL, info.getResenvModel().getFullPath().toOSString());
+		props.setProperty(OUTPUT_FOLDER, info.getOutputFolder());
 		
 		return true;
 	}
@@ -134,6 +137,9 @@ public class LaunchConfiguration {
 					IPath path = new Path(props.getProperty(RESENV_MODEL));
 					IFile file = ResourcesPlugin.getWorkspace().getRoot().getFile(path);
 					info.setResenvModel(file);
+				}
+				if (info.getOutputFolder() == null) {
+					info.setOutputFolder(props.getProperty(OUTPUT_FOLDER));
 				}
 			}
 		}

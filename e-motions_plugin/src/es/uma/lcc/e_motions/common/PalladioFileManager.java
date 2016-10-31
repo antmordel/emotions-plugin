@@ -36,6 +36,8 @@ public class PalladioFileManager {
 	
 	private IFile newPalladioRepository;
 	private IFile newPalladioResourceType;
+	
+	private IFolder tmp;
 
 	private PalladioFileManager() {
 		info = PalladioRunningInformation.getDefault();
@@ -161,4 +163,5 @@ public class PalladioFileManager {
 	public IFile getNewPalladioResourceType() {
 		return newPalladioResourceType;
 	}
+
 }
