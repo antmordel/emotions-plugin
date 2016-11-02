@@ -69,7 +69,7 @@ public class PalladioDialog extends Dialog {
 		Group groupEmotionsFiles = new Group(composite, SWT.NONE);
 		groupEmotionsFiles.setFont(SWTResourceManager.getFont("Segoe UI", 12, SWT.NORMAL));
 		groupEmotionsFiles.setText("e-Motions files");
-		groupEmotionsFiles.setBounds(20, 34, 513, 108);
+		groupEmotionsFiles.setBounds(20, 34, 513, 130);
 		
 		Label lblEmotionsBehavior = new Label(groupEmotionsFiles, SWT.NONE);
 		lblEmotionsBehavior.setBounds(30, 40, 106, 15);
