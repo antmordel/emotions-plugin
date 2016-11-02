@@ -107,4 +107,5 @@ public class PalladioRunningInformation {
 		this.outputFolder = outputFolder;
 	}
 	
+	
 }

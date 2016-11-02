@@ -345,7 +345,7 @@ public class PalladioDialog extends Dialog {
 			}
 		});
 		
-		Button btnPrintAppliedMtes = new Button(grpSimulationOptions, SWT.CHECK);
+		final Button btnPrintAppliedMtes = new Button(grpSimulationOptions, SWT.CHECK);
 		btnPrintAppliedMtes.setBounds(321, 50, 171, 16);
 		btnPrintAppliedMtes.setText("Print applied mte's and rules");
 		btnPrintAppliedMtes.setSelection(info.isAppliedRules());
@@ -356,7 +356,7 @@ public class PalladioDialog extends Dialog {
 		    }
 		});
 		
-		Button btnShowAdvisories = new Button(grpSimulationOptions, SWT.CHECK);
+		final Button btnShowAdvisories = new Button(grpSimulationOptions, SWT.CHECK);
 		btnShowAdvisories.setBounds(321, 69, 145, 16);
 		btnShowAdvisories.setSelection(info.isShowAdvisories());
 		btnShowAdvisories.setText("Show Maude advisories");
