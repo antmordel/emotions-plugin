@@ -107,7 +107,7 @@ public class Behavior2Maude {
 		
 		/* Loading OCL Parser */
 		IModel oclModel = mF.newModel(atlMM);
-		injector.inject(oclModel, FileManager.getDefault().getOCLParserModel().getFullPath().toOSString());
+		injector.inject(oclModel, "file:///" + FileManager.getDefault().getOCLParserModel().getLocation().toOSString());
 
 		/* Loading Maude Model */
 		IModel maudeModel = mF.newModel(maudeMM);

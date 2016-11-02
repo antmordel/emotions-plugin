@@ -43,7 +43,9 @@ public class PalladioJob extends Job {
 		
 		/* Beh2Maude */
 		try {
-			Behavior2Maude.behOcl2Maude("file:///" + info.getBehaviorModel().getLocation().toOSString(),
+			System.out.println("[Behavior Location]: " + info.getBehaviorModel().getLocation().toOSString());
+			System.out.println("[Behavior RawLocation]: " + info.getBehaviorModel().getRawLocation().toOSString());
+			Behavior2Maude.behOcl2Maude("file:///" + info.getBehaviorModel().getRawLocation().toOSString(),
 					"file:///" + info.getMetamodel().getLocation().toOSString());
 			console.println("Behavior to Maude trasnformation finished.");
 		} catch (MaudelingException | URISyntaxException | CoreException
