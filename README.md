@@ -26,6 +26,8 @@ In any Eclipse Modelling:
 - Added full support for the Palladio specification. We have presented [a explicit behavior for the Palladio Component Model][1]. However, as it was mentioned in that work, previous transformations (especifically flattening the input Palladio models) should be done. In this version we provide a new button ![palladio button](https://raw.githubusercontent.com/e-motions/e-motions_plugin/master/e-motions_plugin/icons/palladio.png) has been added giving support to this changes.
 - Since fulfilling the *Palladio in e-Motions* dialog is quite cumbersome, we provide a new file that keeps the last launch of e-Motions. The project containing the file with the rules should be selected before triggering the *Palladio in e-Motions* dialog.
 
+[1]: http://link.springer.com/chapter/10.1007%2F978-3-319-09195-2_9
+
 
 
 
