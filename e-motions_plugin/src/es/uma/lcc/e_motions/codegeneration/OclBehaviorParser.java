@@ -40,9 +40,9 @@ import org.eclipse.m2m.atl.core.emf.EMFModelFactory;
 import org.eclipse.m2m.atl.engine.parser.AtlParser;
 
 import es.uma.lcc.e_motions.common.FileManager;
-import es.uma.lcc.e_motions.common.PalladioRunningInformation;
 import es.uma.lcc.e_motions.common.Printer;
 import es.uma.lcc.e_motions.metamodels.Metamodels;
+import es.uma.lcc.e_motions.running_information.PalladioRunningInformation;
 
 public class OclBehaviorParser {
 
@@ -61,7 +61,8 @@ public class OclBehaviorParser {
 	 * @throws CoreException
 	 * @throws ATLCoreException
 	 */
-	public static void oclParser(String behaviorModel, String metamodel)
+	// TODO change this please. do not put boolean palladio anymore
+	public static void oclParser(String behaviorModel, String metamodel, boolean palladio)
 			throws IOException, CoreException, ATLCoreException {
 
 		IWorkspace workspace = ResourcesPlugin.getWorkspace();
@@ -69,17 +70,18 @@ public class OclBehaviorParser {
 		
 		// TODO change this
 		String project = null;
-		if (FileManager.getDefault().getBehavior() != null) {
+		if (!palladio) {
 			project = FileManager.getDefault().getBehavior().getProject().getName();
 		} else {
 			project = PalladioRunningInformation.getDefault().getBehaviorModel().getProject().getName();
 		}
-
+		
+		// TODO change this
 		IFolder tmp = FileManager.getDefault().createFolderTmp(project);
+		
 		IFile oclBehaviorATLCode = tmp.getFile(FileManager.OCLBEHAVIOR_ATL);
 
-		String output = OclBehaviorParser.parseOclBehavior(behaviorModel,
-				metamodel);
+		String output = OclBehaviorParser.parseOclBehavior(behaviorModel, metamodel);
 		InputStream contents = new ByteArrayInputStream(
 				output.getBytes("UTF-8"));
 		if (oclBehaviorATLCode.exists()) {

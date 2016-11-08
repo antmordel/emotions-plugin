@@ -50,7 +50,6 @@ public class EmotionsConsole {
 		try {
 			IConsoleView view = (IConsoleView) page.showView(IConsoleConstants.ID_CONSOLE_VIEW);
 			view.display(console);
-			System.out.println("hola");
 		} catch (PartInitException e) {
 			e.printStackTrace();
 		}

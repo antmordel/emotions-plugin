@@ -16,12 +16,14 @@ import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.ui.ISelectionService;
 import org.eclipse.ui.PlatformUI;
 
+import es.uma.lcc.e_motions.running_information.PalladioRunningInformation;
+
 /**
  * 
  * @author Antonio Moreno-Delgado <amoreno@lcc.uma.es>
  *
  */
-public class LaunchConfiguration {
+public class PalladioLaunchConfiguration {
 	
 	private PalladioRunningInformation info;
 	private IProject project;
@@ -38,10 +40,13 @@ public class LaunchConfiguration {
 	private final static String ALLOCATION_MODEL = "allocationModel";
 	private final static String RESENV_MODEL = "resenvModel";
 	
+	private final static String PRINT_ADV = "printAdvisories";
+	private final static String PRINT_RULES = "printRules";
+	
 	private final static String OUTPUT_FOLDER = "ouputFolder";
 
 	
-	public LaunchConfiguration() {
+	public PalladioLaunchConfiguration() {
 		info = PalladioRunningInformation.getDefault();
 		props = new Properties();
 	}
@@ -55,7 +60,9 @@ public class LaunchConfiguration {
 		props.setProperty(SYSTEM_MODEL, info.getSystemModel().getFullPath().toOSString());
 		props.setProperty(ALLOCATION_MODEL, info.getAllocationModel().getFullPath().toOSString());
 		props.setProperty(RESENV_MODEL, info.getResenvModel().getFullPath().toOSString());
-		props.setProperty(OUTPUT_FOLDER, info.getOutputFolder());
+		props.setProperty(PRINT_ADV, Boolean.toString(info.isShowAdvisories()));
+		props.setProperty(PRINT_RULES, Boolean.toString(info.isAppliedRules()));
+		props.setProperty(OUTPUT_FOLDER, info.getFolderOutputString());
 		
 		return true;
 	}
@@ -87,7 +94,7 @@ public class LaunchConfiguration {
             Object element = ((IStructuredSelection) selection).getFirstElement();    
 
             if (element instanceof IResource) {    
-                project = ((IResource)element).getProject();    
+                project = ((IResource) element).getProject();    
             }  
         }     
         return project;    
@@ -138,8 +145,16 @@ public class LaunchConfiguration {
 					IFile file = ResourcesPlugin.getWorkspace().getRoot().getFile(path);
 					info.setResenvModel(file);
 				}
-				if (info.getOutputFolder() == null) {
-					info.setOutputFolder(props.getProperty(OUTPUT_FOLDER));
+				if (props.getProperty(PRINT_RULES) != null 
+						&& info.isAppliedRules() != Boolean.parseBoolean(props.getProperty(PRINT_RULES))) {
+					info.setAppliedRules(Boolean.parseBoolean(props.getProperty(PRINT_RULES)));
+				}
+				if (props.getProperty(PRINT_ADV) != null 
+						&& info.isShowAdvisories() != Boolean.parseBoolean(props.getProperty(PRINT_ADV))) {
+					info.setShowAdvisories(Boolean.parseBoolean(props.getProperty(PRINT_ADV)));
+				}
+				if (info.getFolderOutputString() == null) {
+					info.setFolderOutputString(props.getProperty(OUTPUT_FOLDER));
 				}
 			}
 		}

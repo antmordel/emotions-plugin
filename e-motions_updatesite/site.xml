@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<site>
+   <description name="e-Motions" url="lcc.uma.es/~amoreno/e-motions">
+      e-Motions update site
+   </description>
+   <feature url="features/es.uma.lcc.e-motions_2.1.0.201611081109.jar" id="es.uma.lcc.e-motions" version="2.1.0.201611081109">
+      <category name="e-motions"/>
+   </feature>
+   <category-def name="e-motions" label="e-Motions"/>
+</site>

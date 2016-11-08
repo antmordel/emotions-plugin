@@ -2,15 +2,18 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: e-Motions
 Bundle-SymbolicName: es.uma.lcc.e-motions;singleton:=true
-Bundle-Version: 2.0.1.qualifier
+Bundle-Version: 2.1.0.qualifier
 Bundle-Activator: es.uma.lcc.e_motions.Activator
 Bundle-Vendor: LCC UMA
 Bundle-ActivationPolicy: lazy
 Require-Bundle: org.eclipse.ui;bundle-version="3.105.0",
  org.eclipse.core.resources;bundle-version="3.8.101",
  org.eclipse.jface.text;bundle-version="3.8.101",
- org.eclipse.m2m.atl.engine.emfvm;bundle-version="3.6.0",
- org.eclipse.m2m.atl.engine;bundle-version="3.6.0",
- org.eclipse.xtend.lib;bundle-version="2.9.2",
- org.eclipse.m2m.atl.emftvm;bundle-version="3.7.0",
- org.eclipse.ui.console;bundle-version="3.6.200"
+ org.eclipse.m2m.atl.engine.emfvm;bundle-version="3.6.0";visibility:=reexport,
+ org.eclipse.m2m.atl.engine;bundle-version="3.6.0";visibility:=reexport,
+ org.eclipse.xtend.lib;bundle-version="2.9.2";visibility:=reexport,
+ org.eclipse.m2m.atl.emftvm;bundle-version="3.7.0";visibility:=reexport,
+ org.eclipse.ui.console;bundle-version="3.6.200",
+ Behavior;bundle-version="1.0.0",
+ GCS;bundle-version="1.0.0",
+ es.uma.lcc.maude_mm;bundle-version="1.0.0"

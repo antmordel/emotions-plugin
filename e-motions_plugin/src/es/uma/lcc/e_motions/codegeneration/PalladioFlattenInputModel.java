@@ -26,24 +26,21 @@ import org.eclipse.m2m.atl.emftvm.util.DefaultModuleResolver;
 import org.eclipse.m2m.atl.emftvm.util.ModuleResolver;
 import org.eclipse.m2m.atl.emftvm.util.TimingData;
 
-import es.uma.lcc.e_motions.common.PalladioFileManager;
-import es.uma.lcc.e_motions.console.EmotionsConsole;
 import es.uma.lcc.e_motions.metamodels.Metamodels;
+import es.uma.lcc.e_motions.running_information.PalladioRunningInformation;
 
 public class PalladioFlattenInputModel {
-	
-	private EmotionsConsole console;
-	private PalladioFileManager fileManager;
-	
+
+	private PalladioRunningInformation info;
+
 	public PalladioFlattenInputModel() {
-		console = EmotionsConsole.getDefault();
-		fileManager = PalladioFileManager.getDefault();
+		info = PalladioRunningInformation.getDefault();
 	}
-	
+
 	public void run() {
 		flattenPalladioFiles();
 	}
-	
+
 	private void registerMetamodel(ResourceSet rs, String path) {
 		Resource Rpcm = rs.getResource(URI.createURI(path), true);
 		Iterator<EObject> eo = Rpcm.getAllContents();
@@ -51,52 +48,53 @@ public class PalladioFlattenInputModel {
 			EObject next = eo.next();
 			if (next instanceof EPackage) {
 				rs.getPackageRegistry().put(((EPackage) next).getNsURI(), ((EPackage) next));
-				console.println("URI: " + ((EPackage) next).getNsURI().toString());
 			}
 		}
 	}
-	
+
 	private void flattenPalladioFiles() {
 		/*
-		 * Removes the strings "pathmap://PCM_MODELS/" in repository and resource environment files.
+		 * Removes the strings "pathmap://PCM_MODELS/" in repository and
+		 * resource environment files.
 		 */
 		try {
-			fileManager.copyIFilesRemovePathmaps();
-			fileManager.copyFixedFiles();
+			info.copyIFilesRemovePathmaps();
+			info.copyFixedFiles();
 		} catch (CoreException | IOException e) {
 			e.printStackTrace();
 		}
-		/* 
+
+		/*
 		 * Creates the environment
 		 */
 		ExecEnv env = EmftvmFactory.eINSTANCE.createExecEnv();
 		ResourceSet rs = new ResourceSetImpl();
-		console.println("Flattening Palladio files\n-------------------------");
-		
+
 		/*
 		 * Load metamodels
 		 */
 		// Input metamodels
 		rs.getResourceFactoryRegistry().getExtensionToFactoryMap().put("ecore", new EcoreResourceFactoryImpl());
 		final ExtendedMetaData extendedMetaData = new BasicExtendedMetaData(rs.getPackageRegistry());
-		rs.getLoadOptions().put(XMLResource.OPTION_EXTENDED_META_DATA,
-		    extendedMetaData);
-		
+		rs.getLoadOptions().put(XMLResource.OPTION_EXTENDED_META_DATA, extendedMetaData);
+
 		registerMetamodel(rs, Metamodels.class.getResource("units.ecore").toString());
-		//registerMetamodel(rs, Metamodels.class.getResource("probabilityfunction.ecore").toString());
+		// registerMetamodel(rs,
+		// Metamodels.class.getResource("probabilityfunction.ecore").toString());
 		registerMetamodel(rs, Metamodels.class.getResource("stoex.ecore").toString());
 		registerMetamodel(rs, Metamodels.class.getResource("identifier.ecore").toString());
 		registerMetamodel(rs, Metamodels.class.getResource("pcm.ecore").toString());
-		
+
 		Metamodel MMPcm = EmftvmFactory.eINSTANCE.createMetamodel();
 		MMPcm.setResource(rs.getResource(URI.createURI(Metamodels.class.getResource("pcm.ecore").toString()), true));
 		env.registerMetaModel("PCM", MMPcm);
-		
+
 		// Output metamodels
 		registerMetamodel(rs, Metamodels.class.getResource("flatten.ecore").toString());
-		
+
 		Metamodel MMFlattenPcm = EmftvmFactory.eINSTANCE.createMetamodel();
-		MMFlattenPcm.setResource(rs.getResource(URI.createURI(Metamodels.class.getResource("flatten.ecore").toString()), true));
+		MMFlattenPcm.setResource(
+				rs.getResource(URI.createURI(Metamodels.class.getResource("flatten.ecore").toString()), true));
 		env.registerMetaModel("FlattenPCM", MMFlattenPcm);
 
 		/*
@@ -104,91 +102,114 @@ public class PalladioFlattenInputModel {
 		 */
 		rs.getResourceFactoryRegistry().getExtensionToFactoryMap().put("xmi", new XMIResourceFactoryImpl());
 		rs.getResourceFactoryRegistry().getExtensionToFactoryMap().put("emftvm", new EMFTVMResourceFactoryImpl());
-		
+
 		/*
 		 * Load models
 		 * 
-		 * create OUTPCM : FlattenPCM from INUSAGEMODEL : PCM, INREPOSITORY : PCM, 
-		 * 			INSYSTEM : PCM, INALLOCATION : PCM, INRESOURCEENVIRONTMENT : PCM, INRESOURCETYPE : PCM, INPRIMITIVETYPES : PCM;
+		 * create OUTPCM : FlattenPCM from INUSAGEMODEL : PCM, INREPOSITORY :
+		 * PCM, INSYSTEM : PCM, INALLOCATION : PCM, INRESOURCEENVIRONTMENT :
+		 * PCM, INRESOURCETYPE : PCM, INPRIMITIVETYPES : PCM;
 		 * 
 		 */
 		Model inUsageModel = EmftvmFactory.eINSTANCE.createModel();
-//		inUsageModel.setResource(rs.getResource(URI.createFileURI(fileManager.getNewUsageModel().getFullPath().toOSString()), true));
-		inUsageModel.setResource(rs.getResource(URI.createFileURI(fileManager.getNewUsageModel().getLocation().toOSString()), true));
+		// inUsageModel.setResource(rs.getResource(URI.createFileURI(info.getNewUsageModel().getFullPath().toOSString()),
+		// true));
+		inUsageModel.setResource(
+				rs.getResource(URI.createFileURI(info.getNewUsageModel().getLocation().toOSString()), true));
 		// it is not working with the cross-references
-		//inUsageModel.setResource(rs.getResource(URI.createURI("file:///" + fileManager.getNewUsageModel().getRawLocation().makeAbsolute().toOSString(), true), true));
+		// inUsageModel.setResource(rs.getResource(URI.createURI("file:///" +
+		// info.getNewUsageModel().getRawLocation().makeAbsolute().toOSString(),
+		// true), true));
 		env.registerInputModel("INUSAGEMODEL", inUsageModel);
-		console.println(" - Model UsageModel loaded");
-		
+
 		Model inRepository = EmftvmFactory.eINSTANCE.createModel();
-//		inRepository.setResource(rs.getResource(URI.createFileURI(fileManager.getNewRepositoryModel().getFullPath().toOSString()), true));
-		inRepository.setResource(rs.getResource(URI.createFileURI(fileManager.getNewRepositoryModel().getLocation().toOSString()), true));
-		//inRepository.setResource(rs.getResource(URI.createURI("file:///" + fileManager.getNewRepositoryModel().getRawLocation().makeAbsolute().toOSString(), true), true));
+		// inRepository.setResource(rs.getResource(URI.createFileURI(info.getNewRepositoryModel().getFullPath().toOSString()),
+		// true));
+		inRepository.setResource(
+				rs.getResource(URI.createFileURI(info.getNewRepositoryModel().getLocation().toOSString()), true));
+		// inRepository.setResource(rs.getResource(URI.createURI("file:///" +
+		// info.getNewRepositoryModel().getRawLocation().makeAbsolute().toOSString(),
+		// true), true));
 		env.registerInputModel("INREPOSITORY", inRepository);
-		console.println(" - Model Repository loaded");
-		
+
 		Model inSystem = EmftvmFactory.eINSTANCE.createModel();
-//		inSystem.setResource(rs.getResource(URI.createFileURI(fileManager.getNewSystemModel().getFullPath().toOSString()), true));
-		inSystem.setResource(rs.getResource(URI.createFileURI(fileManager.getNewSystemModel().getLocation().toOSString()), true));
-		//inSystem.setResource(rs.getResource(URI.createURI("file:///" + fileManager.getNewSystemModel().getRawLocation().makeAbsolute().toOSString(), true), true));
+		// inSystem.setResource(rs.getResource(URI.createFileURI(info.getNewSystemModel().getFullPath().toOSString()),
+		// true));
+		inSystem.setResource(
+				rs.getResource(URI.createFileURI(info.getNewSystemModel().getLocation().toOSString()), true));
+		// inSystem.setResource(rs.getResource(URI.createURI("file:///" +
+		// info.getNewSystemModel().getRawLocation().makeAbsolute().toOSString(),
+		// true), true));
 		env.registerInputModel("INSYSTEM", inSystem);
-		console.println(" - Model System loaded");
-		
+
 		Model inAllocation = EmftvmFactory.eINSTANCE.createModel();
-//		inAllocation.setResource(rs.getResource(URI.createFileURI(fileManager.getNewAllocationModel().getFullPath().toOSString()), true));
-		inAllocation.setResource(rs.getResource(URI.createFileURI(fileManager.getNewAllocationModel().getLocation().toOSString()), true));
-		//inAllocation.setResource(rs.getResource(URI.createURI("file:///" + fileManager.getNewAllocationModel().getRawLocation().makeAbsolute().toOSString(), true), true));
+		// inAllocation.setResource(rs.getResource(URI.createFileURI(info.getNewAllocationModel().getFullPath().toOSString()),
+		// true));
+		inAllocation.setResource(
+				rs.getResource(URI.createFileURI(info.getNewAllocationModel().getLocation().toOSString()), true));
+		// inAllocation.setResource(rs.getResource(URI.createURI("file:///" +
+		// info.getNewAllocationModel().getRawLocation().makeAbsolute().toOSString(),
+		// true), true));
 		env.registerInputModel("INALLOCATION", inAllocation);
-		console.println(" - Model Allocation loaded");
-		
+
 		Model inResourceEnvironment = EmftvmFactory.eINSTANCE.createModel();
-//		inResourceEnvironment.setResource(rs.getResource(URI.createFileURI(fileManager.getNewResenvModel().getFullPath().toOSString()), true));
-		inResourceEnvironment.setResource(rs.getResource(URI.createFileURI(fileManager.getNewResenvModel().getLocation().toOSString()), true));
-		//inResourceEnvironment.setResource(rs.getResource(URI.createURI("file:///" + fileManager.getNewResenvModel().getRawLocation().makeAbsolute().toOSString(), true), true));
+		// inResourceEnvironment.setResource(rs.getResource(URI.createFileURI(info.getNewResenvModel().getFullPath().toOSString()),
+		// true));
+		inResourceEnvironment.setResource(
+				rs.getResource(URI.createFileURI(info.getNewResenvModel().getLocation().toOSString()), true));
+		// inResourceEnvironment.setResource(rs.getResource(URI.createURI("file:///"
+		// +
+		// info.getNewResenvModel().getRawLocation().makeAbsolute().toOSString(),
+		// true), true));
 		env.registerInputModel("INRESOURCEENVIRONTMENT", inResourceEnvironment);
-		console.println(" - Model ResourceEnvironment loaded");
-		
+
 		Model inResourceType = EmftvmFactory.eINSTANCE.createModel();
-//		inResourceType.setResource(rs.getResource(URI.createFileURI(fileManager.getNewPalladioResourceType().getFullPath().toOSString()), true));
-		inResourceType.setResource(rs.getResource(URI.createFileURI(fileManager.getNewPalladioResourceType().getLocation().toOSString()), true));
-		//inResourceType.setResource(rs.getResource(URI.createURI("file:///" + fileManager.getNewPalladioResourceType().getRawLocation().makeAbsolute().toOSString(), true), true));
+		// inResourceType.setResource(rs.getResource(URI.createFileURI(info.getNewPalladioResourceType().getFullPath().toOSString()),
+		// true));
+		inResourceType.setResource(
+				rs.getResource(URI.createFileURI(info.getNewPalladioResourceType().getLocation().toOSString()), true));
+		// inResourceType.setResource(rs.getResource(URI.createURI("file:///" +
+		// info.getNewPalladioResourceType().getRawLocation().makeAbsolute().toOSString(),
+		// true), true));
 		env.registerInputModel("INRESOURCETYPE", inResourceType);
-		console.println(" - Model ResourceType loaded");
-		
+
 		Model inPrimitiveTypes = EmftvmFactory.eINSTANCE.createModel();
-//		inPrimitiveTypes.setResource(rs.getResource(URI.createFileURI(fileManager.getNewPalladioRepository().getFullPath().toOSString()), true));
-		inPrimitiveTypes.setResource(rs.getResource(URI.createFileURI(fileManager.getNewPalladioRepository().getLocation().toOSString()), true));
-		//inPrimitiveTypes.setResource(rs.getResource(URI.createURI("file:///" + fileManager.getNewPalladioRepository().getRawLocation().makeAbsolute().toOSString(), true), true));
+		// inPrimitiveTypes.setResource(rs.getResource(URI.createFileURI(info.getNewPalladioRepository().getFullPath().toOSString()),
+		// true));
+		inPrimitiveTypes.setResource(
+				rs.getResource(URI.createFileURI(info.getNewPalladioRepository().getLocation().toOSString()), true));
+		// inPrimitiveTypes.setResource(rs.getResource(URI.createURI("file:///"
+		// +
+		// info.getNewPalladioRepository().getRawLocation().makeAbsolute().toOSString(),
+		// true), true));
 		env.registerInputModel("INPRIMITIVETYPES", inPrimitiveTypes);
-		console.println(" - Model PrimitiveTypes loaded");
-		
+
 		// Output model
 		Model outFlatten = EmftvmFactory.eINSTANCE.createModel();
-		outFlatten.setResource(rs.createResource(URI.createURI("file:///" + fileManager.getFolderTmp().getLocation().toOSString() + "/outFlatten.xmi")));
+		outFlatten.setResource(rs.createResource(
+				URI.createURI("file:///" + info.getFolderTmp().getLocation().toOSString() + "/" + PalladioRunningInformation.FLATTEN_MODEL)));
 		env.registerOutputModel("OUTPCM", outFlatten);
-		console.println(" - Model OUTPCM loaded");
-		
+
 		EcoreUtil.resolveAll(rs);
-		
+
 		/*
 		 * Load the transformation
 		 */
-		final ModuleResolver mr = new DefaultModuleResolver("platform:/plugin/es.uma.lcc.e-motions/transformations/", rs);
-		
+		final ModuleResolver mr = new DefaultModuleResolver("platform:/plugin/es.uma.lcc.e-motions/transformations/",
+				rs);
+
 		TimingData td = new TimingData();
 		env.loadModule(mr, "MM2FlattenMM");
-		console.println("Transformation MM2FlattenMM loaded");
-		
+
 		td.finishLoading();
 		env.run(td);
 		td.finish();
-		
-		/* 
+
+		/*
 		 * Save output model
 		 */
 		try {
 			outFlatten.getResource().save(Collections.emptyMap());
-			console.println(" - Ouptut flatten model saved");
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

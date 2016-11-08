@@ -1,7 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <site>
-   <feature url="features/es.uma.lcc.emotions_2.0.7.qualifier.jar" id="es.uma.lcc.emotions" version="2.0.7.qualifier">
-      <category name="e-Motions"/>
-   </feature>
    <category-def name="e-Motions" label="e-Motions Plug-in"/>
 </site>

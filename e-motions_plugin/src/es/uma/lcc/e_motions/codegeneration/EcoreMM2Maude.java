@@ -19,9 +19,9 @@ import org.eclipse.m2m.atl.core.launch.ILauncher;
 import org.eclipse.m2m.atl.engine.emfvm.launch.EMFVMLauncher;
 
 import es.uma.lcc.e_motions.common.FileManager;
-import es.uma.lcc.e_motions.common.PalladioRunningInformation;
 import es.uma.lcc.e_motions.common.Printer;
 import es.uma.lcc.e_motions.metamodels.Metamodels;
+import es.uma.lcc.e_motions.running_information.PalladioRunningInformation;
 import es.uma.lcc.e_motions.transformations.Transformations;
 
 /**
@@ -112,5 +112,55 @@ public class EcoreMM2Maude {
 		long endTime = System.currentTimeMillis();
 		DecimalFormat df = new DecimalFormat("#0.000");
 		_p.println("EcoreMM2Maude M2M transformation in " + df.format((endTime - startTime) / 1000.0) + " seconds.");
+	}
+	
+	public static void ecore2MaudePalladio(String metamodelString) throws ATLCoreException, IOException {
+		long startTime = System.currentTimeMillis();
+
+		/**
+		 * ATL transformation header:
+		 * 
+		 * create OUT : Maude from IN : Ecore;
+		 */
+		ModelFactory mF = new EMFModelFactory();
+		IInjector injector = new EMFInjector();
+		IExtractor extractor = new EMFExtractor();
+
+		/* Loading Ecore MM */
+		IReferenceModel ecoreMM = mF.newReferenceModel();
+		injector.inject(ecoreMM, "http://www.eclipse.org/emf/2002/Ecore");
+
+		/* Loading Maude Metamodel */
+		IReferenceModel maudeMM = mF.newReferenceModel();
+		injector.inject(maudeMM, Metamodels.class.getResource("Maude.ecore").openStream(),
+				new HashMap<String, Object>());
+
+		/* Loading Ecore model, i.e., the Metamodel of the system */
+		IModel mmModel = mF.newModel(ecoreMM);
+		injector.inject(mmModel, metamodelString);
+
+		/* Loading Maude Model */
+		IModel maudeModel = mF.newModel(maudeMM);
+
+		/* Run transformation */
+		ILauncher transformationLauncher = new EMFVMLauncher();
+
+		transformationLauncher.initialize(new HashMap<String, Object>());
+		transformationLauncher.addInModel(mmModel, "IN", "Ecore");
+		transformationLauncher.addOutModel(maudeModel, "OUT", "Maude");
+
+		Map<String, Object> options = new HashMap<String, Object>();
+
+		transformationLauncher.launch(ILauncher.RUN_MODE, null, options,
+				Transformations.class.getResourceAsStream("EcoreMM2Maude.asm"));
+
+		/* Extract resulting model */
+		PalladioRunningInformation info = PalladioRunningInformation.getDefault();
+		
+		String project = PalladioRunningInformation.getDefault().getBehaviorModel().getProject().getName();
+		String metamodelName = PalladioRunningInformation.getDefault().getMetamodel().getName();
+		String outFile = metamodelName.substring(0, metamodelName.indexOf(".")) + ".xmi";
+		info.setMetamodelMaude(new Path("platform:/resource/" + project + "/" + FileManager.TMP_FOLDER + "/" + outFile));
+		extractor.extract(maudeModel, info.getMetamodelMaude().toOSString());
 	}
 }

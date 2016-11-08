@@ -1,1 +1,4 @@
 [ ] Unify file managers and running informations.
+[ ] Create an update method in the PalladioLaunchConfiguration.
+[ ] Take out the metamodels from the Java source folder.
+[ ] Limit output folders to the workspace

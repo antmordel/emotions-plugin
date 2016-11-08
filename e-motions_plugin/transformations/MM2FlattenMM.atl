@@ -9,12 +9,12 @@ create OUTPCM : FlattenPCM from INUSAGEMODEL : PCM, INREPOSITORY : PCM, INSYSTEM
 rule FlattenDummyClass {
  from
   sourceClass : PCM!DummyClass
- to
+ to 
   targetClass : FlattenPCM!PCMpcmDummyClass
 }
 
 -- @extends FlattenRandomVariable
-rule FlattenPCMRandomVariable { 
+rule FlattenPCMRandomVariable {
  from
   sourceClass : PCM!PCMRandomVariable
  to
@@ -44,7 +44,6 @@ rule FlattenPCMRandomVariable {
   	if(not sourceClass.parametricResourceDemand_PCMRandomVariable.oclIsUndefined()){
   	  targetClass.parametricResourceDemand_PCMRandomVariable <- sourceClass.parametricResourceDemand_PCMRandomVariable.resolve();
   	}
-  	sourceClass.specification.debug('RandomVariable transformed');
   }
 }
 
@@ -237,14 +236,10 @@ rule FlattenProvidedDelegationConnector {
   sourceClass : PCM!ProvidedDelegationConnector
  to
   targetClass : FlattenPCM!PCMcompositionProvidedDelegationConnector (
-   --innerProvidedRole_ProvidedDelegationConnector <- sourceClass.innerProvidedRole_ProvidedDelegationConnector,
-   --outerProvidedRole_ProvidedDelegationConnector <- sourceClass.outerProvidedRole_ProvidedDelegationConnector,
+   innerProvidedRole_ProvidedDelegationConnector <- sourceClass.innerProvidedRole_ProvidedDelegationConnector,
+   outerProvidedRole_ProvidedDelegationConnector <- sourceClass.outerProvidedRole_ProvidedDelegationConnector,
    assemblyContext_ProvidedDelegationConnector <- sourceClass.assemblyContext_ProvidedDelegationConnector
   )
-  do {
-  	targetClass.innerProvidedRole_ProvidedDelegationConnector <- sourceClass.innerProvidedRole_ProvidedDelegationConnector.resolve();
-  	targetClass.outerProvidedRole_ProvidedDelegationConnector <- sourceClass.outerProvidedRole_ProvidedDelegationConnector.resolve();
-  }
 }
 
 -- @extends FlattenDelegationConnector
@@ -366,12 +361,9 @@ rule FlattenAssemblyContext {
  to
   targetClass : FlattenPCM!PCMcompositionAssemblyContext (
    parentStructure__AssemblyContext <- sourceClass.parentStructure__AssemblyContext,
-   --encapsulatedComponent__AssemblyContext <- sourceClass.encapsulatedComponent__AssemblyContext,
+   encapsulatedComponent__AssemblyContext <- sourceClass.encapsulatedComponent__AssemblyContext,
    configParameterUsages__AssemblyContext <- sourceClass.configParameterUsages__AssemblyContext
   )
-  do {
-  	targetClass.encapsulatedComponent__AssemblyContext <- sourceClass.encapsulatedComponent__AssemblyContext;
-  }
 }
 
 abstract rule FlattenWorkload {
@@ -428,16 +420,12 @@ rule FlattenEntryLevelSystemCall {
   sourceClass : PCM!EntryLevelSystemCall
  to
   targetClass : FlattenPCM!PCMusagemodelEntryLevelSystemCall (
-   --providedRole_EntryLevelSystemCall <- sourceClass.providedRole_EntryLevelSystemCall,
-   --operationSignature__EntryLevelSystemCall <- sourceClass.operationSignature__EntryLevelSystemCall,
+   providedRole_EntryLevelSystemCall <- sourceClass.providedRole_EntryLevelSystemCall,
+   operationSignature__EntryLevelSystemCall <- sourceClass.operationSignature__EntryLevelSystemCall,
    outputParameterUsages_EntryLevelSystemCall <- sourceClass.outputParameterUsages_EntryLevelSystemCall,
    inputParameterUsages_EntryLevelSystemCall <- sourceClass.inputParameterUsages_EntryLevelSystemCall,
    priority <- sourceClass.priority
   )
-  do {
-  	targetClass.providedRole_EntryLevelSystemCall <- sourceClass.providedRole_EntryLevelSystemCall.resolve();
-  	targetClass.operationSignature__EntryLevelSystemCall <- sourceClass.operationSignature__EntryLevelSystemCall.resolve();
-  }
 }
 
 -- @extends FlattenEntity
@@ -812,11 +800,8 @@ rule FlattenOperationProvidedRole {
   sourceClass : PCM!OperationProvidedRole
  to
   targetClass : FlattenPCM!PCMrepositoryOperationProvidedRole (
-   --providedInterface__OperationProvidedRole <- sourceClass.providedInterface__OperationProvidedRole
+   providedInterface__OperationProvidedRole <- sourceClass.providedInterface__OperationProvidedRole
   )
-  do {
-	targetClass.providedInterface__OperationProvidedRole <- sourceClass.providedInterface__OperationProvidedRole.resolve();	
-  }
 }
 
 -- @extends FlattenProvidedRole
@@ -1432,17 +1417,14 @@ rule FlattenParametricResourceDemand {
   sourceClass : PCM!ParametricResourceDemand
  to
   targetClass : FlattenPCM!PCMseff_performanceParametricResourceDemand (
-   --requiredResource_ParametricResourceDemand <- sourceClass.requiredResource_ParametricResourceDemand,
-   --action_ParametricResourceDemand <- sourceClass.action_ParametricResourceDemand
+   requiredResource_ParametricResourceDemand <- sourceClass.requiredResource_ParametricResourceDemand,
+   action_ParametricResourceDemand <- sourceClass.action_ParametricResourceDemand
    --specification_ParametericResourceDemand <- thisModule.FlattenPCMRandomVariableLazy(sourceClass.specification_ParametericResourceDemand)
    --specification_ParametericResourceDemand <- sourceClass.specification_ParametericResourceDemand
   )
   do {
-  	sourceClass.specification_ParametericResourceDemand.specification.debug('RandomVariable');
    	--targetClass.specification_ParametericResourceDemand <- thisModule.resolveTemp(sourceClass.specification_ParametericResourceDemand, 'targetClass');
    	targetClass.specification_ParametericResourceDemand <- sourceClass.specification_ParametericResourceDemand.resolve();
-   	--targetClass.requiredResource_ParametricResourceDemand <- sourceClass.requiredResource_ParametricResourceDemand.resolve();
-   	sourceClass.requiredResource_ParametricResourceDemand.debug();
   }
 }
 
@@ -1609,15 +1591,13 @@ rule FlattenProcessingResourceSpecification {
    MTTR <- sourceClass.MTTR,
    MTTF <- sourceClass.MTTF,
    requiredByContainer <- sourceClass.requiredByContainer,
-   --schedulingPolicy <- sourceClass.schedulingPolicy,
-   --activeResourceType_ActiveResourceSpecification <- sourceClass.activeResourceType_ActiveResourceSpecification,
+   schedulingPolicy <- sourceClass.schedulingPolicy,
+   activeResourceType_ActiveResourceSpecification <- sourceClass.activeResourceType_ActiveResourceSpecification,
    numberOfReplicas <- sourceClass.numberOfReplicas
   )
   do {
   	targetClass.processingRate_ProcessingResourceSpecification <- sourceClass.processingRate_ProcessingResourceSpecification.resolve();
   	targetClass.resourceContainer_ProcessingResourceSpecification <- sourceClass.resourceContainer_ProcessingResourceSpecification.resolve();
-  	targetClass.schedulingPolicy <- sourceClass.schedulingPolicy.resolve();
-  	targetClass.activeResourceType_ActiveResourceSpecification <- sourceClass.activeResourceType_ActiveResourceSpecification.resolve();
   }
 }
 
@@ -1641,15 +1621,11 @@ rule FlattenAllocationContext {
   sourceClass : PCM!AllocationContext
  to
   targetClass : FlattenPCM!PCMallocationAllocationContext (
-   --resourceContainer_AllocationContext <- sourceClass.resourceContainer_AllocationContext,
-   --assemblyContext_AllocationContext <- sourceClass.assemblyContext_AllocationContext,
+   resourceContainer_AllocationContext <- sourceClass.resourceContainer_AllocationContext,
+   assemblyContext_AllocationContext <- sourceClass.assemblyContext_AllocationContext,
    allocation_AllocationContext <- sourceClass.allocation_AllocationContext,
    eventChannel__AllocationContext <- sourceClass.eventChannel__AllocationContext
   )
-  do {
-  	targetClass.resourceContainer_AllocationContext <- sourceClass.resourceContainer_AllocationContext.resolve();
-  	targetClass.assemblyContext_AllocationContext <- sourceClass.assemblyContext_AllocationContext.resolve();
-  }
 }
 
 -- @extends FlattenEntity
@@ -1658,14 +1634,10 @@ rule FlattenAllocation {
   sourceClass : PCM!Allocation
  to
   targetClass : FlattenPCM!PCMallocationAllocation (
-   --targetResourceEnvironment_Allocation <- sourceClass.targetResourceEnvironment_Allocation,
-   --system_Allocation <- sourceClass.system_Allocation,
+   targetResourceEnvironment_Allocation <- sourceClass.targetResourceEnvironment_Allocation,
+   system_Allocation <- sourceClass.system_Allocation,
    allocationContexts_Allocation <- sourceClass.allocationContexts_Allocation
   )
-  do {
-  	targetClass.targetResourceEnvironment_Allocation <- sourceClass.targetResourceEnvironment_Allocation.resolve();
-  	targetClass.system_Allocation <- sourceClass.system_Allocation.resolve();
-  }
 }
 
 -- @extends FlattenComposedProvidingRequiringEntity, FlattenRepositoryComponent

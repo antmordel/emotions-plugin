@@ -331,12 +331,12 @@ public class FileManager {
 	
 	public String extractBehaviorModuleName() throws IOException {
 		BufferedReader br = null;
-    try {
-    	behaviorCode.refreshLocal(IResource.DEPTH_INFINITE, null);
-	    br = new BufferedReader(new InputStreamReader(behaviorCode.getContents()));
-    } catch (CoreException e) {
-	    e.printStackTrace();
-    }
+		try {
+			behaviorCode.refreshLocal(IResource.DEPTH_INFINITE, null);
+			br = new BufferedReader(new InputStreamReader(behaviorCode.getContents()));
+		} catch (CoreException e) {
+			e.printStackTrace();
+		}
 		String line = br.readLine();
 		while (!line.startsWith("mod ")) {
 			line = br.readLine();
