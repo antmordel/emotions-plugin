@@ -9,7 +9,7 @@ An extensive tutorial and information with a vast range of examples can be found
 Please, note that this is an alpha version. Report issues on this project by email to [amoreno@lcc.uma.es](mailto:amoreno@lcc.uma.es). Please, add enough information to reproduce the problem.
 
 # How to install e-Motions?
-In any Eclipse Modelling:
+In any Eclipse for Modelling (Eclipse Modelling Tools):
 
 1. Install ATL
     http://download.eclipse.org/mmt/atl/updates/releases/3.6/
