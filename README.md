@@ -11,14 +11,17 @@ Please, note that this is an alpha version. Report issues on this project by ema
 # How to install e-Motions?
 In any Eclipse for Modelling (Eclipse Modelling Tools):
 
-1. Install ATL
-    http://download.eclipse.org/mmt/atl/updates/releases/3.6/
+1. Download a Eclipse Modelling as the following:
+    https://www.eclipse.org/downloads/packages/eclipse-modeling-tools/neon1a
 
-2. Install Xtend
+2. Install ATL
+    http://download.eclipse.org/mmt/atl/updates/releases/3.7/
+
+3. Install Xtend
     http://download.eclipse.org/modeling/tmf/xtext/updates/composite/releases/ 
     * Only XTend IDE (under Xtend category) is needed.
 
-3. Install e-Motions 
+4. Install e-Motions 
     http://lcc.uma.es/~amoreno/e-motions/
 
 # Changelog
