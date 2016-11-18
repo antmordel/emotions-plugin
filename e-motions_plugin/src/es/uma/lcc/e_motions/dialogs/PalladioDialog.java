@@ -36,11 +36,10 @@ import es.uma.lcc.e_motions.running_information.PalladioRunningInformation;
  * @author Antonio Moreno-Delgado <amoreno@lcc.uma.es>
  *
  */
-public class PalladioDialog extends Dialog {
+public class PalladioDialog extends EmotionsDialog {
 	
 	private Shell shell;
-	private Text textBehavior;
-	private Text textMetamodel;
+	
 	private Text textUsageModel;
 	private Text textRepositoryModel;
 	private Text textSystemModel;
@@ -66,81 +65,6 @@ public class PalladioDialog extends Dialog {
     protected Point getInitialSize() {
     	return new Point(600, 750);
     }
-	
-	private void createEmotionsFilesGroup(Composite composite) {
-		Group groupEmotionsFiles = new Group(composite, SWT.NONE);
-		groupEmotionsFiles.setFont(SWTResourceManager.getFont("Segoe UI", 12, SWT.NORMAL));
-		groupEmotionsFiles.setText("e-Motions files");
-		groupEmotionsFiles.setBounds(20, 34, 560, 130);
-		
-		Label lblEmotionsBehavior = new Label(groupEmotionsFiles, SWT.NONE);
-		lblEmotionsBehavior.setBounds(20, 40, 126, 15);
-		lblEmotionsBehavior.setText("e-Motions behavior:");
-		
-		textBehavior = new Text(groupEmotionsFiles, SWT.BORDER);
-		textBehavior.setBounds(143, 37, 300, 25);
-		textBehavior.setEditable(false);
-		if (info.getBehaviorModel() != null) {
-			textBehavior.setText(info.getBehaviorModel().getFullPath().toOSString());
-		}
-		
-		Button btnBehModel = new Button(groupEmotionsFiles, SWT.NONE);
-		btnBehModel.setBounds(449, 35, 80, 25);
-		btnBehModel.setText("Browse");
-		btnBehModel.addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(SelectionEvent e) {
-				ElementTreeSelectionDialog dialog = new ElementTreeSelectionDialog(shell, new WorkbenchLabelProvider(),
-						new BaseWorkbenchContentProvider());
-				dialog.setTitle("e-Motions behavior model");
-				dialog.setMessage("Select *.behavior file");
-				dialog.setInput(ResourcesPlugin.getWorkspace());
-				dialog.addFilter(new FilePatternFilter("behavior"));
-				dialog.open();
-				
-				IFile resultBehavior = (IFile) dialog.getResult()[0];
-				if (dialog.getReturnCode() == Window.OK) {
-					textBehavior.setText(resultBehavior.getFullPath().toOSString());
-					info.setBehaviorModel(resultBehavior);
-					checkIfCompleted();
-				}
-			} 
-		});
-		
-		Label lblMetamodel = new Label(groupEmotionsFiles, SWT.NONE);
-		lblMetamodel.setBounds(67, 78, 70, 15);
-		lblMetamodel.setText("Metamodel:");
-
-		textMetamodel = new Text(groupEmotionsFiles, SWT.BORDER);
-		textMetamodel.setBounds(143, 75, 300, 21);
-		textMetamodel.setEditable(false);
-		if (info.getMetamodel() != null) {
-			textMetamodel.setText(info.getMetamodel().getFullPath().toOSString());
-		}
-		
-		Button btnMetamodel = new Button(groupEmotionsFiles, SWT.NONE);
-		btnMetamodel.setBounds(449, 73, 80, 25);
-		btnMetamodel.setText("Browse");
-		btnMetamodel.addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(SelectionEvent e) {
-				ElementTreeSelectionDialog dialog = new ElementTreeSelectionDialog(shell, new WorkbenchLabelProvider(),
-						new BaseWorkbenchContentProvider());
-				dialog.setTitle("Metamodel");
-				dialog.setMessage("Select *.ecore file");
-				dialog.setInput(ResourcesPlugin.getWorkspace());
-				dialog.addFilter(new FilePatternFilter("ecore"));
-				dialog.open();
-				
-				IFile resultMetamodel = (IFile) dialog.getResult()[0];
-				if (dialog.getReturnCode() == Window.OK) {
-					textMetamodel.setText(resultMetamodel.getFullPath().toOSString());
-					info.setMetamodel(resultMetamodel);
-					checkIfCompleted();
-				}
-			} 
-		});
-	}
 	
 	private void createPalladioFilesGroup(Composite composite) {
 		Group grpPalladioFiles = new Group(composite, SWT.NONE);

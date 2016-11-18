@@ -10,6 +10,7 @@ import org.eclipse.jface.viewers.ViewerFilter;
 import org.eclipse.jface.window.Window;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Color;
+import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.RGB;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -27,33 +28,35 @@ import org.eclipse.ui.model.WorkbenchLabelProvider;
 
 import es.uma.lcc.e_motions.common.ExecutionData;
 import es.uma.lcc.e_motions.common.FileManager;
+import es.uma.lcc.e_motions.runningdata.CodGenerationFileManager;
 
 
-public class MaudeCodeDialog extends Dialog {
-	protected IAdaptable input;
-	private Shell shell;
+public class CodGenerationDialog extends EmotionsDialog {
+	
 	protected static Text textnombremodelo2, textnombremodelo, textAdditionalModels;
 	protected static Button mod2urlbutton, mod2uributton, mmod3uributton, clearAddMM, clearInitMM;
 	protected static boolean issetEcoreMM = false;
 	static Label UMLWarningLabel;
 	static Text textnombremmodelo3;
 
-	public MaudeCodeDialog(Shell parentShell) {
-		super(parentShell);
-		shell = parentShell;
-		//configureShell(shell);
+	public CodGenerationDialog(Shell parentShell, CodGenerationFileManager fm) {
+		super(parentShell, fm);
 	}
 
 	protected void configureShell(Shell newShell) {
 		super.configureShell(newShell);
-		newShell.setText("Maude Infrastructure Code Generation");
+		newShell.setText("Maude Infrastructure Code generation");
 	}
+	
+	@Override
+	protected Point getInitialSize() {
+    	return new Point(600, 400);
+    }
 
 	protected Control createDialogArea(Composite parent) {
-		
-		final FileManager _fm = FileManager.getDefault();
 		Composite composite = (Composite) super.createDialogArea(parent);
-
+		composite.setLayout(null);
+		
 		GridLayout layout = new GridLayout();
 		layout.numColumns = 5;
 		composite.setLayout(layout);
