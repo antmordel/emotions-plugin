@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <feature
-      id="es.uma.lcc.e-motions"
+      id="es.uma.lcc.e-motions.feature"
       label="e-Motions Plug-in"
-      version="2.1.0.qualifier"
+      version="2.2.0.qualifier"
       provider-name="Atenea"
       plugin="es.uma.lcc.emotions">
 
@@ -72,16 +72,22 @@ You should have received a copy of the GNU General Public License along with e-M
       <import plugin="lpg.runtime.java" version="2.0.17" match="compatible"/>
       <import plugin="org.eclipse.ocl.common" version="1.0.0" match="compatible"/>
       <import plugin="org.eclipse.ocl" version="3.0.0" match="compatible"/>
+      <import plugin="org.eclipse.ui" version="3.5.0" match="compatible"/>
+      <import plugin="org.eclipse.jface.text" version="3.5.0" match="compatible"/>
+      <import plugin="org.eclipse.ui.workbench.texteditor" version="3.5.0" match="compatible"/>
+      <import plugin="org.eclipse.core.runtime" version="3.11.0" match="compatible"/>
+      <import plugin="org.eclipse.core.expressions" version="3.4.0" match="compatible"/>
+      <import plugin="org.eclipse.core.variables" version="3.2.800" match="compatible"/>
       <import plugin="org.eclipse.ui" version="3.105.0" match="greaterOrEqual"/>
       <import plugin="org.eclipse.core.resources" version="3.8.101" match="greaterOrEqual"/>
       <import plugin="org.eclipse.jface.text" version="3.8.101" match="greaterOrEqual"/>
-      <import plugin="org.eclipse.m2m.atl.engine.emfvm" version="3.6.0" match="greaterOrEqual"/>
-      <import plugin="org.eclipse.m2m.atl.engine" version="3.6.0" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.m2m.atl.engine.emfvm" version="3.7.0" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.m2m.atl.engine" version="3.7.0" match="greaterOrEqual"/>
       <import plugin="org.eclipse.xtend.lib" version="2.9.2" match="greaterOrEqual"/>
       <import plugin="org.eclipse.m2m.atl.emftvm" version="3.7.0" match="greaterOrEqual"/>
-      <import plugin="org.eclipse.ui.console" version="3.6.200" match="greaterOrEqual"/>
       <import plugin="Behavior" version="1.0.0" match="greaterOrEqual"/>
       <import plugin="es.uma.lcc.maude_mm" version="1.0.0" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.ui.console" version="3.6.200" match="greaterOrEqual"/>
    </requires>
 
    <plugin
@@ -176,10 +182,24 @@ You should have received a copy of the GNU General Public License along with e-M
          unpack="false"/>
 
    <plugin
-         id="es.uma.lcc.e-motions"
+         id="org.eclipse.ui.console"
          download-size="0"
          install-size="0"
-         version="2.1.0.qualifier"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="es.uma.lcc.e-motions.plugin"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="Rule.diagram"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
          unpack="false"/>
 
 </feature>
