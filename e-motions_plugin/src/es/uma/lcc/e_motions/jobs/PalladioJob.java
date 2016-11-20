@@ -27,7 +27,7 @@ import es.uma.lcc.e_motions.common.FileManager;
 import es.uma.lcc.e_motions.console.EmotionsConsole;
 import es.uma.lcc.e_motions.maudeprocess.MaudeProcess;
 import es.uma.lcc.e_motions.maudeprocess.exceptions.MaudelingException;
-import es.uma.lcc.e_motions.running_information.PalladioRunningInformation;
+import es.uma.lcc.e_motions.runningdata.PalladioRunningInformation;
 
 /**
  * This class implements the flattening transformation for Palladio.

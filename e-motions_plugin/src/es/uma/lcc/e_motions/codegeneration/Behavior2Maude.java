@@ -27,7 +27,7 @@ import es.uma.lcc.e_motions.common.Printer;
 import es.uma.lcc.e_motions.console.EmotionsConsole;
 import es.uma.lcc.e_motions.maudeprocess.exceptions.MaudelingException;
 import es.uma.lcc.e_motions.metamodels.Metamodels;
-import es.uma.lcc.e_motions.running_information.PalladioRunningInformation;
+import es.uma.lcc.e_motions.runningdata.PalladioRunningInformation;
 import es.uma.lcc.e_motions.transformations.Transformations;
 
 /**

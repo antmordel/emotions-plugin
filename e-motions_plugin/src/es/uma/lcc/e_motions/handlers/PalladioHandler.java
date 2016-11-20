@@ -13,32 +13,34 @@ import es.uma.lcc.e_motions.common.PalladioLaunchConfiguration;
 import es.uma.lcc.e_motions.console.EmotionsConsole;
 import es.uma.lcc.e_motions.dialogs.PalladioDialog;
 import es.uma.lcc.e_motions.jobs.PalladioJob;
+import es.uma.lcc.e_motions.runningdata.PalladioFileManager;
 
 public class PalladioHandler extends AbstractHandler {
 
 	@Override
 	public Object execute(ExecutionEvent event) throws ExecutionException {
-		Dialog palladioDialog;
-		
+		PalladioDialog dialog;
 		IWorkbenchWindow window = HandlerUtil.getActiveWorkbenchWindowChecked(event);
+		PalladioFileManager fm = new PalladioFileManager();
+//		PalladioLaunchConfiguration launch = new PalladioLaunchConfiguration();
+//		launch.read();
+//		
 		
-		PalladioLaunchConfiguration launch = new PalladioLaunchConfiguration();
-		launch.read();
 		
-		palladioDialog = new PalladioDialog(window.getShell());
-        int exitCode = palladioDialog.open();
-        
-        if (exitCode == Window.OK) {
-        	EmotionsConsole.getDefault().setVisible().clean();
-        	
-        	/* save the new configuration */
-        	launch = new PalladioLaunchConfiguration();
-        	launch.save();
-        	
-        	Job palladioJob = new PalladioJob("Creating Palladio infrastructure");
-        	palladioJob.setPriority(Job.SHORT);
-        	palladioJob.schedule(); // start as soon as possible
-        }
+		dialog = new PalladioDialog(window.getShell(), fm);
+        int exitCode = dialog.open();
+//        
+//        if (exitCode == Window.OK) {
+//        	EmotionsConsole.getDefault().setVisible().clean();
+//        	
+//        	/* save the new configuration */
+//        	launch = new PalladioLaunchConfiguration();
+//        	launch.save();
+//        	
+//        	Job palladioJob = new PalladioJob("Creating Palladio infrastructure");
+//        	palladioJob.setPriority(Job.SHORT);
+//        	palladioJob.schedule(); // start as soon as possible
+//        }
         
 		return null;
 	}

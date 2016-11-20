@@ -27,7 +27,7 @@ import org.eclipse.m2m.atl.emftvm.util.ModuleResolver;
 import org.eclipse.m2m.atl.emftvm.util.TimingData;
 
 import es.uma.lcc.e_motions.metamodels.Metamodels;
-import es.uma.lcc.e_motions.running_information.PalladioRunningInformation;
+import es.uma.lcc.e_motions.runningdata.PalladioRunningInformation;
 
 public class PalladioFlattenInputModel {
 

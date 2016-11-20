@@ -42,7 +42,7 @@ import org.eclipse.m2m.atl.engine.parser.AtlParser;
 import es.uma.lcc.e_motions.common.FileManager;
 import es.uma.lcc.e_motions.common.Printer;
 import es.uma.lcc.e_motions.metamodels.Metamodels;
-import es.uma.lcc.e_motions.running_information.PalladioRunningInformation;
+import es.uma.lcc.e_motions.runningdata.PalladioRunningInformation;
 
 public class OclBehaviorParser {
 

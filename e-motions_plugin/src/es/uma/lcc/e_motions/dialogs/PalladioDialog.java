@@ -3,7 +3,6 @@ package es.uma.lcc.e_motions.dialogs;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.ResourcesPlugin;
-import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.window.Window;
 import org.eclipse.swt.SWT;
@@ -29,7 +28,8 @@ import org.eclipse.ui.model.BaseWorkbenchContentProvider;
 import org.eclipse.ui.model.WorkbenchLabelProvider;
 import org.eclipse.wb.swt.SWTResourceManager;
 
-import es.uma.lcc.e_motions.running_information.PalladioRunningInformation;
+import es.uma.lcc.e_motions.runningdata.PalladioFileManager;
+import es.uma.lcc.e_motions.runningdata.PalladioRunningInformation;
 
 /**
  * 
@@ -45,17 +45,16 @@ public class PalladioDialog extends EmotionsDialog {
 	private Text textSystemModel;
 	private Text textAllocationModel;
 	private Text textResourceEnvModel;
-	private Text textTimeLimit;
-	private Text textOutputFolder;
+	
 	
 	private PalladioRunningInformation info;
 
-	public PalladioDialog(Shell parentShell) {
-		super(parentShell);
-		shell = parentShell;
+	public PalladioDialog(Shell parentShell, PalladioFileManager fm) {
+		super(parentShell, fm);
 		info = PalladioRunningInformation.getDefault();
+		shell = parentShell;
 	}
-	
+
 	protected void configureShell(Shell newShell) {
 		super.configureShell(newShell);
 		newShell.setText("Palladio into e-Motions code generation");
@@ -244,103 +243,6 @@ public class PalladioDialog extends EmotionsDialog {
 		});
 	}
 	
-	private void createSimulationGroup(Composite composite) {
-		Group grpSimulationOptions = new Group(composite, SWT.NONE);
-		grpSimulationOptions.setFont(SWTResourceManager.getFont("Segoe UI", 12, SWT.NORMAL));
-		grpSimulationOptions.setText("Simulation options");
-		grpSimulationOptions.setBounds(20, 420, 560, 110);
-		
-		Label lblSystemTimeLimit = new Label(grpSimulationOptions, SWT.NONE);
-		lblSystemTimeLimit.setBounds(39, 32, 103, 15);
-		lblSystemTimeLimit.setText("System time limit:");
-		
-		Label lblemptyForInfinite = new Label(grpSimulationOptions, SWT.NONE);
-		lblemptyForInfinite.setFont(SWTResourceManager.getFont("Segoe UI", 7, SWT.NORMAL));
-		lblemptyForInfinite.setBounds(39, 50, 77, 15);
-		lblemptyForInfinite.setText("(empty for infinite)");
-		
-		textTimeLimit = new Text(grpSimulationOptions, SWT.BORDER);
-		textTimeLimit.setBounds(143, 28, 76, 21);
-		textTimeLimit.addModifyListener(new ModifyListener() {
-			
-			@Override
-			public void modifyText(ModifyEvent e) {
-				try {
-					info.setLimitTime(Integer.parseInt(textTimeLimit.getText()));
-				} catch (NumberFormatException nfe) {}
-			}
-		});
-		
-		final Button btnPrintAppliedMtes = new Button(grpSimulationOptions, SWT.CHECK);
-		btnPrintAppliedMtes.setBounds(321, 50, 200, 16);
-		btnPrintAppliedMtes.setText("Print applied mte's and rules");
-		btnPrintAppliedMtes.setSelection(info.isAppliedRules());
-		btnPrintAppliedMtes.addSelectionListener(new SelectionAdapter()	{
-			@Override
-		    public void widgetSelected(SelectionEvent e) {
-				info.setAppliedRules(btnPrintAppliedMtes.getSelection());
-		    }
-		});
-		
-		final Button btnShowAdvisories = new Button(grpSimulationOptions, SWT.CHECK);
-		btnShowAdvisories.setBounds(321, 69, 165, 16);
-		btnShowAdvisories.setSelection(info.isShowAdvisories());
-		btnShowAdvisories.setText("Show Maude advisories");
-		btnShowAdvisories.addSelectionListener(new SelectionAdapter()	{
-			@Override
-		    public void widgetSelected(SelectionEvent e) {
-				info.setShowAdvisories(btnShowAdvisories.getSelection());
-		    }
-		});
-		
-		Label lblAdvancedOptions = new Label(grpSimulationOptions, SWT.NONE);
-		lblAdvancedOptions.setBounds(321, 20, 103, 15);
-		lblAdvancedOptions.setText("Advanced options");
-		
-		Label lblSeparatorAdvanced = new Label(grpSimulationOptions, SWT.SEPARATOR | SWT.HORIZONTAL);
-		lblSeparatorAdvanced.setBounds(321, 40, 100, 2);
-	}
-	
-	private void createOutputGroup(Composite composite) {
-		Group grpOutputOptions = new Group(composite, SWT.NONE);
-		grpOutputOptions.setFont(SWTResourceManager.getFont("Segoe UI", 12, SWT.NORMAL));
-		grpOutputOptions.setText("Output options");
-		grpOutputOptions.setBounds(20, 540, 560, 110);
-		
-		Label lblOutputFolder = new Label(grpOutputOptions, SWT.NONE);
-		lblOutputFolder.setBounds(35, 42, 82, 15);
-		lblOutputFolder.setText("Output folder:");
-		
-		textOutputFolder = new Text(grpOutputOptions, SWT.BORDER);
-		textOutputFolder.setBounds(143, 36, 300, 25);
-		if (info.getFolderOutputString() != null) {
-			textOutputFolder.setText(info.getFolderOutputString());
-		}
-		textOutputFolder.addListener(SWT.Modify, new Listener() {
-			public void handleEvent(Event event) {
-				info.setFolderOutputString(textOutputFolder.getText());
-			}
-		});
-		
-		Button btnOutputFolder = new Button(grpOutputOptions, SWT.NONE);
-		btnOutputFolder.setBounds(449, 36, 80, 25);
-		btnOutputFolder.setText("Browse");
-		btnOutputFolder.setEnabled(false);
-		btnOutputFolder.addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(SelectionEvent e) {
-				DirectoryDialog dialog = new DirectoryDialog(shell);
-				dialog.setFilterPath(ResourcesPlugin.getWorkspace().getRoot().getLocation().toString());
-				String resultingDir = dialog.open();
-				if (resultingDir != null) {
-					textOutputFolder.setText(resultingDir);
-					info.setFolderOutputString(resultingDir);
-				}
-				checkIfCompleted();
-			}
-		});
-	}
-	
 	@Override
 	protected Control createDialogArea(Composite parent) {
 		Composite composite = (Composite) super.createDialogArea(parent);
@@ -348,7 +250,7 @@ public class PalladioDialog extends EmotionsDialog {
 		
 		createEmotionsFilesGroup(composite);
 		createPalladioFilesGroup(composite);
-		createSimulationGroup(composite);
+		createSimulationGroup(composite, 420);
 		createOutputGroup(composite);
 				
 		return composite;
@@ -370,8 +272,7 @@ public class PalladioDialog extends EmotionsDialog {
 				checkIfCompleted(textRepositoryModel) &&
 				checkIfCompleted(textSystemModel) &&
 				checkIfCompleted(textAllocationModel) &&
-				checkIfCompleted(textResourceEnvModel) &&
-				checkIfCompleted(textOutputFolder);
+				checkIfCompleted(textResourceEnvModel);
 		btnOk.setEnabled(completed);
 	}
 	

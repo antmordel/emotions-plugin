@@ -5,7 +5,7 @@ import org.eclipse.core.resources.IFile;
 import es.uma.lcc.e_motions.common.ExecutionData;
 import es.uma.lcc.e_motions.common.FileManager;
 import es.uma.lcc.e_motions.common.Printer;
-import es.uma.lcc.e_motions.running_information.PalladioRunningInformation;
+import es.uma.lcc.e_motions.runningdata.PalladioRunningInformation;
 
 /**
  * @copyright Antonio Moreno-Delgado <i>amoreno@lcc.uma.es</i>

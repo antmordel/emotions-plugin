@@ -12,6 +12,10 @@ public abstract class FileManager {
 	protected IFile behaviorModel;
 	protected IFile metamodel;
 	
+	private int limitTime;
+
+	private boolean appliedRules;
+	private boolean showAdvisories;
 	
 	public IFile getBehaviorModel() {
 		return behaviorModel;
@@ -26,4 +30,27 @@ public abstract class FileManager {
 		this.metamodel = metamodel;
 	}
 	
+	public int getLimitTime() {
+		return limitTime;
+	}
+
+	public void setLimitTime(int limitTime) {
+		this.limitTime = limitTime;
+	}
+
+	public boolean isAppliedRules() {
+		return appliedRules;
+	}
+
+	public void setAppliedRules(boolean appliedRules) {
+		this.appliedRules = appliedRules;
+	}
+
+	public boolean isShowAdvisories() {
+		return showAdvisories;
+	}
+
+	public void setShowAdvisories(boolean showAdvisories) {
+		this.showAdvisories = showAdvisories;
+	}
 }

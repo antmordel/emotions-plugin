@@ -1,4 +1,4 @@
-package es.uma.lcc.e_motions.running_information;
+package es.uma.lcc.e_motions.runningdata;
 
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;

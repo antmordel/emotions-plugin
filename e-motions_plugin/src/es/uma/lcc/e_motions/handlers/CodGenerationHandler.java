@@ -20,13 +20,13 @@ public class CodGenerationHandler extends AbstractHandler {
 	
 	public Object execute(ExecutionEvent event) throws ExecutionException {
 		
-		Dialog codGenerationDialog;
+		CodGenerationDialog dialog;
 		CodGenerationFileManager fm = new CodGenerationFileManager();
 		IWorkbenchWindow window = HandlerUtil.getActiveWorkbenchWindowChecked(event);
 		
-		codGenerationDialog = new CodGenerationDialog(window.getShell(), fm);
+		dialog = new CodGenerationDialog(window.getShell(), fm);
         
-		int exitCode = codGenerationDialog.open();
+		int exitCode = dialog.open();
                      
 		return null;
 	}
