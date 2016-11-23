@@ -12,7 +12,6 @@ import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.DirectoryDialog;
-import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
@@ -134,21 +133,39 @@ public class EmotionsDialog extends Dialog {
 		lblSystemTimeLimit.setBounds(39, 32, 103, 15);
 		lblSystemTimeLimit.setText("System time limit:");
 		
-		Label lblemptyForInfinite = new Label(grpSimulationOptions, SWT.NONE);
-		lblemptyForInfinite.setFont(SWTResourceManager.getFont("Segoe UI", 7, SWT.NORMAL));
-		lblemptyForInfinite.setBounds(39, 50, 77, 15);
-		lblemptyForInfinite.setText("(empty for infinite)");
+//		Label lblemptyForInfinite = new Label(grpSimulationOptions, SWT.NONE);
+//		lblemptyForInfinite.setFont(SWTResourceManager.getFont("Segoe UI", 7, SWT.NORMAL));
+//		lblemptyForInfinite.setBounds(39, 50, 77, 15);
+//		lblemptyForInfinite.setText("(empty for infinite)");
 		
 		textTimeLimit = new Text(grpSimulationOptions, SWT.BORDER);
 		textTimeLimit.setBounds(143, 28, 76, 21);
+		textTimeLimit.setText(String.valueOf(fm.getLimitTime()));
 		textTimeLimit.addModifyListener(new ModifyListener() {
-			
 			@Override
 			public void modifyText(ModifyEvent e) {
 				try {
 					fm.setLimitTime(Integer.parseInt(textTimeLimit.getText()));
 				} catch (NumberFormatException nfe) {}
 			}
+		});
+		
+		final Button btnInfiniteSimulation = new Button(grpSimulationOptions, SWT.CHECK);
+		btnInfiniteSimulation.setBounds(143, 55, 100, 16);
+		btnInfiniteSimulation.setFont(SWTResourceManager.getFont("Segoe UI", 7, SWT.NORMAL));
+		btnInfiniteSimulation.setText("Infinite simulation");
+		btnInfiniteSimulation.setSelection(fm.isInfiniteLimitTime());
+		btnInfiniteSimulation.addSelectionListener(new SelectionAdapter()	{
+			@Override
+		    public void widgetSelected(SelectionEvent e) {
+				fm.setInfiniteLimitTime(btnInfiniteSimulation.getSelection());
+				textTimeLimit.setEnabled(!fm.isInfiniteLimitTime());
+				if (fm.isInfiniteLimitTime()) {
+					textTimeLimit.setText("");
+				} else {
+					textTimeLimit.setText(String.valueOf(fm.getLimitTime()));
+				}
+		    }
 		});
 		
 		final Button btnPrintAppliedMtes = new Button(grpSimulationOptions, SWT.CHECK);
@@ -181,11 +198,11 @@ public class EmotionsDialog extends Dialog {
 		lblSeparatorAdvanced.setBounds(321, 40, 100, 2);
 	}
 	
-	protected void createOutputGroup(Composite composite) {
+	protected void createOutputGroup(Composite composite, int offset) {
 		Group grpOutputOptions = new Group(composite, SWT.NONE);
 		grpOutputOptions.setFont(SWTResourceManager.getFont("Segoe UI", 12, SWT.NORMAL));
 		grpOutputOptions.setText("Output options");
-		grpOutputOptions.setBounds(20, 540, 560, 110);
+		grpOutputOptions.setBounds(20, offset, 560, 90);
 		
 		Label lblOutputFolder = new Label(grpOutputOptions, SWT.NONE);
 		lblOutputFolder.setBounds(35, 42, 82, 15);
@@ -193,14 +210,11 @@ public class EmotionsDialog extends Dialog {
 		
 		textOutputFolder = new Text(grpOutputOptions, SWT.BORDER);
 		textOutputFolder.setBounds(143, 36, 300, 25);
-//		if (fm.getFolderOutputString() != null) {
-//			textOutputFolder.setText(fm.getFolderOutputString());
-//		}
-//		textOutputFolder.addListener(SWT.Modify, new Listener() {
-//			public void handleEvent(Event event) {
-//				fm.setFolderOutputString(textOutputFolder.getText());
-//			}
-//		});
+		textOutputFolder.setEditable(false);
+		if (fm.getFolderOutputPathString() != null) {
+			textOutputFolder.setText(fm.getFolderOutputPathString());
+		}
+		
 		
 		Button btnOutputFolder = new Button(grpOutputOptions, SWT.NONE);
 		btnOutputFolder.setBounds(449, 36, 80, 25);
@@ -214,7 +228,7 @@ public class EmotionsDialog extends Dialog {
 				String resultingDir = dialog.open();
 				if (resultingDir != null) {
 					textOutputFolder.setText(resultingDir);
-//					fm.setFolderOutputString(resultingDir);
+					fm.setFolderOutputPathString(textOutputFolder.getText());
 				}
 				// TODO checkIfCompleted();
 			}

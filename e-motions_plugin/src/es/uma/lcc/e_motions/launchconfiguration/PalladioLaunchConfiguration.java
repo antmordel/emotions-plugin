@@ -1,4 +1,4 @@
-package es.uma.lcc.e_motions.common;
+package es.uma.lcc.e_motions.launchconfiguration;
 
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -16,6 +16,7 @@ import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.ui.ISelectionService;
 import org.eclipse.ui.PlatformUI;
 
+import es.uma.lcc.e_motions.runningdata.PalladioFileManager;
 import es.uma.lcc.e_motions.runningdata.PalladioRunningInformation;
 
 /**
@@ -23,46 +24,37 @@ import es.uma.lcc.e_motions.runningdata.PalladioRunningInformation;
  * @author Antonio Moreno-Delgado <amoreno@lcc.uma.es>
  *
  */
-public class PalladioLaunchConfiguration {
+public class PalladioLaunchConfiguration extends EmotionsLaunchConfiguration {
 	
 	private PalladioRunningInformation info;
-	private IProject project;
-	private Properties props;
-	
-	private final String FILE_NAME = ".launchemotions";
-	
-	private final static String BEH_MODEL = "behaviorModel";
-	private final static String METAMODEL = "metamodel";
-	
+		
 	private final static String USAGE_MODEL = "usageModel";
 	private final static String REPOSITORY_MODEL = "repositoryModel";
 	private final static String SYSTEM_MODEL = "systemModel";
 	private final static String ALLOCATION_MODEL = "allocationModel";
 	private final static String RESENV_MODEL = "resenvModel";
 	
-	private final static String PRINT_ADV = "printAdvisories";
-	private final static String PRINT_RULES = "printRules";
-	
-	private final static String OUTPUT_FOLDER = "ouputFolder";
-
-	
-	public PalladioLaunchConfiguration() {
+	public PalladioLaunchConfiguration(PalladioFileManager palladioFileManager) {
+		super(palladioFileManager);
 		info = PalladioRunningInformation.getDefault();
 		props = new Properties();
 	}
 	
 	private boolean createProps() {
 		
-		props.setProperty(BEH_MODEL, info.getBehaviorModel().getFullPath().toOSString());
-		props.setProperty(METAMODEL, info.getMetamodel().getFullPath().toOSString());
+		props.setProperty(BEH_MODEL, info.getBehaviorModel().getFullPath().toOSString()); // TODO delete
+		props.setProperty(METAMODEL, info.getMetamodel().getFullPath().toOSString()); // TODO delete
+		
 		props.setProperty(USAGE_MODEL, info.getUsageModel().getFullPath().toOSString());
 		props.setProperty(REPOSITORY_MODEL, info.getRepositoryModel().getFullPath().toOSString());
 		props.setProperty(SYSTEM_MODEL, info.getSystemModel().getFullPath().toOSString());
 		props.setProperty(ALLOCATION_MODEL, info.getAllocationModel().getFullPath().toOSString());
 		props.setProperty(RESENV_MODEL, info.getResenvModel().getFullPath().toOSString());
-		props.setProperty(PRINT_ADV, Boolean.toString(info.isShowAdvisories()));
-		props.setProperty(PRINT_RULES, Boolean.toString(info.isAppliedRules()));
-		props.setProperty(OUTPUT_FOLDER, info.getFolderOutputString());
+		
+		props.setProperty(PRINT_ADV, Boolean.toString(info.isShowAdvisories())); // TODO delete
+		props.setProperty(PRINT_RULES, Boolean.toString(info.isAppliedRules())); // TODO delete
+		
+		props.setProperty(OUTPUT_FOLDER, info.getFolderOutputString()); // TODO delete
 		
 		return true;
 	}
@@ -72,7 +64,7 @@ public class PalladioLaunchConfiguration {
 		
 		res = createProps();
 		
-		project = info.getBehaviorModel().getProject();
+		IProject project = info.getBehaviorModel().getProject();
 		IFile file = project.getFile(FILE_NAME);
 		try {
 			FileOutputStream fos = new FileOutputStream(file.getRawLocation().makeAbsolute().toFile());
@@ -84,7 +76,7 @@ public class PalladioLaunchConfiguration {
 		return res;
 	}
 	
-	private IProject getCurrentProject(){    
+	protected IProject getSelectedProject(){    
         ISelectionService selectionService = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getSelectionService();    
 
         ISelection selection = selectionService.getSelection();    
@@ -101,7 +93,7 @@ public class PalladioLaunchConfiguration {
     }
 
 	public void read() {
-		project = getCurrentProject();
+		IProject project = getSelectedProject();
 		if (project != null) {
 			IFile fileProperties = project.getFile(FILE_NAME);
 			if (fileProperties.exists()) {
@@ -110,6 +102,7 @@ public class PalladioLaunchConfiguration {
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
+				// TODO remove commons
 				if (info.getBehaviorModel() == null) {
 					IPath path = new Path(props.getProperty(BEH_MODEL));
 					IFile file = ResourcesPlugin.getWorkspace().getRoot().getFile(path);

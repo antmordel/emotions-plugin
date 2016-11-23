@@ -13,9 +13,12 @@ public abstract class FileManager {
 	protected IFile metamodel;
 	
 	private int limitTime;
+	private boolean infiniteLimitTime;
 
 	private boolean appliedRules;
 	private boolean showAdvisories;
+	
+	private String folderOutputPathString;
 	
 	public IFile getBehaviorModel() {
 		return behaviorModel;
@@ -38,6 +41,12 @@ public abstract class FileManager {
 		this.limitTime = limitTime;
 	}
 
+	public boolean isInfiniteLimitTime() {
+		return infiniteLimitTime;
+	}
+	public void setInfiniteLimitTime(boolean infiniteLimitTime) {
+		this.infiniteLimitTime = infiniteLimitTime;
+	}
 	public boolean isAppliedRules() {
 		return appliedRules;
 	}
@@ -53,4 +62,18 @@ public abstract class FileManager {
 	public void setShowAdvisories(boolean showAdvisories) {
 		this.showAdvisories = showAdvisories;
 	}
+	public String getFolderOutputPathString() {
+		return folderOutputPathString;
+	}
+	public void setFolderOutputPathString(String outputFolderPathString) {
+		this.folderOutputPathString = outputFolderPathString;
+	}
+	@Override
+	public String toString() {
+		return "FileManager [behaviorModel=" + behaviorModel + ", metamodel=" + metamodel + ", limitTime=" + limitTime
+				+ ", infiniteLimitTime=" + infiniteLimitTime + ", appliedRules=" + appliedRules + ", showAdvisories="
+				+ showAdvisories + ", folderOutputPathString=" + folderOutputPathString + "]";
+	}
+	
+	
 }

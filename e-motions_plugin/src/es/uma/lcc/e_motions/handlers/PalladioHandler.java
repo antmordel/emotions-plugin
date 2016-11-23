@@ -9,10 +9,10 @@ import org.eclipse.jface.window.Window;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.handlers.HandlerUtil;
 
-import es.uma.lcc.e_motions.common.PalladioLaunchConfiguration;
 import es.uma.lcc.e_motions.console.EmotionsConsole;
 import es.uma.lcc.e_motions.dialogs.PalladioDialog;
 import es.uma.lcc.e_motions.jobs.PalladioJob;
+import es.uma.lcc.e_motions.launchconfiguration.PalladioLaunchConfiguration;
 import es.uma.lcc.e_motions.runningdata.PalladioFileManager;
 
 public class PalladioHandler extends AbstractHandler {

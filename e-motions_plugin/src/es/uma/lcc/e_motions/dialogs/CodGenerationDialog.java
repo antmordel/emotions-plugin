@@ -38,8 +38,8 @@ public class CodGenerationDialog extends EmotionsDialog {
 		composite.setLayout(null);
 		
 		createEmotionsFilesGroup(composite);
-		createSimulationGroup(composite, 180);
-		
+		createSimulationGroup(composite, 170);
+		createOutputGroup(composite, 290);
 		return composite;
 	}
 }
