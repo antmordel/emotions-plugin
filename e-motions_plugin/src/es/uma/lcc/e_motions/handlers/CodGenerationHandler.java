@@ -9,6 +9,7 @@ import org.eclipse.ui.handlers.HandlerUtil;
 
 import es.uma.lcc.e_motions.console.EmotionsConsole;
 import es.uma.lcc.e_motions.dialogs.CodGenerationDialog;
+import es.uma.lcc.e_motions.jobs.CodGenerationJob;
 import es.uma.lcc.e_motions.launchconfiguration.CodGenerationLaunchConfiguration;
 import es.uma.lcc.e_motions.runningdata.CodGenerationFileManager;
 
@@ -35,6 +36,8 @@ public class CodGenerationHandler extends EmotionsHandler {
 		if (exitCode == Window.OK) {
 			getConsole();
 			launch.save();
+			CodGenerationJob job = new CodGenerationJob("CodGeneration job", fm);
+			job.schedule();
 		}
                      
 		return null;

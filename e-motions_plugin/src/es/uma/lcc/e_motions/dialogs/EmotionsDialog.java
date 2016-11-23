@@ -21,7 +21,7 @@ import org.eclipse.ui.model.BaseWorkbenchContentProvider;
 import org.eclipse.ui.model.WorkbenchLabelProvider;
 import org.eclipse.wb.swt.SWTResourceManager;
 
-import es.uma.lcc.e_motions.runningdata.FileManager;
+import es.uma.lcc.e_motions.runningdata.EmotionsFileManager;
 
 /**
  * 
@@ -32,7 +32,7 @@ public class EmotionsDialog extends Dialog {
 	
 	protected Shell parentShell;
 	
-	protected FileManager fm;
+	protected EmotionsFileManager fm;
 	protected Text textBehavior;
 	protected Text textMetamodel;
 	private Text textTimeLimit;
@@ -43,7 +43,7 @@ public class EmotionsDialog extends Dialog {
 		this.parentShell = parentShell;
 	}
 	
-	protected EmotionsDialog(Shell parentShell, FileManager fm) {
+	protected EmotionsDialog(Shell parentShell, EmotionsFileManager fm) {
 		this(parentShell);
 		this.fm = fm;
 	}

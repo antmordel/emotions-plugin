@@ -7,7 +7,7 @@ import org.eclipse.core.resources.IFile;
  * @author Antonio Moreno-Delgado <amoreno@lcc.uma.es>
  *
  */
-public abstract class FileManager {
+public abstract class EmotionsFileManager {
 	
 	protected IFile behaviorModel;
 	protected IFile metamodel;

@@ -1,5 +1,9 @@
 package es.uma.lcc.e_motions.console;
 
+
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.graphics.Color;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.IWorkbenchWindow;
@@ -67,5 +71,12 @@ public class EmotionsConsole {
 	
 	public void println(String text) {
 		consoleStream.println(text);
+	}
+	
+	public void errorln(String text) {
+		Color beforeColor = consoleStream.getColor();
+		consoleStream.setColor(Display.getDefault().getSystemColor(SWT.COLOR_RED));
+		consoleStream.println(text);
+		consoleStream.setColor(beforeColor);
 	}
 }

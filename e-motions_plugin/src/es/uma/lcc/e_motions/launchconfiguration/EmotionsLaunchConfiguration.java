@@ -17,7 +17,7 @@ import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.ui.ISelectionService;
 import org.eclipse.ui.PlatformUI;
 
-import es.uma.lcc.e_motions.runningdata.FileManager;
+import es.uma.lcc.e_motions.runningdata.EmotionsFileManager;
 
 /**
  * 
@@ -37,10 +37,10 @@ public class EmotionsLaunchConfiguration {
 	
 	protected final static String OUTPUT_FOLDER = "ouputFolder";
 	
-	protected FileManager fm;
+	protected EmotionsFileManager fm;
 	protected Properties props;
 	
-	public EmotionsLaunchConfiguration(FileManager fm) {
+	public EmotionsLaunchConfiguration(EmotionsFileManager fm) {
 		this.fm = fm;
 		props = new Properties();
 	}
