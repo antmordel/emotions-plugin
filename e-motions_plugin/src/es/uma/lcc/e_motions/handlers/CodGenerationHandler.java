@@ -7,7 +7,6 @@ import org.eclipse.jface.window.Window;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.handlers.HandlerUtil;
 
-import es.uma.lcc.e_motions.console.EmotionsConsole;
 import es.uma.lcc.e_motions.dialogs.CodGenerationDialog;
 import es.uma.lcc.e_motions.jobs.CodGenerationJob;
 import es.uma.lcc.e_motions.launchconfiguration.CodGenerationLaunchConfiguration;
@@ -25,9 +24,7 @@ public class CodGenerationHandler extends EmotionsHandler {
 		
 		IWorkbenchWindow window = HandlerUtil.getActiveWorkbenchWindowChecked(event);
 		
-		
 		launch.read();
-		EmotionsConsole.getDefault().println(fm.toString());
 		
 		dialog = new CodGenerationDialog(window.getShell(), (CodGenerationFileManager) fm);
         

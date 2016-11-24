@@ -54,7 +54,7 @@ public class EmotionsLaunchConfiguration {
 		props.setProperty(IS_INFINITE, Boolean.toString(fm.isInfiniteLimitTime()));
 		props.setProperty(TIME_LIMIT, Integer.toString(fm.getLimitTime()));
 		
-		props.setProperty(OUTPUT_FOLDER, fm.getFolderOutputPathString());
+		props.setProperty(OUTPUT_FOLDER, fm.getFolderResult().getFullPath().toPortableString());
 		return true;
 	}
 	
@@ -98,7 +98,7 @@ public class EmotionsLaunchConfiguration {
 	public void read() {
 		IProject project = getSelectedProject();
 		IFile fileProperties = project!=null?project.getFile(FILE_NAME):null;
-		if (project != null && fileProperties != null) {
+		if (fileProperties != null && fileProperties.exists()) {
 			try {
 				props.load(new FileInputStream(fileProperties.getRawLocation().makeAbsolute().toFile()));
 			} catch (IOException e) {
@@ -125,7 +125,7 @@ public class EmotionsLaunchConfiguration {
 			fm.setLimitTime(Integer.parseInt(props.getProperty(TIME_LIMIT)));
 			
 			/* output folder */
-			fm.setFolderOutputPathString(props.getProperty(OUTPUT_FOLDER));
+			fm.setFolderResult(ResourcesPlugin.getWorkspace().getRoot().getFolder(new Path(props.getProperty(OUTPUT_FOLDER))));
 		}
 	}
 }

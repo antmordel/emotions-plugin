@@ -74,9 +74,17 @@ public class EmotionsConsole {
 	}
 	
 	public void errorln(String text) {
-		Color beforeColor = consoleStream.getColor();
-		consoleStream.setColor(Display.getDefault().getSystemColor(SWT.COLOR_RED));
+//		Color beforeColor = consoleStream.getColor();
+//		consoleStream.setColor(Display.getDefault().getSystemColor(SWT.COLOR_RED));
 		consoleStream.println(text);
-		consoleStream.setColor(beforeColor);
+//		consoleStream.setColor(beforeColor);
+	}
+
+	public void successln(String text) {
+//		Color beforeColor = consoleStream.getColor();
+//		consoleStream.setColor(SWT.COLOR_GREEN);
+		consoleStream.print("Success: ");
+//		consoleStream.setColor(beforeColor);
+		consoleStream.println(text);
 	}
 }

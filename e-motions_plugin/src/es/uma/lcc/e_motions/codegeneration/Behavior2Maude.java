@@ -43,7 +43,7 @@ public class Behavior2Maude {
 	public static void behOcl2MaudePalladio(String behaviorModel, String metamodel) throws IOException,
 	URISyntaxException, CoreException, MaudelingException, ATLCoreException {
 		// TODO change this
-		OclBehaviorParser.oclParser(behaviorModel, metamodel, true);
+		OldOclBehaviorParser.oclParser(behaviorModel, metamodel, true);
 		/**
 		 * ATL transformation header:
 		 * 
@@ -124,7 +124,7 @@ public class Behavior2Maude {
 		long startTime = System.currentTimeMillis();
 		Printer _p = Printer.getDefault();
 		
-		OclBehaviorParser.oclParser(behaviorModel, metamodel, false);
+		OldOclBehaviorParser.oclParser(behaviorModel, metamodel, false);
 		
 		/**
 		 * ATL transformation header:
