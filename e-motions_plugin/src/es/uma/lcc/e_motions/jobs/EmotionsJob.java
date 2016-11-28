@@ -12,6 +12,7 @@ import org.eclipse.m2m.atl.core.ATLCoreException;
 import es.uma.lcc.e_motions.codegeneration.Model2TextMaude;
 import es.uma.lcc.e_motions.console.EmotionsConsole;
 import es.uma.lcc.e_motions.runningdata.EmotionsFileManager;
+import es.uma.lcc.e_motions.transformations.model2model.Behavior2MaudeM2M;
 import es.uma.lcc.e_motions.transformations.model2model.Ecore2MaudeM2M;
 import es.uma.lcc.e_motions.transformations.model2model.OclBehaviorParser;
 
@@ -66,8 +67,9 @@ public abstract class EmotionsJob extends Job {
 			OclBehaviorParser oclParser = new OclBehaviorParser(fm.getBehaviorModel(), fm.getMetamodel(),
 					fm.getOclParserCode(), fm.getOclParserXMI());
 			oclParser.execute();
-			
-			
+			Behavior2MaudeM2M beh2maudeM2M = new Behavior2MaudeM2M(fm.getBehaviorModel(), fm.getMetamodel(),
+					fm.getOclParserXMI(), fm.getBehaviorMaudeXMI());
+			beh2maudeM2M.execute();
 		} catch (CoreException | ATLCoreException | IOException e) {
 			e.printStackTrace();
 		}

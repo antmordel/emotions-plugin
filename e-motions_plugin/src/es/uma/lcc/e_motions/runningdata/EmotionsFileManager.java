@@ -49,6 +49,9 @@ public abstract class EmotionsFileManager {
 	/* Stores the OCL parser in XMI (conforming to ATL) */
 	private IFile oclParserXMI;
 	
+	/* Stores the Behavior Maude in XMI (conforming to Maude) */
+	private IFile behaviorMaudeXMI;
+	
 	public IFile getBehaviorModel() {
 		return behaviorModel;
 	}
@@ -150,6 +153,16 @@ public abstract class EmotionsFileManager {
 			}
 		}
 		return oclParserXMI;
+	}
+	
+	public IFile getBehaviorMaudeXMI() throws NoSuchFileException {
+		if (behaviorMaudeXMI == null) {
+			if (getBehaviorModel() == null) {
+				throw new NoSuchFileException("Behavior cannot be found");
+			}
+			behaviorMaudeXMI = getFolderTmp().getFile(getBehaviorModel().getName() + ".xmi");
+		}
+		return behaviorMaudeXMI;
 	}
 	
 	@Override

@@ -28,6 +28,7 @@ public abstract class ATLTransformation {
 	public abstract void execute() throws ATLCoreException, IOException, CoreException;
 	
 	protected String path(IFile file) {
+		System.out.println("Path: " + file.getFullPath().toPortableString());
 		return file.getFullPath().toPortableString();
 	}
 }
