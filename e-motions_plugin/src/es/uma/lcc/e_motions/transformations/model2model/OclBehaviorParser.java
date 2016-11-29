@@ -28,7 +28,7 @@ import org.eclipse.m2m.atl.engine.parser.AtlParser;
 
 import es.uma.lcc.e_motions.common.EmotionsPaths;
 
-public class OclBehaviorParser extends ATLTransformation {
+public class OclBehaviorParser extends EmotionsTransformation {
 	
 	private IFile modelBehavior;
 	private IFile metamodel;

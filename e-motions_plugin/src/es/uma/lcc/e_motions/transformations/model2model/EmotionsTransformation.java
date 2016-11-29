@@ -12,14 +12,14 @@ import org.eclipse.m2m.atl.core.emf.EMFExtractor;
 import org.eclipse.m2m.atl.core.emf.EMFInjector;
 import org.eclipse.m2m.atl.core.emf.EMFModelFactory;
 
-public abstract class ATLTransformation {
+public abstract class EmotionsTransformation {
 	
 	
 	protected ModelFactory mf;
 	protected IInjector injector;
 	protected IExtractor extractor;
 	
-	public ATLTransformation() {
+	public EmotionsTransformation() {
 		mf = new EMFModelFactory();
 		injector = new EMFInjector();
 		extractor = new EMFExtractor();

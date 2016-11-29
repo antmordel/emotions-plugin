@@ -1,7 +1,10 @@
 package es.uma.lcc.e_motions.runningdata;
 
+import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
+import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.nio.file.NoSuchFileException;
 
 import org.eclipse.core.resources.IFile;
@@ -10,6 +13,9 @@ import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
+
+import es.uma.lcc.e_motions.Activator;
+import es.uma.lcc.e_motions.common.FileManager;
 
 /**
  * 
@@ -51,6 +57,9 @@ public abstract class EmotionsFileManager {
 	
 	/* Stores the Behavior Maude in XMI (conforming to Maude) */
 	private IFile behaviorMaudeXMI;
+	
+	/* Stores the Behavior Maude code resulting of the Behavior2Maude transformation. */
+	private IFile behaviorMaudeCode;
 	
 	public IFile getBehaviorModel() {
 		return behaviorModel;
@@ -165,13 +174,46 @@ public abstract class EmotionsFileManager {
 		return behaviorMaudeXMI;
 	}
 	
+	public IFile getBehaviorMaudeCode() throws CoreException {
+		if (behaviorMaudeCode == null) {
+			behaviorMaudeCode = getFolderResult().getFile(getBehaviorModel().getName() + ".maude");
+			if (!behaviorMaudeCode.exists()) {
+				byte[] bytes = "".getBytes();
+			    InputStream source = new ByteArrayInputStream(bytes);
+			    behaviorMaudeCode.create(source, IResource.NONE, null);
+			}
+		}
+		return behaviorMaudeCode;
+	}
+	
+	public IProject getCurrentProject() {
+		return ResourcesPlugin.getWorkspace().getRoot().getProject(this.getBehaviorModel().getProject().getName());
+	}
+	
+	public void copyFile(String file) throws IOException, CoreException {
+		InputStream inp = Activator.getDefault().getBundle().getEntry("lib/resources/maude/" + file).openStream();
+		String fileContents = "";
+		BufferedReader br = new BufferedReader(new InputStreamReader(inp));
+		String line = br.readLine();
+		while (line != null) {
+			fileContents = fileContents + line + "\n";
+			line = br.readLine();
+		}
+		br.close();
+		
+		IFile result = getFolderResult().getFile(file);
+		if(!result.exists()){
+			result.create(new ByteArrayInputStream(fileContents.getBytes()), true, null);
+		} else {
+			result.setContents(new ByteArrayInputStream(fileContents.getBytes()), true, true, null);
+		}
+	}
+	
 	@Override
 	public String toString() {
 		return "FileManager [behaviorModel=" + behaviorModel + ", metamodel=" + metamodel + ", limitTime=" + limitTime
 				+ ", infiniteLimitTime=" + infiniteLimitTime + ", appliedRules=" + appliedRules + ", showAdvisories="
 				+ showAdvisories + ", folderResult=" + folderResult + "]";
 	}
-	
-	
 	
 }

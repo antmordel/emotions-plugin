@@ -17,7 +17,7 @@ import behavior.BehaviorPackage;
 import es.uma.lcc.e_motions.Activator;
 import es.uma.lcc.e_motions.common.EmotionsPaths;
 
-public class Behavior2MaudeM2M extends ATLTransformation {
+public class Behavior2MaudeM2M extends EmotionsTransformation {
 
 	/**
 	 * Some notes

@@ -15,7 +15,7 @@ import org.eclipse.m2m.atl.engine.emfvm.launch.EMFVMLauncher;
 import es.uma.lcc.e_motions.Activator;
 import es.uma.lcc.e_motions.common.EmotionsPaths;
 
-public class Ecore2MaudeM2M extends ATLTransformation {
+public class Ecore2MaudeM2M extends EmotionsTransformation {
 	/**
 	 * ATL transformation header:
 	 * 

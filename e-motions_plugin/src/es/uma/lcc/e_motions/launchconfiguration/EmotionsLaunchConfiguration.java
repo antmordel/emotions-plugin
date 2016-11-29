@@ -79,7 +79,7 @@ public class EmotionsLaunchConfiguration {
 		return res;
 	}
 	
-	protected IProject getSelectedProject(){    
+	public static IProject getSelectedProject(){    
         ISelectionService selectionService = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getSelectionService();    
 
         ISelection selection = selectionService.getSelection();    

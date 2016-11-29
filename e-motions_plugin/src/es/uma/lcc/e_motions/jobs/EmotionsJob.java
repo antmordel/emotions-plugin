@@ -3,6 +3,8 @@ package es.uma.lcc.e_motions.jobs;
 import java.io.IOException;
 import java.nio.file.NoSuchFileException;
 import java.text.DecimalFormat;
+import java.util.Arrays;
+import java.util.List;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -73,5 +75,32 @@ public abstract class EmotionsJob extends Job {
 		} catch (CoreException | ATLCoreException | IOException e) {
 			e.printStackTrace();
 		}
+	}
+	
+	protected void runBehavior2MaudeCode(IProgressMonitor monitor) {
+		monitor.subTask("Behavior 2 Maude M2T");
+		monitor.worked(1);
+		
+		try {
+			String inputModelXMI = fm.getBehaviorMaudeXMI().getFullPath().toPortableString();
+			String outputModelCode = fm.getBehaviorMaudeCode().getLocation().toPortableString();
+			Model2TextMaude.generate(inputModelXMI, outputModelCode);
+		} catch (NoSuchFileException | CoreException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	protected void copyInfrastuctureFiles() {
+		init = System.currentTimeMillis();
+		List<String> filesToCopy = Arrays.asList("mOdCL.maude", "MGDefinitions.maude", "EcoreMM.maude", 
+				"MGRealTimeMaude24.maude", "e-Motions.maude");
+		try {
+			for (String file : filesToCopy) {
+				fm.copyFile(file);
+			}
+		} catch (IOException | CoreException e) {
+			e.printStackTrace();
+		}
+		
 	}
 }
