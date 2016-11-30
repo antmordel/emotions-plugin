@@ -16,7 +16,6 @@ import es.uma.lcc.e_motions.runningdata.CodGenerationFileManager;
 public class CodGenerationHandler extends EmotionsHandler {
 	
 	public Object execute(ExecutionEvent event) throws ExecutionException {
-		
 		CodGenerationDialog dialog;
 		if (fm == null || EmotionsLaunchConfiguration.getSelectedProject() != fm.getCurrentProject()) {
 			fm = new CodGenerationFileManager();
@@ -34,7 +33,7 @@ public class CodGenerationHandler extends EmotionsHandler {
 		if (exitCode == Window.OK) {
 			getConsole();
 			launch.save();
-			CodGenerationJob job = new CodGenerationJob("CodGeneration job", fm);
+			CodGenerationJob job = new CodGenerationJob("CodGeneration job", (CodGenerationFileManager) fm);
 			job.schedule();
 		}
                      

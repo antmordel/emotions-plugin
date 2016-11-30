@@ -64,7 +64,7 @@ public abstract class EmotionsJob extends Job {
 	protected void runBehavior2MaudeM2M(IProgressMonitor monitor) {
 		monitor.subTask("Behavior 2 Maude M2M");
 		monitor.worked(1);
-
+		System.out.println("se ejecuta el runBehavior2MaudeM2M");
 		try {
 			OclBehaviorParser oclParser = new OclBehaviorParser(fm.getBehaviorModel(), fm.getMetamodel(),
 					fm.getOclParserCode(), fm.getOclParserXMI());

@@ -15,7 +15,6 @@ import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 
 import es.uma.lcc.e_motions.Activator;
-import es.uma.lcc.e_motions.common.FileManager;
 
 /**
  * 
@@ -60,6 +59,9 @@ public abstract class EmotionsFileManager {
 	
 	/* Stores the Behavior Maude code resulting of the Behavior2Maude transformation. */
 	private IFile behaviorMaudeCode;
+	
+	/* Stores the TickRule module */
+	private IFile runMaudeCode;
 	
 	public IFile getBehaviorModel() {
 		return behaviorModel;
@@ -207,6 +209,13 @@ public abstract class EmotionsFileManager {
 		} else {
 			result.setContents(new ByteArrayInputStream(fileContents.getBytes()), true, true, null);
 		}
+	}
+	
+	public IFile getRunMaudeCode() throws CoreException {
+		if (runMaudeCode == null) {
+			runMaudeCode = getFolderResult().getFile("run.maude");
+		}
+		return runMaudeCode;
 	}
 	
 	@Override
