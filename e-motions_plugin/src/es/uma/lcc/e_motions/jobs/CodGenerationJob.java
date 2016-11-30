@@ -1,7 +1,6 @@
 package es.uma.lcc.e_motions.jobs;
 
 import java.io.IOException;
-import java.nio.file.NoSuchFileException;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -73,7 +72,10 @@ public class CodGenerationJob extends EmotionsJob {
 					fm.isAppliedRules(), 
 					fm.isShowAdvisories(),
 					CommonOperations.extractModuleName(fm.getInitModelCode()),
-					CommonOperations.extractModuleName(fm.getBehaviorMaudeCode()));
+					CommonOperations.extractModuleName(fm.getBehaviorMaudeCode()),
+					fm.isInfiniteLimitTime(),
+					fm.getLimitTime(),
+					CommonOperations.extractInitModelOperator(fm.getInitModelCode()));
 			tickRuleMod.create();
 		} catch (CoreException | ATLCoreException | IOException e) {
 			e.printStackTrace();

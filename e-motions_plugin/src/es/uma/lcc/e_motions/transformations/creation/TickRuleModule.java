@@ -19,9 +19,13 @@ public class TickRuleModule {
 	private boolean printAdvisories;
 	private String nameInitialModule;
 	private String nameBehaviorModule;
+	private boolean isInfiniteTime;
+	private int limitTime;
+	private String initModelOperator;
 
 	public TickRuleModule(String metamodelFile, String behaviorFile, String initialModel, IFile output,
-			boolean printAttrs, boolean printAdvisories, String nameInitialModule, String nameBehaviorModule) {
+			boolean printAttrs, boolean printAdvisories, String nameInitialModule, String nameBehaviorModule,
+			boolean isInfiniteTime, int limitTime, String initModelOperator) {
 		this.metamodelFile = metamodelFile;
 		this.behaviorFile = behaviorFile;
 		this.initialModel = initialModel;
@@ -30,6 +34,9 @@ public class TickRuleModule {
 		this.printAdvisories = printAdvisories;
 		this.nameInitialModule = nameInitialModule;
 		this.nameBehaviorModule = nameBehaviorModule;
+		this.isInfiniteTime = isInfiniteTime;
+		this.limitTime = limitTime;
+		this.initModelOperator = initModelOperator;
 	}
 
 	public void create() throws ATLCoreException, IOException, CoreException {
@@ -38,11 +45,11 @@ public class TickRuleModule {
 		sb.append("\n");
 
 		sb.append("set show advisories ").append(printAdvisories?"on":"off").append(" .\n");
-		sb.append("set print attributes ").append(printAttrs?"on":"off").append(" .\n");
+		sb.append("set print attribute ").append(printAttrs?"on":"off").append(" .\n");
 		
 		/* File importation */
 		sb.append("\n");
-		Arrays.asList("mOdCL.maude", "MGDefinitions.maude", "EcoreMM.maude", "MGRealTimeMaude24.maude", "e-Motions.maude").stream()
+		Arrays.asList("model-checker.maude", "mOdCL.maude", "MGDefinitions.maude", "EcoreMM.maude", "MGRealTimeMaude24.maude", "e-Motions.maude").stream()
 			.map(file -> sb.append("load ").append(file).append("\n")).collect(Collectors.joining());
 		sb.append("\n");
 		
@@ -52,10 +59,25 @@ public class TickRuleModule {
 
 		/* Module TICK RULE */
 		sb.append("\n\nmod RUN is\n");
+		/* importations and variables */
 		sb.append("  pr ").append(nameInitialModule).append(" . ---- Also importing the metamodel\n");
 		sb.append("  pr ").append(nameBehaviorModule).append(" .\n\n");
 		sb.append("  var T TE : Time .\n");
-		sb.append("  var MODEL : @Model .\n\n");		
+		sb.append("  var MODEL : @Model .\n\n");
+		/* conditional rule */
+		sb.append("  crl [tick] :\n");
+		sb.append("   { MODEL } in time T\n");
+		sb.append("  =>\n");
+		sb.append("   { delta(MODEL, TE) } in time (T plus TE)\n");
+		if (isInfiniteTime) {
+			sb.append("  if TE := mte(MODEL) /\\ TE =/= zero .\n");
+		} else {
+			sb.append("  if TE := mte(MODEL) /\\ TE =/= zero /\\ (T plus TE) le ").append(limitTime).append(" .\n");
+		}
+		sb.append("endm");
+		
+		/* rewrite command */
+		sb.append("\n\nrewrite init(" + initModelOperator + ") .\n");
 		
 		if (output.exists()) {
 			output.setContents(new ByteArrayInputStream(sb.toString().getBytes()), true, true, null);

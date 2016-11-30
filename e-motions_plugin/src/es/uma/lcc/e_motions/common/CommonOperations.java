@@ -37,12 +37,12 @@ public class CommonOperations {
 	
 	public static String extractMetamodelOperator(IFile file) throws IOException {
 		BufferedReader br = null;
-    try {
-    	file.refreshLocal(IResource.DEPTH_INFINITE, null);
-	    br = new BufferedReader(new InputStreamReader(file.getContents()));
-    } catch (CoreException e) {
-	    e.printStackTrace();
-    }
+		try {
+			file.refreshLocal(IResource.DEPTH_INFINITE, null);
+			br = new BufferedReader(new InputStreamReader(file.getContents()));
+		} catch (CoreException e) {
+			e.printStackTrace();
+		}
 		String line = br.readLine();
 		while (!line.startsWith("  op ")) {
 			line = br.readLine();
@@ -58,5 +58,9 @@ public class CommonOperations {
 			}
 		}
 		return acum;
+	}
+
+	public static String extractInitModelOperator(IFile file) throws IOException {
+		return extractMetamodelOperator(file);
 	}
 }

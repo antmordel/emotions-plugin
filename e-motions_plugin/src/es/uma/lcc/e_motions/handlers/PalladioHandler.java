@@ -11,7 +11,7 @@ import org.eclipse.ui.handlers.HandlerUtil;
 
 import es.uma.lcc.e_motions.console.EmotionsConsole;
 import es.uma.lcc.e_motions.dialogs.PalladioDialog;
-import es.uma.lcc.e_motions.jobs.PalladioJob;
+import es.uma.lcc.e_motions.jobs.OldPalladioJob;
 import es.uma.lcc.e_motions.launchconfiguration.PalladioLaunchConfiguration;
 import es.uma.lcc.e_motions.runningdata.PalladioFileManager;
 
