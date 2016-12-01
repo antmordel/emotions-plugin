@@ -37,7 +37,7 @@ public class Ecore2MaudeM2M extends EmotionsTransformation {
 		injector.inject(ecoreMM, "http://www.eclipse.org/emf/2002/Ecore");
 		
 		IReferenceModel maudeMM = mf.newReferenceModel();
-		injector.inject(maudeMM, EmotionsPaths.MAUDE, new HashMap<String, Object>());
+		injector.inject(maudeMM, EmotionsPaths.MM_MAUDE, new HashMap<String, Object>());
 		
 		IModel mmModel = mf.newModel(ecoreMM);
 		System.out.println(input);

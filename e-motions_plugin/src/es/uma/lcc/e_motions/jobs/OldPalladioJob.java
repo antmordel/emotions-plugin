@@ -22,12 +22,12 @@ import es.uma.lcc.e_motions.codegeneration.EcoreMM2Maude;
 import es.uma.lcc.e_motions.codegeneration.Model2Maude;
 import es.uma.lcc.e_motions.codegeneration.Model2TextMaude;
 import es.uma.lcc.e_motions.codegeneration.ModuleGenerators;
-import es.uma.lcc.e_motions.codegeneration.PalladioFlattenInputModel;
 import es.uma.lcc.e_motions.common.FileManager;
 import es.uma.lcc.e_motions.console.EmotionsConsole;
 import es.uma.lcc.e_motions.maudeprocess.MaudeProcess;
 import es.uma.lcc.e_motions.maudeprocess.exceptions.MaudelingException;
 import es.uma.lcc.e_motions.runningdata.PalladioRunningInformation;
+import es.uma.lcc.e_motions.transformations.model2model.PalladioFlattenInputModel;
 
 /**
  * This class implements the flattening transformation for Palladio.

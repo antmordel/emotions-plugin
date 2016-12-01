@@ -230,13 +230,6 @@ public class EmotionsDialog extends Dialog {
 		btnOutputFolder.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				// DirectoryDialog dialog = new DirectoryDialog(parentShell);
-				// dialog.setFilterPath(ResourcesPlugin.getWorkspace().getRoot().getLocation().toString());
-				// String resultingDir = dialog.open();
-				// if (resultingDir != null) {
-				// textOutputFolder.setText(resultingDir);
-				// fm.setFolderOutputPathString(textOutputFolder.getText());
-				// }
 				ElementTreeSelectionDialog dialog = new ElementTreeSelectionDialog(parentShell,
 						new WorkbenchLabelProvider(), new BaseWorkbenchContentProvider());
 				dialog.setInput(ResourcesPlugin.getWorkspace().getRoot());

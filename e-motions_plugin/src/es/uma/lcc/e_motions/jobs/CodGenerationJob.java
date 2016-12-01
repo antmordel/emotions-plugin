@@ -39,6 +39,8 @@ public class CodGenerationJob extends EmotionsJob {
 				+ df.format((System.currentTimeMillis() - init) / 1000.0) + " seconds.");
 		
 		/* Input model */
+		monitor.subTask("Initial Model 2 Maude");
+		monitor.worked(1);
 		init = System.currentTimeMillis();
 		if (fm.getInitModel() == null) {
 			/* generate empty model */
@@ -56,12 +58,16 @@ public class CodGenerationJob extends EmotionsJob {
 				+ df.format((System.currentTimeMillis() - init) / 1000.0) + " seconds.");
 		
 		/* Infraestructure */
+		monitor.subTask("Copying Maude infrastructure");
+		monitor.worked(1);
 		init = System.currentTimeMillis();
 		copyInfrastuctureFiles();
 		console.successln("Maude infraestructure copied in "
 				+ df.format((System.currentTimeMillis() - init) / 1000.0) + " seconds.");
 		
 		/* Create run Maude file */
+		monitor.subTask("Creating run.maude file");
+		monitor.worked(1);
 		init = System.currentTimeMillis();
 		TickRuleModule tickRuleMod;
 		try {

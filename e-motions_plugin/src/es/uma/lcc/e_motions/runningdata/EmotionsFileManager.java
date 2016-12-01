@@ -63,6 +63,10 @@ public abstract class EmotionsFileManager {
 	/* Stores the TickRule module */
 	private IFile runMaudeCode;
 	
+	/* Stores the input models */
+	protected IFile initModel;
+	protected IFile initModelCode;
+	
 	public IFile getBehaviorModel() {
 		return behaviorModel;
 	}
@@ -116,6 +120,13 @@ public abstract class EmotionsFileManager {
 		if (folderTmp == null) {
 			IProject currentProject = ResourcesPlugin.getWorkspace().getRoot().getProject(this.getBehaviorModel().getProject().getName());
 			folderTmp = currentProject.getFolder(".tmp");
+			if (!folderTmp.exists()) {
+				try {
+					folderTmp.create(true, true, null);
+				} catch (CoreException e) {
+					e.printStackTrace();
+				}
+			}
 		}
 		return folderTmp;
 	}
@@ -216,6 +227,27 @@ public abstract class EmotionsFileManager {
 			runMaudeCode = getFolderResult().getFile("run.maude");
 		}
 		return runMaudeCode;
+	}
+	public IFile getInitModel() {
+		return initModel;
+	}
+
+	public void setInitModel(IFile initModel) {
+		this.initModel = initModel;
+	}
+	
+	public IFile getInitModelCode() throws NoSuchFileException {
+		if (initModelCode == null) {
+			if (getMetamodel() == null) {
+				throw new NoSuchFileException("Init model cannot be found");
+			}
+			if (initModelCode == null) {
+				initModelCode = getFolderResult().getFile("EmptyModel.maude");
+			} else {
+				initModelCode = getFolderResult().getFile(getInitModel().getName() + ".maude");
+			}
+		}
+		return initModelCode;
 	}
 	
 	@Override

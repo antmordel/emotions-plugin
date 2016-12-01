@@ -53,7 +53,7 @@ public class Behavior2MaudeM2M extends EmotionsTransformation {
 		
 		/* Loading Maude Metamodel */
 		IReferenceModel maudeMM = mf.newReferenceModel();
-		injector.inject(maudeMM, EmotionsPaths.MAUDE, new HashMap<String, Object>());
+		injector.inject(maudeMM, EmotionsPaths.MM_MAUDE, new HashMap<String, Object>());
 		
 		/* Loading Behavior Metamodel */
 		IReferenceModel behMM = mf.newReferenceModel();
@@ -61,7 +61,7 @@ public class Behavior2MaudeM2M extends EmotionsTransformation {
 		
 		/* Loading ATL Metamodel */
 		IReferenceModel atlMM = mf.newReferenceModel();
-		injector.inject(atlMM, EmotionsPaths.ATL, new HashMap<String, Object>());
+		injector.inject(atlMM, EmotionsPaths.MM_ATL, new HashMap<String, Object>());
 		
 		/* Loading Behavior Model */
 		IModel behModel = mf.newModel(behMM);

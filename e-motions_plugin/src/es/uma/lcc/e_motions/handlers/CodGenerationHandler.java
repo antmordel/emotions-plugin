@@ -10,17 +10,14 @@ import org.eclipse.ui.handlers.HandlerUtil;
 import es.uma.lcc.e_motions.dialogs.CodGenerationDialog;
 import es.uma.lcc.e_motions.jobs.CodGenerationJob;
 import es.uma.lcc.e_motions.launchconfiguration.CodGenerationLaunchConfiguration;
-import es.uma.lcc.e_motions.launchconfiguration.EmotionsLaunchConfiguration;
 import es.uma.lcc.e_motions.runningdata.CodGenerationFileManager;
 
 public class CodGenerationHandler extends EmotionsHandler {
 	
 	public Object execute(ExecutionEvent event) throws ExecutionException {
 		CodGenerationDialog dialog;
-		if (fm == null || EmotionsLaunchConfiguration.getSelectedProject() != fm.getCurrentProject()) {
-			fm = new CodGenerationFileManager();
-			launch = new CodGenerationLaunchConfiguration((CodGenerationFileManager) fm);
-		}
+		fm = new CodGenerationFileManager();
+		launch = new CodGenerationLaunchConfiguration((CodGenerationFileManager) fm);
 		
 		IWorkbenchWindow window = HandlerUtil.getActiveWorkbenchWindowChecked(event);
 		

@@ -45,7 +45,7 @@ public class EmotionsLaunchConfiguration {
 		props = new Properties();
 	}
 	
-	private boolean createProps() {
+	protected boolean createProps() {
 		props.setProperty(BEH_MODEL, fm.getBehaviorModel().getFullPath().toOSString());
 		props.setProperty(METAMODEL, fm.getMetamodel().getFullPath().toOSString());
 		

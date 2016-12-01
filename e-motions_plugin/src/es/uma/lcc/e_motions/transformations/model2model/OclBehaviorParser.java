@@ -52,7 +52,7 @@ public class OclBehaviorParser extends EmotionsTransformation {
 		
 		/* Create ATL transformation into the XMI */
 		IReferenceModel atlMM = mf.newReferenceModel();
-		injector.inject(atlMM, EmotionsPaths.ATL, new HashMap<String, Object>());
+		injector.inject(atlMM, EmotionsPaths.MM_ATL, new HashMap<String, Object>());
 		
 		AtlParser atlPars = AtlParser.getDefault();
 		IModel atlModel = mf.newModel(atlMM);
