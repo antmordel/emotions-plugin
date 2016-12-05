@@ -6,14 +6,10 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.Collections;
-import java.util.Iterator;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.emf.common.util.URI;
-import org.eclipse.emf.ecore.EObject;
-import org.eclipse.emf.ecore.EPackage;
-import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.emf.ecore.util.BasicExtendedMetaData;
@@ -50,7 +46,7 @@ public class PalladioFlattenInputModel extends EmotionsTransformation {
 
 	private IFile palladioResourceTypes;
 	private IFile palladioPrimitiveTypes;
-	
+
 	private IFile output;
 
 	public PalladioFlattenInputModel(IFile originalUsageModel, IFile originalRepositoryModel, IFile originalSystemModel,
@@ -133,17 +129,6 @@ public class PalladioFlattenInputModel extends EmotionsTransformation {
 		}
 	}
 
-	private void registerMetamodel(ResourceSet rs, String path) {
-		Resource Rpcm = rs.getResource(URI.createURI(path), true);
-		Iterator<EObject> eo = Rpcm.getAllContents();
-		while (eo.hasNext()) {
-			EObject next = eo.next();
-			if (next instanceof EPackage) {
-				rs.getPackageRegistry().put(((EPackage) next).getNsURI(), ((EPackage) next));
-			}
-		}
-	}
-
 	private void flattenPalladioFiles() {
 		/*
 		 * Creates the environment
@@ -200,8 +185,8 @@ public class PalladioFlattenInputModel extends EmotionsTransformation {
 		env.registerInputModel("INUSAGEMODEL", inUsageModel);
 
 		Model inRepository = EmftvmFactory.eINSTANCE.createModel();
-		inRepository
-				.setResource(rs.getResource(URI.createFileURI(newRepositoryModel.getLocation().toPortableString()), true));
+		inRepository.setResource(
+				rs.getResource(URI.createFileURI(newRepositoryModel.getLocation().toPortableString()), true));
 		env.registerInputModel("INREPOSITORY", inRepository);
 
 		Model inSystem = EmftvmFactory.eINSTANCE.createModel();
@@ -209,8 +194,8 @@ public class PalladioFlattenInputModel extends EmotionsTransformation {
 		env.registerInputModel("INSYSTEM", inSystem);
 
 		Model inAllocation = EmftvmFactory.eINSTANCE.createModel();
-		inAllocation
-				.setResource(rs.getResource(URI.createFileURI(newAllocationModel.getLocation().toPortableString()), true));
+		inAllocation.setResource(
+				rs.getResource(URI.createFileURI(newAllocationModel.getLocation().toPortableString()), true));
 		env.registerInputModel("INALLOCATION", inAllocation);
 
 		Model inResourceEnvironment = EmftvmFactory.eINSTANCE.createModel();
@@ -219,8 +204,8 @@ public class PalladioFlattenInputModel extends EmotionsTransformation {
 		env.registerInputModel("INRESOURCEENVIRONTMENT", inResourceEnvironment);
 
 		Model inResourceType = EmftvmFactory.eINSTANCE.createModel();
-		inResourceType
-				.setResource(rs.getResource(URI.createFileURI(palladioResourceTypes.getLocation().toPortableString()), true));
+		inResourceType.setResource(
+				rs.getResource(URI.createFileURI(palladioResourceTypes.getLocation().toPortableString()), true));
 		env.registerInputModel("INRESOURCETYPE", inResourceType);
 
 		Model inPrimitiveTypes = EmftvmFactory.eINSTANCE.createModel();

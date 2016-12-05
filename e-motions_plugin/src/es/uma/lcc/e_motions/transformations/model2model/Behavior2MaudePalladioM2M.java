@@ -17,7 +17,7 @@ import behavior.BehaviorPackage;
 import es.uma.lcc.e_motions.Activator;
 import es.uma.lcc.e_motions.common.EmotionsPaths;
 
-public class Behavior2MaudeM2M extends EmotionsTransformation {
+public class Behavior2MaudePalladioM2M extends EmotionsTransformation {
 
 	/**
 	 * Some notes
@@ -39,7 +39,7 @@ public class Behavior2MaudeM2M extends EmotionsTransformation {
 	private IFile modelAtl;
 	private IFile modelOutput;
 
-	public Behavior2MaudeM2M(IFile modelBehavior, IFile modelAtl, IFile modelOutput) {
+	public Behavior2MaudePalladioM2M(IFile modelBehavior, IFile modelAtl, IFile modelOutput) {
 		super();
 		this.modelBehavior = modelBehavior;
 		this.modelAtl = modelAtl;
@@ -83,7 +83,7 @@ public class Behavior2MaudeM2M extends EmotionsTransformation {
 		Map<String, Object> options = new HashMap<String, Object>();
 		options.put("allowInterModelReferences", Boolean.TRUE);
 		
-		URL trafoURL = Activator.getDefault().getBundle().getEntry(EmotionsPaths.BEHAVIOR2MAUDE);
+		URL trafoURL = Activator.getDefault().getBundle().getEntry(EmotionsPaths.BEHAVIOR2MAUDEPALLADIO);
 		transformationLauncher.launch(ILauncher.RUN_MODE, null, options, new Object[] { trafoURL.openStream() });
 		
 		/* serialize model */

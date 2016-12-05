@@ -10,7 +10,6 @@ import org.eclipse.m2m.atl.core.ATLCoreException;
 
 import es.uma.lcc.e_motions.common.CommonOperations;
 import es.uma.lcc.e_motions.runningdata.CodGenerationFileManager;
-import es.uma.lcc.e_motions.transformations.creation.EmptyModel;
 import es.uma.lcc.e_motions.transformations.creation.TickRuleModule;
 
 public class CodGenerationJob extends EmotionsJob {
@@ -39,29 +38,18 @@ public class CodGenerationJob extends EmotionsJob {
 				+ df.format((System.currentTimeMillis() - init) / 1000.0) + " seconds.");
 		
 		/* Input model */
-		monitor.subTask("Initial Model 2 Maude");
-		monitor.worked(1);
 		init = System.currentTimeMillis();
-		if (fm.getInitModel() == null) {
-			/* generate empty model */
-			EmptyModel creator;
-			try {
-				creator = new EmptyModel(CommonOperations.extractModuleName(fm.getMetamodelMaudeCode()), 
-						CommonOperations.extractMetamodelOperator(fm.getMetamodelMaudeCode()), fm.getInitModelCode());
-				creator.create();
-			} catch (IOException | CoreException e) {
-				console.errorln("Error creating an EmptyModel");
-			}
-		}
-		/* assert: init model is not null */
+		runInitModel2MaudeCode(monitor);
 		console.successln("Init model created in "
 				+ df.format((System.currentTimeMillis() - init) / 1000.0) + " seconds.");
 		
 		/* Infraestructure */
-		monitor.subTask("Copying Maude infrastructure");
-		monitor.worked(1);
 		init = System.currentTimeMillis();
-		copyInfrastuctureFiles();
+		try {
+			copyInfrastuctureFiles(monitor);
+		} catch (IOException | CoreException e1) {
+			console.errorln(e1.getMessage());
+		}
 		console.successln("Maude infraestructure copied in "
 				+ df.format((System.currentTimeMillis() - init) / 1000.0) + " seconds.");
 		

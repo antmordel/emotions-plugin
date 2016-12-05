@@ -65,7 +65,11 @@ public abstract class EmotionsFileManager {
 	
 	/* Stores the input models */
 	protected IFile initModel;
+	protected IFile initModelXmi;
 	protected IFile initModelCode;
+	
+	/* Stores the aux parameters file used in for the model2maude (init model) transformation */
+	protected IFile paramsAuxFile;
 	
 	public IFile getBehaviorModel() {
 		return behaviorModel;
@@ -228,6 +232,7 @@ public abstract class EmotionsFileManager {
 		}
 		return runMaudeCode;
 	}
+	
 	public IFile getInitModel() {
 		return initModel;
 	}
@@ -236,18 +241,35 @@ public abstract class EmotionsFileManager {
 		this.initModel = initModel;
 	}
 	
-	public IFile getInitModelCode() throws NoSuchFileException {
+	public IFile getInitModelXmi() {
+		if (initModelXmi == null) {
+			String name = getInitModel().getFileExtension().equals("xmi")?getInitModel().getName():getInitModel().getName() + ".xmi";
+			initModelXmi = getFolderTmp().getFile(name);
+		}
+		return initModelXmi;
+	}
+
+	public IFile getInitModelCode() throws NoSuchFileException, CoreException {
 		if (initModelCode == null) {
-			if (getMetamodel() == null) {
-				throw new NoSuchFileException("Init model cannot be found");
-			}
-			if (initModelCode == null) {
+			if (initModel == null) {
 				initModelCode = getFolderResult().getFile("EmptyModel.maude");
 			} else {
 				initModelCode = getFolderResult().getFile(getInitModel().getName() + ".maude");
+				if (!initModelCode.exists()) {
+					byte[] bytes = "".getBytes();
+				    InputStream source = new ByteArrayInputStream(bytes);
+				    initModelCode.create(source, IResource.NONE, null);
+				}
 			}
 		}
 		return initModelCode;
+	}
+	
+	public IFile getParamsAuxFile() throws CoreException {
+		if (paramsAuxFile == null) {
+			paramsAuxFile = getFolderTmp().getFile("paramsATL.xmi");
+		}
+		return paramsAuxFile;
 	}
 	
 	@Override
