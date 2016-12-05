@@ -3,7 +3,7 @@
    <description name="e-Motions" url="lcc.uma.es/~amoreno/e-motions">
       e-Motions update site
    </description>
-   <feature url="features/es.uma.lcc.e-motions.feature_2.2.0.201611161641.jar" id="es.uma.lcc.e-motions.feature" version="2.2.0.201611161641">
+   <feature url="features/es.uma.lcc.e-motions.feature_2.3.0.201612051631.jar" id="es.uma.lcc.e-motions.feature" version="2.3.0.201612051631">
       <category name="e-motions"/>
    </feature>
    <category-def name="e-motions" label="e-Motions"/>

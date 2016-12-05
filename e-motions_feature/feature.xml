@@ -2,7 +2,7 @@
 <feature
       id="es.uma.lcc.e-motions.feature"
       label="e-Motions Plug-in"
-      version="2.2.0.qualifier"
+      version="2.3.0.qualifier"
       provider-name="Atenea"
       plugin="es.uma.lcc.emotions">
 
