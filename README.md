@@ -1,7 +1,7 @@
 # e-Motions plug-in 
 *A graphical framework for the specification, simulation and analysis of Real-Time sytems.*
 
-- *Status*: Developer version 2.1.0 (alpha)
+- *Status*: Developer version 2.3.0 (alpha)
 
 An extensive tutorial and information with a vast range of examples can be found in the [Atenea group's website](http://atenea.lcc.uma.es/index.php/Main_Page/Resources/E-motions).
 
@@ -25,6 +25,8 @@ In any Eclipse for Modelling (Eclipse Modelling Tools):
     http://lcc.uma.es/~amoreno/e-motions/
 
 # Changelog
+### 2.3.0
+- Added a file to store the last launch configuration. To read an existing launch configuration, just select the project in which e-Motions was fired and press the e-Motions button afterwords.
 ### 2.1.0
 - Added full support for Palladio specifications. We provided [an explicit behavior for the Palladio Component Model][1]. In that paper, transformations performing the flattening of the input Palladio models had to be independently executed. In the current version of the tool, we provide a new button ![palladio button](https://raw.githubusercontent.com/e-motions/e-motions_plugin/master/e-motions_plugin/icons/palladio.png) that triggers its execution automatically.
 - Since fulfilling the *Palladio in e-Motions* dialog is quite cumbersome, the last launch is saved so that it can be re-used. The project containing the file with the rules should be selected before triggering the *Palladio in e-Motions* dialog.
