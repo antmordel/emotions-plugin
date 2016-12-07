@@ -11,18 +11,21 @@ Please, note that this is an alpha version. Report issues on this project by ema
 # How to install e-Motions?
 In any Eclipse for Modelling (Eclipse Modelling Tools):
 
-1. Download a Eclipse Modelling as the following:
+1. Download a Eclipse Modelling as the following
     https://www.eclipse.org/downloads/packages/eclipse-modeling-tools/neon1a
 
 2. Install ATL
     http://download.eclipse.org/mmt/atl/updates/releases/3.7/
 
-3. Install Xtend
-    http://download.eclipse.org/modeling/tmf/xtext/updates/composite/releases/ 
-    * Only XTend IDE (under Xtend category) is needed.
-
-4. Install e-Motions 
+3. Install e-Motions (Java 1.8 needed!)
     http://lcc.uma.es/~amoreno/e-motions/
+    
+After the installation, the two icons (![emotions button](https://raw.githubusercontent.com/e-motions/e-motions_plugin/master/e-motions_plugin/icons/emotions.png)![palladio button](https://raw.githubusercontent.com/e-motions/e-motions_plugin/master/e-motions_plugin/icons/palladio.png)) should have been appeared.
+    
+# Getting the gist
+## e-Motions
+To get a flavour of what e-Motions is, you can download some example projects on [this repository](https://github.com/e-motions/emotions_projects). 
+
 
 # Changelog
 ### 2.3.0
