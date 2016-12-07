@@ -26,6 +26,7 @@ After the installation, the two icons (![emotions button](https://raw.githubuser
 ## e-Motions
 To get a flavour of what e-Motions is, you can download some example projects on [this repository](https://github.com/e-motions/emotions_projects). 
 In this repository you can find the [Production Line System](http://atenea.lcc.uma.es/index.php/Main_Page/Resources/E-motions/PLSExample) in which this mini-tutorial is based on.
+
 1. Clone the repository into your local computer.
 2. Open the Eclipse with the e-Motions plug-in.
 3. Import the project under the folder `/emotions_projects/pls`.
