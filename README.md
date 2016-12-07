@@ -29,9 +29,9 @@ In this repository you can find the [Production Line System](http://atenea.lcc.u
 1. Clone the repository into your local computer.
 2. Open the Eclipse with the e-Motions plug-in.
 3. Import the project under the folder `/emotions_projects/pls`.
-4. Click on the cog wheel ![emotions button](https://raw.githubusercontent.com/e-motions/e-motions_plugin/master/e-motions_plugin/icons/cog.png) and fill out all the text fields and check boxes as the following:
-![pls_form](https://github.com/e-motions/e-motions_plugin/blob/master/tutorial/pls_emotions.png?raw=true)
-
+4. Click on the cog wheel ![emotions button](https://raw.githubusercontent.com/e-motions/e-motions_plugin/master/e-motions_plugin/icons/cog.png) and fill out all the text fields and check boxes as the [following](https://github.com/e-motions/e-motions_plugin/blob/master/tutorial/pls_emotions.png?raw=true).
+5. Click on *Ok*.
+6. To run the generated code, just launch Maude with the command `maude run.maude`, in the output folder.
 
 # Changelog
 ### 2.3.0
