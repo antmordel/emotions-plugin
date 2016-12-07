@@ -20,12 +20,16 @@ In any Eclipse for Modelling (Eclipse Modelling Tools):
 3. Install e-Motions (Java 1.8 needed!)
     http://lcc.uma.es/~amoreno/e-motions/
     
-After the installation, the two icons (![emotions button](https://raw.githubusercontent.com/e-motions/e-motions_plugin/master/e-motions_plugin/icons/emotions.png)![palladio button](https://raw.githubusercontent.com/e-motions/e-motions_plugin/master/e-motions_plugin/icons/palladio.png)) should have been appeared.
+After the installation, the two icons (![emotions button](https://raw.githubusercontent.com/e-motions/e-motions_plugin/master/e-motions_plugin/icons/cog.png)![palladio button](https://raw.githubusercontent.com/e-motions/e-motions_plugin/master/e-motions_plugin/icons/palladio.png)) should have been appeared.
     
 # Getting the gist
 ## e-Motions
 To get a flavour of what e-Motions is, you can download some example projects on [this repository](https://github.com/e-motions/emotions_projects). 
-
+In this repository you can find the [Production Line System](http://atenea.lcc.uma.es/index.php/Main_Page/Resources/E-motions/PLSExample) in which this mini-tutorial is based on.
+1. Clone the repository into your local computer.
+2. Open the Eclipse with the e-Motions plug-in.
+3. Import the project under the folder `/emotions_projects/pls`.
+4. Click on the cog wheel ![emotions button](https://raw.githubusercontent.com/e-motions/e-motions_plugin/master/e-motions_plugin/icons/cog.png) and fill out all the text fields and check boxes.
 
 # Changelog
 ### 2.3.0
