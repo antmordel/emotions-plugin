@@ -55,7 +55,7 @@ public class PalladioDialog extends EmotionsDialog {
     }
 	
 	private void createPalladioFilesGroup(Composite composite) {
-		PalladioFileManager fm = (PalladioFileManager) super.fm;
+		final PalladioFileManager fm = (PalladioFileManager) super.fm;
 		Group grpPalladioFiles = new Group(composite, SWT.NONE);
 		grpPalladioFiles.setFont(SWTResourceManager.getFont("Segoe UI", 12, SWT.NORMAL));
 		grpPalladioFiles.setText("Palladio files");
@@ -69,7 +69,7 @@ public class PalladioDialog extends EmotionsDialog {
 		textUsageModel.setBounds(143, 23, 300, 25);
 		textUsageModel.setEditable(false);
 		if (fm.getUsageModel() != null) {
-			textUsageModel.setText(fm.getUsageModel().getFullPath().toOSString());
+			textUsageModel.setText(fm.getUsageModel().getFullPath().toPortableString());
 		}
 		
 		Button btnUsageModel = new Button(grpPalladioFiles, SWT.NONE);
@@ -85,12 +85,13 @@ public class PalladioDialog extends EmotionsDialog {
 				dialog.setInput(ResourcesPlugin.getWorkspace());
 				dialog.addFilter(new FilePatternFilter("usagemodel"));
 				dialog.open();
-				
-				IFile resultUsageModel = (IFile) dialog.getResult()[0];
-				if (dialog.getReturnCode() == Window.OK) {
-					textUsageModel.setText(resultUsageModel.getFullPath().toOSString());
-					fm.setUsageModel(resultUsageModel);
-					checkIfCompleted();
+				if (dialog.getFirstResult() != null) {
+					IFile resultUsageModel = (IFile) dialog.getResult()[0];
+					if (dialog.getReturnCode() == Window.OK) {
+						textUsageModel.setText(resultUsageModel.getFullPath().toPortableString());
+						fm.setUsageModel(resultUsageModel);
+						checkIfCompleted();
+					}
 				}
 			} 
 		});
@@ -103,7 +104,7 @@ public class PalladioDialog extends EmotionsDialog {
 		textRepositoryModel.setBounds(143, 62, 300, 25);
 		textRepositoryModel.setEditable(false);
 		if (fm.getRepositoryModel() != null) {
-			textRepositoryModel.setText(fm.getRepositoryModel().getFullPath().toOSString());
+			textRepositoryModel.setText(fm.getRepositoryModel().getFullPath().toPortableString());
 		}
 		
 		Button btnRepositoryModel = new Button(grpPalladioFiles, SWT.NONE);
@@ -119,12 +120,13 @@ public class PalladioDialog extends EmotionsDialog {
 				dialog.setInput(ResourcesPlugin.getWorkspace());
 				dialog.addFilter(new FilePatternFilter("repository"));
 				dialog.open();
-				
-				IFile resultRepositoryModel = (IFile) dialog.getResult()[0];
-				if (dialog.getReturnCode() == Window.OK) {
-					textRepositoryModel.setText(resultRepositoryModel.getFullPath().toOSString());
-					fm.setRepositoryModel(resultRepositoryModel);
-					checkIfCompleted();
+				if (dialog.getFirstResult() != null) {
+					IFile resultRepositoryModel = (IFile) dialog.getResult()[0];
+					if (dialog.getReturnCode() == Window.OK) {
+						textRepositoryModel.setText(resultRepositoryModel.getFullPath().toPortableString());
+						fm.setRepositoryModel(resultRepositoryModel);
+						checkIfCompleted();
+					}
 				}
 			} 
 		});
@@ -137,7 +139,7 @@ public class PalladioDialog extends EmotionsDialog {
 		textSystemModel.setBounds(143, 101, 300, 25);
 		textSystemModel.setEditable(false);
 		if (fm.getSystemModel() != null) {
-			textSystemModel.setText(fm.getSystemModel().getFullPath().toOSString());
+			textSystemModel.setText(fm.getSystemModel().getFullPath().toPortableString());
 		}
 		
 		Button btnSystemModel = new Button(grpPalladioFiles, SWT.NONE);
@@ -153,12 +155,13 @@ public class PalladioDialog extends EmotionsDialog {
 				dialog.setInput(ResourcesPlugin.getWorkspace());
 				dialog.addFilter(new FilePatternFilter("system"));
 				dialog.open();
-				
-				IFile resultSystemModel = (IFile) dialog.getResult()[0];
-				if (dialog.getReturnCode() == Window.OK) {
-					textSystemModel.setText(resultSystemModel.getFullPath().toOSString());
-					fm.setSystemModel(resultSystemModel);
-					checkIfCompleted();
+				if (dialog.getFirstResult() != null) {
+					IFile resultSystemModel = (IFile) dialog.getResult()[0];
+					if (dialog.getReturnCode() == Window.OK) {
+						textSystemModel.setText(resultSystemModel.getFullPath().toPortableString());
+						fm.setSystemModel(resultSystemModel);
+						checkIfCompleted();
+					}
 				}
 			} 
 		});
@@ -171,7 +174,7 @@ public class PalladioDialog extends EmotionsDialog {
 		textAllocationModel.setBounds(143, 140, 300, 25);
 		textAllocationModel.setEditable(false);
 		if (fm.getAllocationModel() != null) {
-			textAllocationModel.setText(fm.getAllocationModel().getFullPath().toOSString());
+			textAllocationModel.setText(fm.getAllocationModel().getFullPath().toPortableString());
 		}
 		
 		Button btnAllocationModel = new Button(grpPalladioFiles, SWT.NONE);
@@ -187,12 +190,13 @@ public class PalladioDialog extends EmotionsDialog {
 				dialog.setInput(ResourcesPlugin.getWorkspace());
 				dialog.addFilter(new FilePatternFilter("allocation"));
 				dialog.open();
-				
-				IFile resultAllocationModel = (IFile) dialog.getResult()[0];
-				if (dialog.getReturnCode() == Window.OK) {
-					textAllocationModel.setText(resultAllocationModel.getFullPath().toOSString());
-					fm.setAllocationModel(resultAllocationModel);
-					checkIfCompleted();
+				if (dialog.getFirstResult() != null) {
+					IFile resultAllocationModel = (IFile) dialog.getResult()[0];
+					if (dialog.getReturnCode() == Window.OK) {
+						textAllocationModel.setText(resultAllocationModel.getFullPath().toPortableString());
+						fm.setAllocationModel(resultAllocationModel);
+						checkIfCompleted();
+					}
 				}
 			} 
 		});
@@ -206,7 +210,7 @@ public class PalladioDialog extends EmotionsDialog {
 		textResourceEnvModel.setBounds(143, 179, 300, 25);
 		textResourceEnvModel.setEditable(false);
 		if (fm.getResenvModel() != null) {
-			textResourceEnvModel.setText(fm.getResenvModel().getFullPath().toOSString());
+			textResourceEnvModel.setText(fm.getResenvModel().getFullPath().toPortableString());
 		}
 		
 		Button btnResourceEnvModel = new Button(grpPalladioFiles, SWT.NONE);
@@ -222,12 +226,13 @@ public class PalladioDialog extends EmotionsDialog {
 				dialog.setInput(ResourcesPlugin.getWorkspace());
 				dialog.addFilter(new FilePatternFilter("resourceenvironment"));
 				dialog.open();
-				
-				IFile resultResourceEnvModel = (IFile) dialog.getResult()[0];
-				if (dialog.getReturnCode() == Window.OK) {
-					textResourceEnvModel.setText(resultResourceEnvModel.getFullPath().toOSString());
-					fm.setResenvModel(resultResourceEnvModel);
-					checkIfCompleted();
+				if (dialog.getFirstResult() != null) {
+					IFile resultResourceEnvModel = (IFile) dialog.getResult()[0];
+					if (dialog.getReturnCode() == Window.OK) {
+						textResourceEnvModel.setText(resultResourceEnvModel.getFullPath().toPortableString());
+						fm.setResenvModel(resultResourceEnvModel);
+						checkIfCompleted();
+					}
 				}
 			} 
 		});

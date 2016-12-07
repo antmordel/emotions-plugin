@@ -6,6 +6,7 @@ import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.handlers.HandlerUtil;
 
+import es.uma.lcc.e_motions.Activator;
 import es.uma.lcc.e_motions.dialogs.PalladioDialog;
 import es.uma.lcc.e_motions.jobs.PalladioJob;
 import es.uma.lcc.e_motions.launchconfiguration.PalladioLaunchConfiguration;
