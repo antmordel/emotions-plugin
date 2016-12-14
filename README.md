@@ -23,7 +23,6 @@ In any Eclipse for Modelling (Eclipse Modelling Tools):
 A first quick check on the installation: After the installation, the two icons (![emotions button](https://raw.githubusercontent.com/e-motions/e-motions_plugin/master/e-motions_plugin/icons/cog.png)![palladio button](https://raw.githubusercontent.com/e-motions/e-motions_plugin/master/e-motions_plugin/icons/palladio.png)) should have been appeared.
     
 ## Getting the gist
-
 To get a flavour of what e-Motions is, you can download some example projects from [this repository](https://github.com/e-motions/emotions_projects), where you can find the [Production Line System](http://atenea.lcc.uma.es/index.php/Main_Page/Resources/E-motions/PLSExample) in which this mini-tutorial is based on.
 
 1. Clone the repository into your local computer.
