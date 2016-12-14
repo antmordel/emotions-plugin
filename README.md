@@ -5,7 +5,7 @@
 
 An extensive tutorial and information with a vast range of examples can be found in the [Atenea group's website](http://atenea.lcc.uma.es/index.php/Main_Page/Resources/E-motions).
 
-## How to report errors?
+## How to report errors?
 Note that this is an alpha version, and there may still be many issues in the plug-in. To help us correct them, please, report them by posting on the *issues* section of this Github project. Please, add enough information to reproduce the problem. Although Eclipse does not give much information about errors, please, include in your report the information on the problems that have occurred inside the Eclipse instance provided in Eclipse's *Error Log* view.
 
 ## How to install e-Motions?
