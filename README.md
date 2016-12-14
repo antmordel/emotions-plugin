@@ -6,7 +6,7 @@
 An extensive tutorial and information with a vast range of examples can be found in the [Atenea group's website](http://atenea.lcc.uma.es/index.php/Main_Page/Resources/E-motions).
 
 ### How to report errors?
-Please, note that this is an alpha version. Report issues on this project by posting *issues* on Github. Please, add enough information to reproduce the problem. Although Eclipse does not report enough information about errors, it is possible to open the *Error Log* view. In such a view there is a list of problems that have occurred inside the Eclipse instance.
+Note that this is an alpha version, and there may still be many issues in the plug-in. To help us correct them, please, report them by posting on the *issues* section of this Github project. Please, add enough information to reproduce the problem. Although Eclipse does not give much information about errors, please, include in your report the information on the problems that have occurred inside the Eclipse instance provided in Eclipse's *Error Log* view.
 
 # How to install e-Motions?
 In any Eclipse for Modelling (Eclipse Modelling Tools):
@@ -20,12 +20,11 @@ In any Eclipse for Modelling (Eclipse Modelling Tools):
 3. Install e-Motions (Java 1.8 needed!)
     http://lcc.uma.es/~amoreno/e-motions/
     
-After the installation, the two icons (![emotions button](https://raw.githubusercontent.com/e-motions/e-motions_plugin/master/e-motions_plugin/icons/cog.png)![palladio button](https://raw.githubusercontent.com/e-motions/e-motions_plugin/master/e-motions_plugin/icons/palladio.png)) should have been appeared.
+A first quick check on the installation: After the installation, the two icons (![emotions button](https://raw.githubusercontent.com/e-motions/e-motions_plugin/master/e-motions_plugin/icons/cog.png)![palladio button](https://raw.githubusercontent.com/e-motions/e-motions_plugin/master/e-motions_plugin/icons/palladio.png)) should have been appeared.
     
 # Getting the gist
 ## e-Motions
-To get a flavour of what e-Motions is, you can download some example projects on [this repository](https://github.com/e-motions/emotions_projects). 
-In this repository you can find the [Production Line System](http://atenea.lcc.uma.es/index.php/Main_Page/Resources/E-motions/PLSExample) in which this mini-tutorial is based on.
+To get a flavour of what e-Motions is, you can download some example projects from [this repository](https://github.com/e-motions/emotions_projects), where you can find the [Production Line System](http://atenea.lcc.uma.es/index.php/Main_Page/Resources/E-motions/PLSExample) in which this mini-tutorial is based on.
 
 1. Clone the repository into your local computer.
 2. Open the Eclipse with the e-Motions plug-in.
