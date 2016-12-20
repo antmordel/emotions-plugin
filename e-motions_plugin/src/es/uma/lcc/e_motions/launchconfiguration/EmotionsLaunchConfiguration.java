@@ -7,15 +7,10 @@ import java.util.Properties;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
-import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IWorkspaceRoot;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
-import org.eclipse.jface.viewers.ISelection;
-import org.eclipse.jface.viewers.IStructuredSelection;
-import org.eclipse.ui.ISelectionService;
-import org.eclipse.ui.PlatformUI;
 
 import es.uma.lcc.e_motions.runningdata.EmotionsFileManager;
 
@@ -58,45 +53,21 @@ public class EmotionsLaunchConfiguration {
 		return true;
 	}
 	
-	private IProject getProject() {
-		return fm.getBehaviorModel().getProject();
-	}
-	
-	public boolean save() {
+	public boolean save(IProject project) {
 		boolean res;
-		
+
 		res = createProps();
-		
-		IFile file = getProject().getFile(FILE_NAME);
-		
+		IFile file = project.getFile(FILE_NAME);
 		try {
 			FileOutputStream fos = new FileOutputStream(file.getRawLocation().makeAbsolute().toFile());
 			props.store(fos, "Launch configuration for e-Motions");
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		
 		return res;
 	}
 	
-	public static IProject getSelectedProject(){    
-        ISelectionService selectionService = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getSelectionService();    
-
-        ISelection selection = selectionService.getSelection();    
-
-        IProject project = null;    
-        if(selection instanceof IStructuredSelection) {    
-            Object element = ((IStructuredSelection) selection).getFirstElement();    
-
-            if (element instanceof IResource) {    
-                project = ((IResource) element).getProject();    
-            }  
-        }     
-        return project;    
-    }
-	
-	public void read() {
-		IProject project = getSelectedProject();
+	public void read(IProject project) {
 		IFile fileProperties = project!=null?project.getFile(FILE_NAME):null;
 		if (fileProperties != null && fileProperties.exists()) {
 			try {

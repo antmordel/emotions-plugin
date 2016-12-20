@@ -8,7 +8,6 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.m2m.atl.core.ATLCoreException;
 
-import es.uma.lcc.e_motions.Activator;
 import es.uma.lcc.e_motions.common.CommonOperations;
 import es.uma.lcc.e_motions.runningdata.PalladioFileManager;
 import es.uma.lcc.e_motions.transformations.creation.TickRuleModulePalladio;
@@ -24,8 +23,6 @@ public class PalladioJob extends EmotionsJob {
 
 	@Override
 	protected IStatus run(IProgressMonitor monitor) {
-		console.println("Maude ATL path: " + Activator.getDefault().getBundle().getEntry("lib/metamodels/Maude.ecore"));
-		
 		PalladioFileManager fm = (PalladioFileManager) super.fm;
 		monitor.beginTask("Palladio code generation", 1);
 

@@ -1294,16 +1294,16 @@ mod E-MOTIONS is
 	--- We create the counter, the clock, and we initialize the time elapse to zero
 	op init : @Model -> ClockedSystem .
 	eq init(MM { OBJSET }) 
-	  = { MM { < 'ids@ : Counter@MGBehavior | value@Counter@MGBehavior : 0 >
-	           < 'rdm@ : Counter@MGBehavior | value@Counter@MGBehavior : 0 >
-	           < 'clk@ : Clock@MGBehavior | time@Clock@MGBehavior : zero >
+	  = { MM { < oid('ids@) : Counter@MGBehavior | value@Counter@MGBehavior : 0 >
+	           < oid('rdm@) : Counter@MGBehavior | value@Counter@MGBehavior : 0 >
+	           < oid('clk@) : Clock@MGBehavior | time@Clock@MGBehavior : zero >
 	           OBJSET } } in time zero .
 	
 	op init : @Model Int -> ClockedSystem .
 	eq init(MM { OBJSET }, I:Int) 
-	  = { MM { < 'ids@ : Counter@MGBehavior | value@Counter@MGBehavior : 0 >
-	           < 'rdm@ : Counter@MGBehavior | value@Counter@MGBehavior : I:Int >
-	           < 'clk@ : Clock@MGBehavior | time@Clock@MGBehavior : zero >
+	  = { MM { < oid('ids@) : Counter@MGBehavior | value@Counter@MGBehavior : 0 >
+	           < oid('rdm@) : Counter@MGBehavior | value@Counter@MGBehavior : I:Int >
+	           < oid('clk@) : Clock@MGBehavior | time@Clock@MGBehavior : zero >
 	           OBJSET } } in time zero .
 	           
 	---- REALIZATION RULE READJUSTMENT

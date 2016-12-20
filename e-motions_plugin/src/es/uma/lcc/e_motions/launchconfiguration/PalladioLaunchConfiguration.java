@@ -1,7 +1,6 @@
 package es.uma.lcc.e_motions.launchconfiguration;
 
 import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Properties;
 
@@ -45,27 +44,9 @@ public class PalladioLaunchConfiguration extends EmotionsLaunchConfiguration {
 		return true;
 	}
 	
-	public boolean save() {
-		boolean res;
-		
-		res = createProps();
-		
-		IProject project = fm.getBehaviorModel().getProject();
-		IFile file = project.getFile(FILE_NAME);
-		try {
-			FileOutputStream fos = new FileOutputStream(file.getRawLocation().makeAbsolute().toFile());
-			props.store(fos, "Launch configuration for e-Motions");
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		
-		return res;
-	}
-	
-	public void read() {
-		super.read();
+	public void read(IProject project) {
+		super.read(project);
 		PalladioFileManager fm = (PalladioFileManager) this.fm;
-		IProject project = getSelectedProject();
 		if (project != null) {
 			IFile fileProperties = project.getFile(FILE_NAME);
 			if (fileProperties.exists()) {
